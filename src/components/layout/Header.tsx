@@ -1,10 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import ThemeToggle from '@/components/ui/ThemeToggle';
+import { useAuth } from '@/contexts/AuthContext';
 
 const navItems = [
   { href: '/levels', label: 'Levels' },
@@ -18,7 +19,14 @@ const navItems = [
 
 export default function Header() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, signOut, isLoading } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  async function handleSignOut() {
+    await signOut();
+    router.push('/');
+  }
 
   return (
     <header className="border-b border-border bg-background/80 backdrop-blur-md sticky top-0 z-50">
@@ -49,6 +57,28 @@ export default function Header() {
               </Link>
             ))}
             <ThemeToggle />
+            {!isLoading && (
+              user ? (
+                <div className="flex items-center gap-2 ml-1">
+                  <span className="text-xs text-muted hidden lg:block max-w-[120px] truncate" title={user.email}>
+                    {user.email}
+                  </span>
+                  <button
+                    onClick={handleSignOut}
+                    className="px-3 py-1.5 rounded-lg text-sm font-medium text-primary-light hover:bg-surface-hover hover:text-primary transition-all duration-200"
+                  >
+                    Sign out
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  className="ml-1 px-3.5 py-2 rounded-lg text-sm font-medium bg-accent text-white hover:bg-accent-hover transition-all duration-200"
+                >
+                  Sign in
+                </Link>
+              )
+            )}
           </nav>
 
           {/* Mobile: theme toggle + menu button */}
@@ -88,6 +118,24 @@ export default function Header() {
                 {item.label}
               </Link>
             ))}
+            {!isLoading && (
+              user ? (
+                <button
+                  onClick={() => { setMobileMenuOpen(false); handleSignOut(); }}
+                  className="block w-full text-left px-3.5 py-2.5 rounded-lg text-sm font-medium text-primary-light hover:bg-surface-hover transition-all duration-200"
+                >
+                  Sign out ({user.email})
+                </button>
+              ) : (
+                <Link
+                  href="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block px-3.5 py-2.5 rounded-lg text-sm font-medium text-accent hover:bg-surface-hover transition-all duration-200"
+                >
+                  Sign in / Create account
+                </Link>
+              )
+            )}
           </nav>
         )}
       </div>

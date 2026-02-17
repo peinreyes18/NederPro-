@@ -3,20 +3,65 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { UserProgress, TopicProgress, ExerciseResult } from '@/types/progress';
 import { loadProgress, saveProgress, defaultProgress } from '@/lib/storage';
+import { createClient } from '@/lib/supabase';
+import { useAuth } from '@/contexts/AuthContext';
+
+async function loadProgressFromSupabase(userId: string): Promise<UserProgress | null> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('user_progress')
+    .select('progress')
+    .eq('user_id', userId)
+    .maybeSingle();
+  if (error || !data) return null;
+  return data.progress as UserProgress;
+}
+
+async function saveProgressToSupabase(userId: string, progress: UserProgress): Promise<void> {
+  const supabase = createClient();
+  await supabase
+    .from('user_progress')
+    .upsert(
+      { user_id: userId, progress, updated_at: new Date().toISOString() },
+      { onConflict: 'user_id' }
+    );
+}
 
 export function useProgress() {
+  const { user } = useAuth();
   const [progress, setProgress] = useState<UserProgress>(defaultProgress);
   const [isLoaded, setIsLoaded] = useState(false);
   const saveTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const userIdRef = useRef<string | null>(null);
 
-  // Load from localStorage on mount
+  // Load progress: from Supabase if logged in, else from localStorage
   useEffect(() => {
-    const stored = loadProgress();
-    setProgress(stored);
-    setIsLoaded(true);
-  }, []);
+    let cancelled = false;
 
-  // Debounced save
+    async function load() {
+      if (user) {
+        userIdRef.current = user.id;
+        const remote = await loadProgressFromSupabase(user.id);
+        if (!cancelled) {
+          setProgress(remote ?? defaultProgress);
+          setIsLoaded(true);
+        }
+      } else {
+        userIdRef.current = null;
+        const local = loadProgress();
+        if (!cancelled) {
+          setProgress(local);
+          setIsLoaded(true);
+        }
+      }
+    }
+
+    setIsLoaded(false);
+    load();
+    return () => { cancelled = true; };
+  }, [user]);
+
+  // Debounced save: Supabase if logged in, else localStorage
   useEffect(() => {
     if (!isLoaded) return;
 
@@ -25,8 +70,13 @@ export function useProgress() {
     }
 
     saveTimerRef.current = setTimeout(() => {
-      saveProgress(progress);
-    }, 300);
+      const uid = userIdRef.current;
+      if (uid) {
+        saveProgressToSupabase(uid, progress);
+      } else {
+        saveProgress(progress);
+      }
+    }, 500);
 
     return () => {
       if (saveTimerRef.current) {

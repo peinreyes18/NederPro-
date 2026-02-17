@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import Card from '@/components/ui/Card';
@@ -10,11 +10,18 @@ import Button from '@/components/ui/Button';
 export default function LoginPage() {
   const { signIn } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get('error') === 'confirmation_failed') {
+      setError('The confirmation link has expired or is invalid. Please sign up again or try signing in.');
+    }
+  }, [searchParams]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -24,7 +31,11 @@ export default function LoginPage() {
     setLoading(false);
 
     if (error) {
-      setError(error);
+      if (error.toLowerCase().includes('email not confirmed')) {
+        setError('Please check your email and click the confirmation link first before signing in.');
+      } else {
+        setError(error);
+      }
     } else {
       router.push('/progress');
     }

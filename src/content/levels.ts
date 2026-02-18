@@ -64,6 +64,15 @@ export const levels: LevelDefinition[] = [
       'Intermediate Dutch grammar including subordinate clauses, passive voice, conditionals, and professional communication for the workplace.',
     topicIds: [
       'plural-formation',
+      'passive-voice',
+      'relative-clauses',
+      'infinitive-constructions',
+      'prepositions-place',
+      'word-formation',
+      'conditional-sentences',
+      'reported-speech',
+      'conjunctions-connectors',
+      'participles-adjectives',
     ],
     examInfo: 'Staatsexamen NT2 Programma I',
   },
@@ -73,7 +82,16 @@ export const levels: LevelDefinition[] = [
     shortName: 'B2',
     description:
       'Advanced grammar and nuanced language use. Complex sentence structures, formal writing, and professional Dutch at an advanced level.',
-    topicIds: [],
+    topicIds: [
+      'complex-word-order',
+      'formal-writing-style',
+      'advanced-modal-verbs',
+      'discourse-markers',
+      'nominalization',
+      'subjunctive-idioms',
+      'advanced-relative-clauses',
+      'register-style',
+    ],
     examInfo: 'Staatsexamen NT2 Programma II',
   },
 ];

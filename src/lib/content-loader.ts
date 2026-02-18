@@ -6,12 +6,14 @@ import { a0Topics } from '@/content/a0';
 import { a1Topics } from '@/content/a1';
 import { a2Topics } from '@/content/a2';
 import { b1Topics } from '@/content/b1';
+import { b2Topics } from '@/content/b2';
 
 const topicsByLevel: Record<string, Topic[]> = {
   a0: a0Topics,
   a1: a1Topics,
   a2: a2Topics,
   b1: b1Topics,
+  b2: b2Topics,
 };
 
 export function getAllLevels() {

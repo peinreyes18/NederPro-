@@ -25,15 +25,22 @@ const skillIcons: Record<string, string> = {
   knowledge: 'Knowledge',
 };
 
+const comingSoonDescriptions: Record<string, string> = {
+  'inburgering-a2':
+    'Practice tests for the Inburgeringsexamen covering reading, listening, speaking, and writing at A2 level.',
+  'staatsexamen-nt2-i':
+    'Practice tests for Staatsexamen NT2 Programma I (B1) — reading comprehension, writing, and listening tasks.',
+  'staatsexamen-nt2-ii':
+    'Practice tests for Staatsexamen NT2 Programma II (B2) — advanced reading, academic writing, and oral tasks.',
+};
+
 export default function ExamsPage() {
-  // Group exams by examType
-  const groupedExams = examTypeOrder
-    .map((type) => ({
-      type,
-      label: examTypeLabels[type] || type,
-      exams: allExams.filter((exam) => exam.examType === type),
-    }))
-    .filter((group) => group.exams.length > 0);
+  // Group exams by examType — keep all four types, even empty ones
+  const groupedExams = examTypeOrder.map((type) => ({
+    type,
+    label: examTypeLabels[type] || type,
+    exams: allExams.filter((exam) => exam.examType === type),
+  }));
 
   return (
     <div>
@@ -78,6 +85,7 @@ export default function ExamsPage() {
           </div>
 
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {/* Available exams */}
             {group.exams.map((exam) => (
               <Card key={exam.id} hover className="flex flex-col">
                 <div className="flex-1">
@@ -119,18 +127,32 @@ export default function ExamsPage() {
                 </div>
               </Card>
             ))}
+
+            {/* Coming soon placeholder when no exams exist for this type */}
+            {group.exams.length === 0 && (
+              <Card className="flex flex-col opacity-60 border-dashed">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <h3 className="font-semibold text-primary text-lg">
+                      Coming Soon
+                    </h3>
+                    <Badge>Coming soon</Badge>
+                  </div>
+                  <p className="text-sm text-muted leading-relaxed mb-4">
+                    {comingSoonDescriptions[group.type] ??
+                      'Practice tests for this exam type are in development.'}
+                  </p>
+                </div>
+                <div className="pt-2">
+                  <Button className="w-full" size="sm" variant="outline" disabled>
+                    Not yet available
+                  </Button>
+                </div>
+              </Card>
+            )}
           </div>
         </section>
       ))}
-
-      {/* Empty state if no exams at all */}
-      {groupedExams.length === 0 && (
-        <section className="max-w-6xl mx-auto px-4 sm:px-6 py-20 text-center">
-          <p className="text-muted text-lg">
-            No practice exams available yet. Check back soon!
-          </p>
-        </section>
-      )}
     </div>
   );
 }

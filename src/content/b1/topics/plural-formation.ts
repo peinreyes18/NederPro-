@@ -345,7 +345,7 @@ export const pluralFormation: Topic = {
           },
           {
             question: 'What is the plural of "tafel"?',
-            options: ['tafelen', 'tafels', 'tafelen', 'tafelss'],
+            options: ['tafelen', 'tafels', 'tafelens', 'tafelss'],
             correctIndex: 1,
             explanation: 'Nouns ending in -el take -s: tafels.',
           },
@@ -432,7 +432,7 @@ export const pluralFormation: Topic = {
           { before: 'Alle', after: "(baby) liggen te slapen.", correctAnswer: "baby's", hint: "Long vowel ending → apostrophe + s" },
           { before: 'De', after: '(speler) trainen elke dag.', correctAnswer: 'spelers', hint: '-er ending takes -s' },
           { before: 'We bezoeken de', after: '(bezienswaardigheid) van Amsterdam.', correctAnswer: 'bezienswaardigheden', hint: '-heid → -heden' },
-          { before: 'In deze straat staan mooie', after: '(villa).', correctAnswer: "villa's", hint: "Long vowel ending → apostroph + s" },
+          { before: 'In deze straat staan mooie', after: '(villa).', correctAnswer: "villa's", hint: "Long vowel ending → apostrophe + s" },
           { before: 'De twee', after: '(professor) gaven een lezing.', correctAnswer: 'professoren', acceptableAnswers: ['professors'], hint: '-or → -oren (or -s)' },
         ],
       },
@@ -591,12 +591,12 @@ export const pluralFormation: Topic = {
             translation: 'There are many trees in the park.',
           },
           {
-            shuffledWords: ['de', 'spelen', 'buiten', 'kinderen'],
+            shuffledWords: ['De', 'spelen', 'buiten', 'kinderen'],
             correctOrder: ['De', 'kinderen', 'spelen', 'buiten'],
             translation: 'The children are playing outside.',
           },
           {
-            shuffledWords: ['de', 'zijn', 'van', 'steden', 'wat', 'grootste', 'Nederland'],
+            shuffledWords: ['de', 'zijn', 'van', 'steden', 'Wat', 'grootste', 'Nederland'],
             correctOrder: ['Wat', 'zijn', 'de', 'grootste', 'steden', 'van', 'Nederland'],
             translation: 'What are the biggest cities of the Netherlands?',
           },

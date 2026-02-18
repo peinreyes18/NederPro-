@@ -90,10 +90,12 @@ export interface WorkplaceContextSection extends BaseLessonSection {
   type: 'workplace-context';
   scenario: string;
   examples: ExampleSentence[];
+  note?: string;
 }
 
 export interface NoteSection extends BaseLessonSection {
   type: 'note';
+  title?: string;
   content: string;
   variant: 'info' | 'tip' | 'warning';
 }

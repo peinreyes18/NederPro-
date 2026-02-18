@@ -1,7 +1,15 @@
 import { ExamPracticeTest } from '../types';
 import { knmPracticeExam3 } from './knm/practice-exam-3';
+import { inburgeringA2Reading1 } from './inburgering-a2/reading-exam-1';
+import { staatsexamenNt2IReading1 } from './staatsexamen-nt2-i/reading-exam-1';
+import { staatsexamenNt2IIReading1 } from './staatsexamen-nt2-ii/reading-exam-1';
 
-export const allExams: ExamPracticeTest[] = [knmPracticeExam3];
+export const allExams: ExamPracticeTest[] = [
+  knmPracticeExam3,
+  inburgeringA2Reading1,
+  staatsexamenNt2IReading1,
+  staatsexamenNt2IIReading1,
+];
 
 export function getExamById(id: string): ExamPracticeTest | undefined {
   return allExams.find((exam) => exam.id === id);

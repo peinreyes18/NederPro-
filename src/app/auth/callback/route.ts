@@ -32,6 +32,8 @@ export async function GET(request: NextRequest) {
 
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
+      // `next` will be '/reset-password' for password recovery links,
+      // or '/progress' for email confirmation links.
       return NextResponse.redirect(`${origin}${next}`);
     }
   }

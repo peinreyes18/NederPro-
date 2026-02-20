@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { createClient } from '@/lib/supabase';
+import { deleteAccount } from '@/app/actions/deleteAccount';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
@@ -63,10 +64,17 @@ export default function AccountPage() {
     setDeleteLoading(true);
     setDeleteError(null);
 
-    // Sign out and redirect — actual account deletion would require a server action
-    // with Supabase admin privileges. For now we sign out and show instructions.
+    const { error } = await deleteAccount();
+
+    if (error) {
+      setDeleteError(error);
+      setDeleteLoading(false);
+      return;
+    }
+
+    // Server action signs out the session; also clear local auth state
     await signOut();
-    router.push('/?deleted=1');
+    router.push('/');
   }
 
   const tabs: { id: Tab; label: string }[] = [

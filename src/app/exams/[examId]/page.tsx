@@ -50,6 +50,7 @@ export default function ExamPage() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [examFinished, setExamFinished] = useState(false);
   const [timerRunning, setTimerRunning] = useState(true);
+  const [navOpen, setNavOpen] = useState(false);
 
   // A question counts as "answered" if it has a selected option (MC/TF)
   // or a non-empty writing response with a self-assessment
@@ -303,14 +304,31 @@ export default function ExamPage() {
           {/* Question navigation grid (sidebar) */}
           <div className="order-first lg:order-last">
             <div className="sticky top-[72px]">
-              <div className="bg-surface rounded-xl border border-border p-4">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-semibold text-primary">
-                    Questions
-                  </h3>
-                  <span className="text-xs text-muted">
-                    {answeredCount}/{totalCount} answered
-                  </span>
+              {/* Mobile: collapsible toggle bar */}
+              <div className="lg:hidden mb-2">
+                <button
+                  onClick={() => setNavOpen((prev) => !prev)}
+                  className="w-full flex items-center justify-between bg-surface border border-border rounded-xl px-4 py-2.5 text-sm font-medium text-primary"
+                >
+                  <span>Questions — {answeredCount}/{totalCount} answered</span>
+                  <svg
+                    className={cn('w-4 h-4 text-muted transition-transform', navOpen && 'rotate-180')}
+                    fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Nav panel — always visible on desktop, toggle on mobile */}
+              <div className={cn(
+                'bg-surface rounded-xl border border-border p-4',
+                'lg:block',
+                navOpen ? 'block' : 'hidden lg:block'
+              )}>
+                <div className="hidden lg:flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-semibold text-primary">Questions</h3>
+                  <span className="text-xs text-muted">{answeredCount}/{totalCount} answered</span>
                 </div>
 
                 <div className="grid grid-cols-8 sm:grid-cols-10 lg:grid-cols-6 gap-1.5">
@@ -325,21 +343,14 @@ export default function ExamPage() {
                     return (
                       <button
                         key={index}
-                        onClick={() => handleJumpToQuestion(index)}
+                        onClick={() => { handleJumpToQuestion(index); setNavOpen(false); }}
                         className={cn(
                           'w-8 h-8 rounded-full text-xs font-semibold transition-all duration-150 flex items-center justify-center',
-                          isCurrent &&
-                            'ring-2 ring-accent ring-offset-2 ring-offset-surface',
-                          isAnswered && !isCurrent &&
-                            'bg-accent text-white',
-                          isAnswered && isCurrent &&
-                            'bg-accent text-white',
-                          !isAnswered && !isCurrent && !isWriting &&
-                            'border-2 border-border text-muted hover:border-accent/40',
-                          !isAnswered && !isCurrent && isWriting &&
-                            'border-2 border-dashed border-border text-muted hover:border-accent/40',
-                          !isAnswered && isCurrent &&
-                            'border-2 border-accent text-accent'
+                          isCurrent && 'ring-2 ring-accent ring-offset-2 ring-offset-surface',
+                          isAnswered && 'bg-accent text-white',
+                          !isAnswered && !isCurrent && !isWriting && 'border-2 border-border text-muted hover:border-accent/40',
+                          !isAnswered && !isCurrent && isWriting && 'border-2 border-dashed border-border text-muted hover:border-accent/40',
+                          !isAnswered && isCurrent && 'border-2 border-accent text-accent'
                         )}
                         title={`Question ${index + 1}${isWriting ? ' (writing)' : ''}${isAnswered ? ' (answered)' : ''}`}
                       >
@@ -354,18 +365,14 @@ export default function ExamPage() {
                   <div className="w-full h-2 rounded-full bg-surface-hover overflow-hidden">
                     <div
                       className="h-full rounded-full bg-accent transition-all duration-300"
-                      style={{
-                        width: `${totalCount > 0 ? (answeredCount / totalCount) * 100 : 0}%`,
-                      }}
+                      style={{ width: `${totalCount > 0 ? (answeredCount / totalCount) * 100 : 0}%` }}
                     />
                   </div>
                 </div>
 
                 {/* Legend if there are writing questions */}
                 {allQuestions.some((q) => q.type === 'writing') && (
-                  <p className="text-xs text-muted mt-3">
-                    Dashed border = writing task
-                  </p>
+                  <p className="text-xs text-muted mt-3">Dashed border = writing task</p>
                 )}
               </div>
             </div>

@@ -168,6 +168,74 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Pricing */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+        <div className="mb-10 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-2">Simple Pricing</h2>
+          <p className="text-muted max-w-xl mx-auto">
+            Start for free. Unlock everything when you are ready.
+          </p>
+        </div>
+
+        <div className="grid gap-6 sm:grid-cols-2 max-w-3xl mx-auto">
+          {/* Free tier */}
+          <Card className="flex flex-col">
+            <div className="mb-4">
+              <Badge>Free</Badge>
+            </div>
+            <p className="text-3xl font-extrabold text-primary mb-1">€0</p>
+            <p className="text-sm text-muted mb-6">No credit card required</p>
+            <ul className="space-y-2 text-sm text-primary-light flex-1 mb-8">
+              {[
+                'A1 grammar lessons',
+                'Core vocabulary sets',
+                'Exam practice previews',
+                'Grammar reference',
+                'Culture &amp; history pages',
+              ].map((item, i) => (
+                <li key={i} className="flex items-start gap-2">
+                  <span className="text-success mt-0.5 flex-shrink-0">✓</span>
+                  <span dangerouslySetInnerHTML={{ __html: item }} />
+                </li>
+              ))}
+            </ul>
+            <Link href="/signup">
+              <Button variant="outline" className="w-full">Create Free Account</Button>
+            </Link>
+          </Card>
+
+          {/* Pro tier */}
+          <Card className="flex flex-col border-accent/40 relative">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+              <Badge variant="accent">Most Popular</Badge>
+            </div>
+            <div className="mb-4">
+              <Badge variant="accent">Pro</Badge>
+            </div>
+            <p className="text-3xl font-extrabold text-primary mb-1">€9<span className="text-lg font-normal text-muted">/mo</span></p>
+            <p className="text-sm text-muted mb-6">Cancel anytime</p>
+            <ul className="space-y-2 text-sm text-primary-light flex-1 mb-8">
+              {[
+                'Everything in Free',
+                'All levels: A2, B1, B2',
+                'Full exam practice library',
+                'AI writing feedback',
+                'Listening &amp; writing exams',
+                'Progress tracking',
+              ].map((item, i) => (
+                <li key={i} className="flex items-start gap-2">
+                  <span className="text-accent mt-0.5 flex-shrink-0">✓</span>
+                  <span dangerouslySetInnerHTML={{ __html: item }} />
+                </li>
+              ))}
+            </ul>
+            <Link href="/signup">
+              <Button className="w-full">Get Started</Button>
+            </Link>
+          </Card>
+        </div>
+      </section>
     </div>
   );
 }

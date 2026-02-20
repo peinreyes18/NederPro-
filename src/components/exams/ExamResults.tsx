@@ -109,9 +109,8 @@ export default function ExamResults({
                 cy="60"
                 r="54"
                 fill="none"
-                stroke="currentColor"
+                stroke="var(--border)"
                 strokeWidth="8"
-                className="text-border"
               />
               <circle
                 cx="60"
@@ -205,7 +204,7 @@ export default function ExamResults({
                     )}
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-24 h-2 rounded-full bg-surface-hover overflow-hidden">
+                    <div className="w-24 h-2 rounded-full bg-border overflow-hidden">
                       <div
                         className={cn(
                           'h-full rounded-full transition-all duration-500',

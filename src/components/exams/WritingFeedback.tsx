@@ -121,7 +121,7 @@ export default function WritingFeedback({ request }: WritingFeedbackProps) {
           {/* Mini circular score */}
           <div className="relative flex-shrink-0 w-16 h-16">
             <svg className="w-full h-full -rotate-90" viewBox="0 0 64 64">
-              <circle cx="32" cy="32" r="28" fill="none" stroke="currentColor" strokeWidth="6" className="text-border" />
+              <circle cx="32" cy="32" r="28" fill="none" stroke="var(--border)" strokeWidth="6" />
               <circle
                 cx="32" cy="32" r="28" fill="none" strokeWidth="6" strokeLinecap="round"
                 strokeDasharray={circumference}

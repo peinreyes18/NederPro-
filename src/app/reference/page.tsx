@@ -1,7 +1,19 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
+
+export const metadata: Metadata = {
+  title: 'Grammar Reference',
+  description:
+    'Quick-reference Dutch grammar tables: verb conjugation, de/het articles, word order, pronouns, and more. Bookmark-friendly for fast lookup during study.',
+  openGraph: {
+    title: 'Dutch Grammar Reference — NederPro',
+    description:
+      'Quick-reference Dutch grammar tables for verb conjugation, articles, word order, and pronouns.',
+  },
+};
 
 const referenceTopics = [
   {

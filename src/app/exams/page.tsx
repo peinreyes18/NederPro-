@@ -1,8 +1,20 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { allExams } from '@/content/exams';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import Button from '@/components/ui/Button';
+
+export const metadata: Metadata = {
+  title: 'Exam Practice',
+  description:
+    'Realistic practice tests for KNM, Inburgeringsexamen, and Staatsexamen NT2. Timed sessions, instant feedback, and detailed score breakdowns to build exam confidence.',
+  openGraph: {
+    title: 'Exam Practice — NederPro',
+    description:
+      'Prepare for official Dutch exams with realistic practice tests. KNM, Inburgeringsexamen, Staatsexamen NT2 (B1 & B2).',
+  },
+};
 
 const examTypeLabels: Record<string, string> = {
   knm: 'KNM \u2013 Kennis van de Nederlandse Maatschappij',

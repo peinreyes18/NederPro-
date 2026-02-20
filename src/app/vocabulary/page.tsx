@@ -1,5 +1,17 @@
+import type { Metadata } from 'next';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import VocabularyPageContent from '@/components/vocabulary/VocabularyPageContent';
+
+export const metadata: Metadata = {
+  title: 'Dutch Vocabulary',
+  description:
+    'Build your Dutch vocabulary with categorised word lists, audio pronunciation, and interactive quizzes. Organised by topic and CEFR level.',
+  openGraph: {
+    title: 'Dutch Vocabulary — NederPro',
+    description:
+      'Categorised Dutch vocabulary with quizzes and audio. Organised by topic and CEFR level.',
+  },
+};
 
 export default function VocabularyPage() {
   return (

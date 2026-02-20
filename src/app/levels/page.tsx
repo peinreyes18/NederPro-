@@ -1,9 +1,21 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import LevelCardProgress from '@/components/progress/LevelCardProgress';
 import { levels } from '@/content/levels';
+
+export const metadata: Metadata = {
+  title: 'Dutch Grammar Levels',
+  description:
+    'Structured Dutch grammar lessons from A1 to B2+. Follow the CEFR path from absolute beginner to advanced — aligned with Inburgeringsexamen and Staatsexamen NT2.',
+  openGraph: {
+    title: 'Dutch Grammar Levels — NederPro',
+    description:
+      'CEFR-aligned Dutch grammar lessons from A1 to B2+. Structured progression toward official Dutch exam certification.',
+  },
+};
 
 export default function LevelsPage() {
   return (

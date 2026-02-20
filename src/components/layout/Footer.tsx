@@ -15,7 +15,7 @@ export default function Footer() {
               Structured Dutch Grammar Learning
             </span>
           </div>
-          <nav className="flex items-center gap-4 text-sm text-muted">
+          <nav className="flex flex-wrap items-center justify-center gap-4 text-sm text-muted">
             <Link href="/levels" className="hover:text-primary transition-colors">
               Levels
             </Link>
@@ -25,15 +25,32 @@ export default function Footer() {
             <Link href="/reference" className="hover:text-primary transition-colors">
               Reference
             </Link>
+            <Link href="/exams" className="hover:text-primary transition-colors">
+              Exams
+            </Link>
             <Link href="/progress" className="hover:text-primary transition-colors">
               Progress
             </Link>
           </nav>
         </div>
-        <div className="mt-6 pt-6 border-t border-border text-center">
-          <p className="text-xs text-muted">
-            Aligned with CEFR levels and Dutch exam standards
-          </p>
+
+        <div className="mt-6 pt-6 border-t border-border">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p className="text-xs text-muted order-2 sm:order-1">
+              &copy; {new Date().getFullYear()} NederPro. All rights reserved.
+            </p>
+            <nav className="flex flex-wrap items-center justify-center gap-4 text-xs text-muted order-1 sm:order-2">
+              <Link href="/privacy" className="hover:text-primary transition-colors">
+                Privacy Policy
+              </Link>
+              <Link href="/cookies" className="hover:text-primary transition-colors">
+                Cookie Policy
+              </Link>
+              <Link href="/terms" className="hover:text-primary transition-colors">
+                Terms &amp; Conditions
+              </Link>
+            </nav>
+          </div>
         </div>
       </div>
     </footer>

@@ -59,10 +59,19 @@ export default function Header() {
             <ThemeToggle />
             {!isLoading && (
               user ? (
-                <div className="flex items-center gap-2 ml-1">
-                  <span className="text-xs text-muted hidden lg:block max-w-[120px] truncate" title={user.email}>
-                    {user.email}
-                  </span>
+                <div className="flex items-center gap-1 ml-1">
+                  <Link
+                    href="/account"
+                    className={cn(
+                      'px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200',
+                      pathname.startsWith('/account')
+                        ? 'bg-accent-light text-accent-hover font-semibold'
+                        : 'text-primary-light hover:bg-surface-hover hover:text-primary'
+                    )}
+                    title={user.email}
+                  >
+                    Account
+                  </Link>
                   <button
                     onClick={handleSignOut}
                     className="px-3 py-1.5 rounded-lg text-sm font-medium text-primary-light hover:bg-surface-hover hover:text-primary transition-all duration-200"
@@ -120,12 +129,26 @@ export default function Header() {
             ))}
             {!isLoading && (
               user ? (
-                <button
-                  onClick={() => { setMobileMenuOpen(false); handleSignOut(); }}
-                  className="block w-full text-left px-3.5 py-2.5 rounded-lg text-sm font-medium text-primary-light hover:bg-surface-hover transition-all duration-200"
-                >
-                  Sign out ({user.email})
-                </button>
+                <>
+                  <Link
+                    href="/account"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={cn(
+                      'block px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all duration-200',
+                      pathname.startsWith('/account')
+                        ? 'bg-accent-light text-accent-hover font-semibold'
+                        : 'text-primary-light hover:bg-surface-hover'
+                    )}
+                  >
+                    Account
+                  </Link>
+                  <button
+                    onClick={() => { setMobileMenuOpen(false); handleSignOut(); }}
+                    className="block w-full text-left px-3.5 py-2.5 rounded-lg text-sm font-medium text-primary-light hover:bg-surface-hover transition-all duration-200"
+                  >
+                    Sign out
+                  </button>
+                </>
               ) : (
                 <Link
                   href="/login"

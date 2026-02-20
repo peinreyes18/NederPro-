@@ -350,5 +350,79 @@ export const alphabetPronunciation: Topic = {
         ],
       },
     },
+    {
+      id: 'a0-alpha-err-1',
+      type: 'error-correction',
+      instruction: 'The Dutch word is misspelled because of a common pronunciation mistake. Write the correct spelling.',
+      difficulty: 'guided',
+      content: {
+        type: 'error-correction',
+        items: [
+          {
+            incorrectSentence: 'goet',
+            correctedSentence: 'goed',
+            errorExplanation: '"Goed" ends in -d (not -t). Although the final -d is often silent, the spelling keeps the -d.',
+          },
+          {
+            incorrectSentence: 'hais',
+            correctedSentence: 'huis',
+            errorExplanation: '"Huis" contains the Dutch diphthong "ui", not "ai". The "ui" sound has no English equivalent.',
+          },
+          {
+            incorrectSentence: 'jaa',
+            correctedSentence: 'ja',
+            errorExplanation: '"Ja" (yes) has a single short vowel "a", not a double "aa". Double vowels are only used in the middle of a word to indicate a long vowel.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a0-alpha-trans-1',
+      type: 'translation',
+      instruction: 'Write the Dutch word for each English word. Pay attention to spelling.',
+      difficulty: 'guided',
+      content: {
+        type: 'translation',
+        items: [
+          {
+            english: 'school',
+            correctDutch: 'school',
+            keyVocabulary: [{ dutch: 'sch-', english: '"sch" sounds like "sgh" — the Dutch g after s' }],
+          },
+          {
+            english: 'night',
+            correctDutch: 'nacht',
+            keyVocabulary: [{ dutch: '-cht', english: '"cht" — the ch is like the Dutch g (guttural)' }],
+          },
+          {
+            english: 'water',
+            correctDutch: 'water',
+            acceptableAnswers: ['water'],
+            keyVocabulary: [{ dutch: 'w-', english: 'Dutch w is softer than English w, somewhere between v and w' }],
+          },
+        ],
+      },
+    },
+    {
+      id: 'a0-alpha-sb-1',
+      type: 'sentence-builder',
+      instruction: 'Build the sentence from the given Dutch words.',
+      difficulty: 'open',
+      content: {
+        type: 'sentence-builder',
+        items: [
+          {
+            availableWords: ['Ik', 'spreek', 'Nederlands', 'een', 'beetje'],
+            correctSentence: 'Ik spreek een beetje Nederlands.',
+            englishPrompt: 'I speak a little Dutch.',
+          },
+          {
+            availableWords: ['Hoe', 'schrijf', 'je', 'dat', '?'],
+            correctSentence: 'Hoe schrijf je dat?',
+            englishPrompt: 'How do you spell that?',
+          },
+        ],
+      },
+    },
   ],
 };

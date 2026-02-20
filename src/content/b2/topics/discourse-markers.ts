@@ -127,6 +127,56 @@ export const discourseMarkers: Topic = {
         },
       ],
     },
+    {
+      id: 'dm-4',
+      title: 'Discourse Markers and Word Order: V2, Subordination, and Position',
+      sections: [
+        {
+          type: 'grammar-rule',
+          rule: 'The grammatical type of a discourse marker determines where it can appear and what word order follows. This is one of the highest-frequency error areas in formal Dutch writing.',
+          explanation:
+            'Dutch discourse markers fall into three grammatical classes: (1) Coordinating conjunctions (want, maar, en, of, dus, toch) — they connect two main clauses; the word order after them is normal (subject-verb). (2) Subordinating conjunctions (omdat, hoewel, aangezien, zodat, opdat, doordat) — they introduce a subordinate clause; the finite verb moves to the end. (3) Sentence adverbs / conjunctive adverbs (echter, bovendien, derhalve, desondanks, namelijk, kortom) — they begin a new main clause and trigger V2 inversion (verb before subject). Mixing these classes is one of the most common B2 errors.',
+        },
+        {
+          type: 'grammar-table',
+          title: 'Three grammatical classes of discourse markers',
+          headers: ['Class', 'Examples', 'Word order after', 'Correct example'],
+          rows: [
+            ['Coordinating conjunction', 'maar, want, dus, toch, en, of', 'Normal main clause (SV)', 'Ik ga niet, want ik ben ziek.'],
+            ['Subordinating conjunction', 'omdat, hoewel, aangezien, doordat, zodat, opdat, ofschoon', 'Verb to end (SOV)', 'Ik ga niet omdat ik ziek ben.'],
+            ['Sentence adverb (V2)', 'echter, bovendien, derhalve, desondanks, desalniettemin, kortom, namelijk, immers, daarom, daarentegen', 'V2 inversion (VS)', 'Ik ben ziek. Derhalve ga ik niet.'],
+          ],
+          caption: '"Echter" is always a sentence adverb — it must NEVER start a sentence alone. "Maar" is always a coordinating conjunction.',
+        },
+        {
+          type: 'grammar-table',
+          title: 'Tricky pairs: same meaning, different grammar',
+          headers: ['Meaning', 'Coord. conj. (main clause)', 'Subord. conj. (verb-final)', 'Sentence adverb (V2)'],
+          rows: [
+            ['cause', 'want (subj.-verb follows)', 'omdat / aangezien (verb to end)', '— (use "daarom" for result)'],
+            ['contrast/concession', 'maar', 'hoewel / ofschoon', 'echter / desondanks / toch'],
+            ['result', 'dus', 'zodat (result)', 'derhalve / dientengevolge / daarom'],
+            ['addition', '—', '—', 'bovendien / daarnaast / tevens'],
+            ['concession', 'toch (but still)', 'al / hoewel', 'desondanks / desalniettemin'],
+          ],
+          caption: '"Dus" (coordinating) vs. "derhalve" (sentence adverb): both mean "therefore" but differ in register and grammar.',
+        },
+        {
+          type: 'common-mistakes',
+          mistakes: [
+            { incorrect: 'Echter, dit klopt niet.', correct: 'Dit klopt echter niet. / Toch klopt dit niet.', explanation: '"Echter" is a sentence adverb that cannot stand alone as the first word. Place it after the subject or use "toch" sentence-initially.' },
+            { incorrect: 'Ik blijf thuis, want ik ben ziek ben.', correct: 'Ik blijf thuis, want ik ben ziek. OR: Ik blijf thuis omdat ik ziek ben.', explanation: '"Want" is coordinating: normal word order follows (subject-verb). "Omdat" is subordinating: verb goes to the end.' },
+            { incorrect: 'Bovendien, de kosten zijn gestegen.', correct: 'Bovendien zijn de kosten gestegen.', explanation: '"Bovendien" is a sentence adverb triggering V2 inversion: verb (zijn) before subject (de kosten). No comma after a sentence adverb in Dutch.' },
+            { incorrect: 'Derhalve we moeten stoppen.', correct: 'Derhalve moeten we stoppen.', explanation: '"Derhalve" triggers V2: the finite verb (moeten) comes in second position, before the subject (we).' },
+          ],
+        },
+        {
+          type: 'note',
+          content: 'A quick test: if you can replace the marker with "maar" and the sentence still works grammatically, it is likely a coordinating conjunction (normal SV order). If you can replace it with "hoewel", it is subordinating (verb to end). If you can replace it with "echter", it is a sentence adverb (V2 inversion).',
+          variant: 'tip',
+        },
+      ],
+    },
   ],
   exercises: [
     {
@@ -250,6 +300,86 @@ export const discourseMarkers: Topic = {
             acceptableAnswers: ['Doordat de deadline is verschoven, hebben we nu meer tijd om het rapport te herzien.'],
             keyVocabulary: [{ dutch: 'aangezien', english: 'since / given that' }, { dutch: 'herzien', english: 'to revise' }],
           },
+        ],
+      },
+    },
+    {
+      id: 'b2-dm-mc-2',
+      type: 'multiple-choice',
+      instruction: 'Choose the word order that correctly follows the discourse marker.',
+      difficulty: 'guided',
+      content: {
+        type: 'multiple-choice',
+        questions: [
+          {
+            question: '"Bovendien ___." Which continuation is grammatically correct?',
+            options: ['zijn er budgettaire problemen.', 'er zijn budgettaire problemen.', 'budgettaire problemen zijn er.', 'er budgettaire problemen zijn.'],
+            correctIndex: 0,
+            explanation: '"Bovendien" is a sentence adverb triggering V2: the finite verb (zijn) must come in second position, before the subject (er … problemen). "Bovendien zijn er budgettaire problemen."',
+          },
+          {
+            question: '"Aangezien de resultaten onvolledig zijn, ___." Which continuation is correct?',
+            options: ['we beslissen later.', 'beslissen we later.', 'later we beslissen.', 'we later beslissen.'],
+            correctIndex: 1,
+            explanation: 'After a fronted subordinate clause ("aangezien …"), V2 inversion applies to the main clause: the finite verb (beslissen) comes before the subject (we).',
+          },
+          {
+            question: 'Which sentence correctly uses "want"?',
+            options: [
+              'Hij bleef thuis, want hij was ziek.',
+              'Hij bleef thuis, want hij ziek was.',
+              'Hij bleef thuis want ziek hij was.',
+              'Want hij was ziek, bleef hij thuis.',
+            ],
+            correctIndex: 0,
+            explanation: '"Want" is coordinating: normal main clause word order follows (subject–verb). Option B has verb-final order, which would apply to "omdat". Option D uses "want" sentence-initially, which is non-standard.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'b2-dm-sb-1',
+      type: 'sentence-builder',
+      instruction: 'Build the sentence from the given words.',
+      difficulty: 'guided',
+      content: {
+        type: 'sentence-builder',
+        items: [
+          {
+            availableWords: ['Bovendien', 'de', 'kosten', 'zijn', 'gestegen', 'aanzienlijk'],
+            correctSentence: 'Bovendien zijn de kosten aanzienlijk gestegen.',
+            englishPrompt: 'Moreover, the costs have risen considerably.',
+          },
+          {
+            availableWords: ['Hoewel', 'duur', 'het', 'is', 'effectief', 'toch', 'het'],
+            correctSentence: 'Hoewel het duur is, is het toch effectief.',
+            englishPrompt: 'Although it is expensive, it is nevertheless effective.',
+          },
+          {
+            availableWords: ['Derhalve', 'wij', 'het', 'project', 'stilleggen', 'dienen', 'te'],
+            correctSentence: 'Derhalve dienen wij het project stil te leggen.',
+            englishPrompt: 'Therefore we must suspend the project.',
+          },
+          {
+            availableWords: ['Dit', 'echter', 'klopt', 'met', 'niet', 'de', 'feiten'],
+            correctSentence: 'Dit klopt echter niet met de feiten.',
+            englishPrompt: 'However, this does not accord with the facts.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'b2-dm-fill-2',
+      type: 'fill-in-the-blank',
+      instruction: 'Fill in the correct discourse marker. Pay attention to word order.',
+      difficulty: 'guided',
+      content: {
+        type: 'fill-in-the-blank',
+        sentences: [
+          { before: 'Het project is geslaagd.', after: 'zijn er nog verbeterpunten voor de toekomst.', correctAnswer: 'Desondanks', hint: 'Sentence adverb meaning "despite this / nevertheless". Triggers V2.' },
+          { before: 'Ik kan niet komen,', after: 'ik een andere afspraak heb.', correctAnswer: 'want', hint: 'Coordinating conjunction for cause. Normal word order follows.' },
+          { before: '', after: 'de deadline is verschoven, hebben we nu meer tijd.', correctAnswer: 'Aangezien', hint: 'Formal subordinating conjunction: "since / given that". Verb goes to end of subordinate clause.' },
+          { before: 'Het is een goed plan.', after: 'zijn er risico\'s aan verbonden.', correctAnswer: 'Toch', hint: 'Sentence-initial concession meaning "nevertheless / still". V2 follows.' },
         ],
       },
     },

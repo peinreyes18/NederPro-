@@ -117,6 +117,59 @@ export const formalWritingStyle: Topic = {
         },
       ],
     },
+    {
+      id: 'fws-4',
+      title: 'Structure and Conventions of Formal Dutch Documents',
+      sections: [
+        {
+          type: 'grammar-rule',
+          rule: 'Formal Dutch documents follow recognised structural conventions: a clear introduction stating purpose, a body developing the argument or information, and a conclusion with a recommendation or call to action.',
+          explanation:
+            'At B2, learners need to produce structurally coherent formal texts. These include business letters, formal emails, short reports, and official responses. Each document type has fixed conventions: a business letter uses specific opening/closing formulas; a report opens with "Inleiding" and ends with "Conclusie / Aanbevelingen"; an official response references the original communication ("Naar aanleiding van uw brief van …"). Understanding these macro-level conventions is as important as sentence-level grammar.',
+        },
+        {
+          type: 'grammar-table',
+          title: 'Structure of a formal business letter or email',
+          headers: ['Section', 'Dutch term', 'Purpose and typical phrases'],
+          rows: [
+            ['Salutation', 'Aanhef', '"Geachte heer/mevrouw [naam]," — always followed by comma'],
+            ['Opening', 'Opening', '"Naar aanleiding van … / In antwoord op … / Met verwijzing naar …"'],
+            ['Purpose statement', 'Doel van de brief', '"Wij schrijven u in verband met … / Het doel van dit schrijven is …"'],
+            ['Body', 'Kern', 'Details, arguments, facts — use formal vocabulary and passive where appropriate'],
+            ['Request / action', 'Verzoek', '"Wij verzoeken u … / U wordt verzocht … / Wij stellen het op prijs als …"'],
+            ['Closing reference', 'Afsluiting', '"Wij zien uw reactie met belangstelling tegemoet. / Voor nadere informatie kunt u contact opnemen."'],
+            ['Closing salutation', 'Groet', '"Met vriendelijke groet, / Hoogachtend," — followed by name and title'],
+          ],
+          caption: 'Dutch business letters use "Geachte" (respected) in the salutation, never "Beste" in very formal correspondence.',
+        },
+        {
+          type: 'grammar-table',
+          title: 'Opening references: situating your letter',
+          headers: ['Situation', 'Dutch opening phrase'],
+          rows: [
+            ['Responding to a letter', '"Naar aanleiding van uw schrijven van [datum] …"'],
+            ['Responding to an email', '"In antwoord op uw e-mail van [datum] …"'],
+            ['Following up on a meeting', '"Met verwijzing naar ons gesprek van [datum] …"'],
+            ['Complaining', '"Wij schrijven u naar aanleiding van een probleem dat wij hebben ondervonden met …"'],
+            ['Requesting information', '"Wij wenden ons tot u met het verzoek om informatie over …"'],
+            ['Unsolicited approach', '"Wij stellen u hierbij graag voor aan …"'],
+          ],
+        },
+        {
+          type: 'note',
+          content: 'The date in formal Dutch letters is written in full: "Amsterdam, 19 februari 2026". The city comes before the date, separated by a comma.',
+          variant: 'info',
+        },
+        {
+          type: 'workplace-context',
+          scenario: 'Writing a formal response to a complaint',
+          examples: [
+            { dutch: 'Geachte mevrouw De Wit,\n\nNaar aanleiding van uw klacht van 5 februari jl. betreffende de levering van uw bestelling, berichten wij u als volgt.\n\nNa onderzoek is gebleken dat er bij de verwerking van uw bestelling een fout is opgetreden. Wij bieden u hiervoor onze oprechte excuses aan.\n\nWij verzoeken u bijgaand het retourformulier in te vullen, waarna wij zorg zullen dragen voor een zo spoedig mogelijke vervangende levering.\n\nWij zien uw reactie met belangstelling tegemoet.\n\nMet vriendelijke groet,\n[Naam]', english: 'Dear Ms. De Wit,\n\nFollowing your complaint of 5 February last regarding the delivery of your order, we inform you as follows.\n\nAfter investigation it has been established that an error occurred in the processing of your order. We sincerely apologise for this.\n\nWe request you to fill in the enclosed return form, after which we will arrange a replacement delivery as soon as possible.\n\nWe look forward to your response.\n\nKind regards,\n[Name]' },
+          ],
+          note: 'Note: "jl." = jongstleden = "of last [month]" — a common abbreviation in formal Dutch correspondence.',
+        },
+      ],
+    },
   ],
   exercises: [
     {
@@ -223,6 +276,68 @@ export const formalWritingStyle: Topic = {
             correctDutch: 'Op basis van de beschikbare gegevens lijkt het aannemelijk dat de kosten zullen dalen.',
             acceptableAnswers: ['Op basis van de beschikbare data lijkt het waarschijnlijk dat de kosten zullen afnemen.'],
             keyVocabulary: [{ dutch: 'aannemelijk', english: 'plausible' }, { dutch: 'dalen', english: 'decrease / fall' }],
+          },
+        ],
+      },
+    },
+    {
+      id: 'b2-fws-rc-1',
+      type: 'reading-comprehension',
+      instruction: 'Read the formal text and answer the questions.',
+      difficulty: 'guided',
+      content: {
+        type: 'reading-comprehension',
+        passage: 'Geachte heer Janssen,\n\nNaar aanleiding van uw e-mail van 12 februari jl. betreffende de vertraging in de levering van uw bestelling (ordernummer 4821), berichten wij u als volgt.\n\nNa onderzoek is vastgesteld dat de vertraging is ontstaan door een technische storing in ons magazijnsysteem. Wij betreuren dit ten zeerste en bieden u onze oprechte excuses aan voor het ondervonden ongemak.\n\nWij kunnen u mededelen dat uw bestelling op 20 februari a.s. zal worden verzonden. Er dient rekening te worden gehouden met een bezorgtermijn van twee tot drie werkdagen.\n\nVoor nadere informatie kunt u contact opnemen met onze klantenservice via klantenservice@bedrijf.nl.\n\nWij zien uw reactie met belangstelling tegemoet en hopen u hiermee voldoende te hebben geïnformeerd.\n\nMet vriendelijke groet,\nMevrouw A. Brinkman\nKlantenservice',
+        questions: [
+          {
+            question: 'Waarom is de levering vertraagd?',
+            options: ['Vanwege een fout door de klant.', 'Door een technische storing in het magazijnsysteem.', 'Omdat de bestelling verloren was gegaan.', 'Vanwege een staking bij de bezorgdienst.'],
+            correctAnswer: 'Door een technische storing in het magazijnsysteem.',
+            explanation: '"Na onderzoek is vastgesteld dat de vertraging is ontstaan door een technische storing in ons magazijnsysteem."',
+          },
+          {
+            question: 'Wanneer wordt de bestelling verzonden?',
+            options: ['Op 12 februari.', 'Binnen twee tot drie werkdagen na ontvangst van dit bericht.', 'Op 20 februari.', 'Na ontvangst van een reactie van de klant.'],
+            correctAnswer: 'Op 20 februari.',
+            explanation: '"Wij kunnen u mededelen dat uw bestelling op 20 februari a.s. zal worden verzonden."',
+          },
+          {
+            question: 'Wat betekent "a.s." in dit schrijven?',
+            options: ['"aanstaande" (= coming / upcoming)', '"als standaard" (= as standard)', '"andere situatie" (= other situation)', '"aan service" (= to service)'],
+            correctAnswer: '"aanstaande" (= coming / upcoming)',
+            explanation: '"A.s." is an abbreviation of "aanstaande", meaning "coming / upcoming". "20 februari a.s." = next/upcoming 20 February.',
+          },
+          {
+            question: 'Welke toon heeft deze brief?',
+            options: ['Informeel en vriendschappelijk.', 'Formeel en verontschuldigend.', 'Formeel en eisen stellend.', 'Informeel en zakelijk.'],
+            correctAnswer: 'Formeel en verontschuldigend.',
+            explanation: 'The letter uses formal register ("Geachte heer", "wij berichten u", "Met vriendelijke groet") and offers an apology ("Wij betreuren dit ten zeerste en bieden u onze oprechte excuses aan").',
+          },
+        ],
+      },
+    },
+    {
+      id: 'b2-fws-sb-1',
+      type: 'sentence-builder',
+      instruction: 'Build the formal sentence from the given words.',
+      difficulty: 'guided',
+      content: {
+        type: 'sentence-builder',
+        items: [
+          {
+            availableWords: ['Er', 'worden', 'van', 'geconcludeerd', 'dat', 'kan', 'de', 'aanpak', 'succesvol', 'was'],
+            correctSentence: 'Er kan worden geconcludeerd dat de aanpak succesvol was.',
+            englishPrompt: 'It can be concluded that the approach was successful.',
+          },
+          {
+            availableWords: ['Men', 'kan', 'stellen', 'dat', 'de', 'resultaten', 'significant', 'zijn'],
+            correctSentence: 'Men kan stellen dat de resultaten significant zijn.',
+            englishPrompt: 'One can argue that the results are significant.',
+          },
+          {
+            availableWords: ['In', 'dit', 'rapport', 'worden', 'de', 'bevindingen', 'gepresenteerd'],
+            correctSentence: 'In dit rapport worden de bevindingen gepresenteerd.',
+            englishPrompt: 'In this report, the findings are presented.',
           },
         ],
       },

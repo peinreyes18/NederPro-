@@ -130,6 +130,68 @@ export const subjectiveIdioms: Topic = {
         },
       ],
     },
+    {
+      id: 'si-4',
+      title: 'Idioms and Fixed Expressions in Professional Contexts',
+      sections: [
+        {
+          type: 'grammar-rule',
+          rule: 'Dutch professional communication relies on a set of semi-formal and formal idioms that appear in meetings, negotiations, performance reviews, and official correspondence. These differ from everyday idioms and require active production at B2.',
+          explanation:
+            'While everyday Dutch idioms (het kind met het badwater weggooien) are important for comprehension, the workplace idioms below are essential for active production in professional settings. They appear in business emails, annual reports, meeting minutes (notulen), and oral presentations. Many involve abstract nouns (de toon, de weg, de lucht) used metaphorically.',
+        },
+        {
+          type: 'grammar-table',
+          title: 'Professional and semi-formal Dutch idioms',
+          headers: ['Idiom', 'Meaning', 'Example in context'],
+          rows: [
+            ['de toon zetten', 'to set the tone', 'De opening van de vergadering zette de toon voor een constructieve discussie.'],
+            ['het roer omgooien', 'to change course completely', 'Na de tegenvallende resultaten moest het bedrijf het roer omgooien.'],
+            ['lucht geven aan', 'to give expression to / voice', 'Medewerkers kregen de kans lucht te geven aan hun zorgen.'],
+            ['de weg bereiden voor', 'to pave the way for', 'De pilot beraidt de weg voor een volledige uitrol.'],
+            ['aan het licht brengen', 'to bring to light / reveal', 'Het onderzoek heeft belangrijke tekortkomingen aan het licht gebracht.'],
+            ['van de grond komen', 'to get off the ground / to materialise', 'Het project is eindelijk van de grond gekomen.'],
+            ['op de agenda zetten', 'to put on the agenda', 'Dit punt moet op de agenda van de volgende vergadering worden gezet.'],
+            ['een punt maken van', 'to make an issue of / to flag', 'De vakbond heeft er een punt van gemaakt.'],
+            ['in het teken staan van', 'to be dominated by / to revolve around', 'Het kwartaal stond in het teken van bezuinigingen.'],
+            ['ter tafel brengen', 'to bring to the table / raise', 'De kwestie is tijdens de vergadering ter tafel gebracht.'],
+          ],
+          caption: 'These idioms are active vocabulary at B2 — you are expected to use them in writing and speaking, not just recognise them.',
+        },
+        {
+          type: 'grammar-table',
+          title: 'More Dutch professional collocations',
+          headers: ['Collocation', 'Meaning', 'Notes'],
+          rows: [
+            ['een standpunt innemen', 'to take a position / stance', 'Formeel: "een standpunt innemen" — not "een standpunt hebben"'],
+            ['een voorstel doen', 'to make a proposal', '"Doen" here — not "maken"'],
+            ['het woord voeren', 'to have the floor / speak', 'In vergaderingen: "het woord voeren"'],
+            ['overeenstemming bereiken', 'to reach agreement', '"Bereiken" — not "maken"'],
+            ['iets op prijs stellen', 'to appreciate something', 'Formal: "Wij stellen uw medewerking op prijs."'],
+            ['aan de orde stellen', 'to raise (a matter)', '"Dit punt is aan de orde gesteld."'],
+            ['tot stand brengen', 'to bring about / achieve', '"Een akkoord tot stand brengen."'],
+            ['uitvoering geven aan', 'to implement / give effect to', '"Uitvoering geven aan het beleid."'],
+          ],
+        },
+        {
+          type: 'common-mistakes',
+          mistakes: [
+            { incorrect: 'We hebben een standpunt.', correct: 'Wij nemen het standpunt in dat…', explanation: '"Een standpunt innemen" is the correct collocation for stating a formal position. "Hebben" does not collocate with "standpunt" in formal Dutch.' },
+            { incorrect: 'We hebben overeenstemming gemaakt.', correct: 'We hebben overeenstemming bereikt.', explanation: '"Overeenstemming bereiken" is the correct collocation. "Maken" is a common calque from English "reach/make agreement".' },
+          ],
+        },
+        {
+          type: 'workplace-context',
+          scenario: 'Minutes of a meeting (notulen) / business report',
+          examples: [
+            { dutch: 'De voorzitter heeft de vergadering geopend en de toon gezet voor een constructieve bespreking.', english: 'The chair opened the meeting and set the tone for a constructive discussion.' },
+            { dutch: 'De directie heeft besloten het roer om te gooien en een nieuwe strategie te formuleren.', english: 'The management decided to change course and formulate a new strategy.' },
+            { dutch: 'Wij stellen uw medewerking aan dit traject zeer op prijs.', english: 'We greatly appreciate your cooperation in this process.' },
+          ],
+          note: 'When writing meeting minutes in Dutch, use the past tense and these formal collocations. Minutes are a key document type in Dutch professional life.',
+        },
+      ],
+    },
   ],
   exercises: [
     {
@@ -228,6 +290,59 @@ export const subjectiveIdioms: Topic = {
             explanation: '"Het over een andere boeg gooien" = to try a different approach / change strategy completely.',
           },
         ],
+      },
+    },
+    {
+      id: 'b2-si-mc-3',
+      type: 'multiple-choice',
+      instruction: 'Choose the correct idiom or collocation.',
+      difficulty: 'guided',
+      content: {
+        type: 'multiple-choice',
+        questions: [
+          {
+            question: 'Het onderzoek heeft een ernstige fout in het proces ___.',
+            options: ['aan het licht gebracht', 'op de agenda gezet', 'ter tafel gebracht', 'van de grond gekomen'],
+            correctIndex: 0,
+            explanation: '"Aan het licht brengen" = to bring to light / reveal. This is the correct idiom for uncovering something previously hidden.',
+          },
+          {
+            question: 'Na jaren van planning is het nieuwbouwproject eindelijk ___.',
+            options: ['het roer omgegooid', 'van de grond gekomen', 'aan de orde gesteld', 'in het teken gestaan'],
+            correctIndex: 1,
+            explanation: '"Van de grond komen" = to get off the ground / to finally materialise after a long period of planning or delay.',
+          },
+          {
+            question: 'Wij ___ uw snelle reactie op prijs.',
+            options: ['stellen', 'nemen', 'brengen', 'houden'],
+            correctIndex: 0,
+            explanation: '"Iets op prijs stellen" = to appreciate something. The fixed collocation verb is "stellen".',
+          },
+          {
+            question: 'De twee partijen hebben na moeilijke onderhandelingen uiteindelijk ___.',
+            options: ['overeenstemming bereikt', 'overeenstemming gemaakt', 'akkoord bereikt', 'een standpunt genomen'],
+            correctIndex: 0,
+            explanation: '"Overeenstemming bereiken" = to reach agreement. "Bereiken" is the correct verb; "maken" is a calque from English.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'b2-si-wp-1',
+      type: 'writing-prompt',
+      instruction: 'Write a short paragraph (5–6 sentences) describing a meeting or project development. Use at least four idioms or fixed expressions from this topic.',
+      difficulty: 'open',
+      content: {
+        type: 'writing-prompt',
+        prompt: 'Schrijf een korte alinea over een vergadering of projectontwikkeling. Gebruik minstens vier vaste uitdrukkingen of idiomen uit dit onderwerp.',
+        context: 'This could be a real or imagined work situation: a strategy meeting, a project kick-off, a performance review, or a negotiation.',
+        guidelines: [
+          'Use at least two workplace collocations (e.g. een standpunt innemen, op prijs stellen, ter tafel brengen)',
+          'Use at least one idiom (e.g. het roer omgooien, van de grond komen, de toon zetten)',
+          'Write in past tense (as if these are meeting notes / notulen)',
+          'Use formal register throughout',
+        ],
+        sampleResponse: 'De directeur heeft de vergadering geopend en direct de toon gezet voor een open discussie. De HR-manager heeft de kwestie van het verzuim ter tafel gebracht, waarop het team de nodige maatregelen heeft besproken. Er werd een standpunt ingenomen dat het verzuimbeleid herzien dient te worden. Na overleg is er overeenstemming bereikt over de nieuwe aanpak. Het management stelt de betrokkenheid van alle medewerkers bij dit traject zeer op prijs.',
       },
     },
     {

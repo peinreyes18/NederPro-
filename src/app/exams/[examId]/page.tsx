@@ -18,26 +18,68 @@ export default function ExamPage() {
 
   const exam = getExamById(examId);
 
-  // Flatten all questions across sections into a single ordered array
-  const allQuestions: ExamQuestion[] = useMemo(() => {
-    if (!exam) return [];
-    return exam.sections.flatMap((section) => section.questions);
+  // Flatten all questions across sections into a single ordered array,
+  // and build a parallel array mapping each question index to its section.
+  const { allQuestions, questionSections } = useMemo(() => {
+    if (!exam) return { allQuestions: [] as ExamQuestion[], questionSections: [] as import('@/content/types').ExamSection[] };
+    const questions: ExamQuestion[] = [];
+    const sections: typeof exam.sections = [];
+    for (const section of exam.sections) {
+      for (const q of section.questions) {
+        questions.push(q);
+        sections.push(section);
+      }
+    }
+    return { allQuestions: questions, questionSections: sections };
   }, [exam]);
 
+  // Multiple-choice / true-false answers: number | null
   const [answers, setAnswers] = useState<(number | null)[]>(() =>
     new Array(allQuestions.length).fill(null)
   );
+  // Writing answers: typed text
+  const [writingAnswers, setWritingAnswers] = useState<string[]>(() =>
+    new Array(allQuestions.length).fill('')
+  );
+  // Writing self-assessment: 0 = not assessed, 1 = did well, -1 = needs practice
+  const [writingSelfAssess, setWritingSelfAssess] = useState<number[]>(() =>
+    new Array(allQuestions.length).fill(0)
+  );
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [examFinished, setExamFinished] = useState(false);
   const [timerRunning, setTimerRunning] = useState(true);
 
-  const answeredCount = answers.filter((a) => a !== null).length;
+  // A question counts as "answered" if it has a selected option (MC/TF)
+  // or a non-empty writing response with a self-assessment
+  const answeredCount = allQuestions.filter((q, i) => {
+    if (q.type === 'writing') {
+      return writingAnswers[i].trim().length > 0 && writingSelfAssess[i] !== 0;
+    }
+    return answers[i] !== null;
+  }).length;
   const totalCount = allQuestions.length;
 
   function handleSelectAnswer(optionIndex: number) {
     setAnswers((prev) => {
       const updated = [...prev];
       updated[currentQuestionIndex] = optionIndex;
+      return updated;
+    });
+  }
+
+  function handleWritingChange(value: string) {
+    setWritingAnswers((prev) => {
+      const updated = [...prev];
+      updated[currentQuestionIndex] = value;
+      return updated;
+    });
+  }
+
+  function handleWritingSelfAssess(value: number) {
+    setWritingSelfAssess((prev) => {
+      const updated = [...prev];
+      updated[currentQuestionIndex] = value;
       return updated;
     });
   }
@@ -75,6 +117,8 @@ export default function ExamPage() {
 
   function handleRetry() {
     setAnswers(new Array(allQuestions.length).fill(null));
+    setWritingAnswers(new Array(allQuestions.length).fill(''));
+    setWritingSelfAssess(new Array(allQuestions.length).fill(0));
     setCurrentQuestionIndex(0);
     setExamFinished(false);
     setTimerRunning(true);
@@ -108,6 +152,8 @@ export default function ExamPage() {
         <ExamResults
           exam={exam}
           answers={answers}
+          writingAnswers={writingAnswers}
+          writingSelfAssess={writingSelfAssess}
           onRetry={handleRetry}
           onBackToExams={handleBackToExams}
         />
@@ -172,11 +218,39 @@ export default function ExamPage() {
               </span>
             </div>
 
+            {/* Passage for current question (if any) */}
+            {(() => {
+              const section = questionSections[currentQuestionIndex];
+              if (!section?.passage) return null;
+              // Only show passage when it changes — detect if this is the first question in this section
+              return (
+                <div className="mb-6 bg-surface border border-border rounded-xl p-5">
+                  {section.passageTitle && (
+                    <h2 className="text-sm font-semibold text-accent mb-3 uppercase tracking-wide">
+                      {section.passageTitle}
+                    </h2>
+                  )}
+                  <p className="text-sm text-primary leading-relaxed whitespace-pre-line">
+                    {section.passage}
+                  </p>
+                  {section.instructions && (
+                    <p className="mt-3 text-xs text-muted italic border-t border-border pt-3">
+                      {section.instructions}
+                    </p>
+                  )}
+                </div>
+              );
+            })()}
+
             {/* Question card */}
             <ExamQuestionCard
               question={currentQuestion}
               selectedIndex={answers[currentQuestionIndex]}
               onSelect={handleSelectAnswer}
+              writingAnswer={writingAnswers[currentQuestionIndex]}
+              onWritingChange={handleWritingChange}
+              writingSelfAssess={writingSelfAssess[currentQuestionIndex]}
+              onWritingSelfAssess={handleWritingSelfAssess}
               showResult={false}
               questionNumber={currentQuestionIndex + 1}
             />
@@ -224,9 +298,13 @@ export default function ExamPage() {
                 </div>
 
                 <div className="grid grid-cols-8 sm:grid-cols-10 lg:grid-cols-6 gap-1.5">
-                  {allQuestions.map((_, index) => {
-                    const isAnswered = answers[index] !== null;
+                  {allQuestions.map((q, index) => {
+                    const isAnswered =
+                      q.type === 'writing'
+                        ? writingAnswers[index].trim().length > 0 && writingSelfAssess[index] !== 0
+                        : answers[index] !== null;
                     const isCurrent = index === currentQuestionIndex;
+                    const isWriting = q.type === 'writing';
 
                     return (
                       <button
@@ -240,12 +318,14 @@ export default function ExamPage() {
                             'bg-accent text-white',
                           isAnswered && isCurrent &&
                             'bg-accent text-white',
-                          !isAnswered && !isCurrent &&
+                          !isAnswered && !isCurrent && !isWriting &&
                             'border-2 border-border text-muted hover:border-accent/40',
+                          !isAnswered && !isCurrent && isWriting &&
+                            'border-2 border-dashed border-border text-muted hover:border-accent/40',
                           !isAnswered && isCurrent &&
                             'border-2 border-accent text-accent'
                         )}
-                        title={`Question ${index + 1}${isAnswered ? ' (answered)' : ''}`}
+                        title={`Question ${index + 1}${isWriting ? ' (writing)' : ''}${isAnswered ? ' (answered)' : ''}`}
                       >
                         {index + 1}
                       </button>
@@ -264,6 +344,13 @@ export default function ExamPage() {
                     />
                   </div>
                 </div>
+
+                {/* Legend if there are writing questions */}
+                {allQuestions.some((q) => q.type === 'writing') && (
+                  <p className="text-xs text-muted mt-3">
+                    Dashed border = writing task
+                  </p>
+                )}
               </div>
             </div>
           </div>

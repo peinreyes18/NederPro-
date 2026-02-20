@@ -318,5 +318,78 @@ export const numbersCounting: Topic = {
         ],
       },
     },
+    {
+      id: 'a0-num-err-1',
+      type: 'error-correction',
+      instruction: 'Correct the Dutch number word.',
+      difficulty: 'guided',
+      content: {
+        type: 'error-correction',
+        items: [
+          {
+            incorrectSentence: 'twaalf en twintig',
+            correctedSentence: 'tweeëntwintig',
+            errorExplanation: 'In Dutch, compound numbers from 21–99 are written as ONE word, and the unit comes first: "tweeëntwintig" (22), not "twaalf en twintig".',
+          },
+          {
+            incorrectSentence: 'viertig',
+            correctedSentence: 'veertig',
+            errorExplanation: '"40" in Dutch is "veertig" (not "viertig"). This is an irregular form — the word changes from "vier" to "veer-".',
+          },
+          {
+            incorrectSentence: 'elf en dertig',
+            correctedSentence: 'eenendertig',
+            errorExplanation: '"31" = "eenendertig" — one word with the unit first (één + en + dertig). It is not "elf en dertig" (elf = 11).',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a0-num-trans-1',
+      type: 'translation',
+      instruction: 'Write the Dutch number word.',
+      difficulty: 'guided',
+      content: {
+        type: 'translation',
+        items: [
+          {
+            english: '15',
+            correctDutch: 'vijftien',
+            keyVocabulary: [{ dutch: 'vijftien', english: '15 — vijf (5) + tien (10)' }],
+          },
+          {
+            english: '27',
+            correctDutch: 'zevenentwintig',
+            keyVocabulary: [{ dutch: 'zevenentwintig', english: '27 — zeven (7) + en + twintig (20)' }],
+          },
+          {
+            english: '100',
+            correctDutch: 'honderd',
+            keyVocabulary: [{ dutch: 'honderd', english: '100' }],
+          },
+        ],
+      },
+    },
+    {
+      id: 'a0-num-sb-1',
+      type: 'sentence-builder',
+      instruction: 'Build the sentence with the correct number expression.',
+      difficulty: 'open',
+      content: {
+        type: 'sentence-builder',
+        items: [
+          {
+            availableWords: ['Ik', 'ben', 'jaar', 'oud', 'dertig', '.'],
+            correctSentence: 'Ik ben dertig jaar oud.',
+            englishPrompt: 'I am thirty years old.',
+          },
+          {
+            availableWords: ['Wij', 'hebben', 'vijf', 'vergaderingen', 'week', 'per', '.'],
+            correctSentence: 'Wij hebben vijf vergaderingen per week.',
+            englishPrompt: 'We have five meetings per week.',
+          },
+        ],
+      },
+    },
   ],
 };

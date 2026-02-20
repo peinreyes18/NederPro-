@@ -127,6 +127,53 @@ export const registerStyle: Topic = {
         },
       ],
     },
+    {
+      id: 'rs-4',
+      title: 'Formal Sentence Structures: Infinitive Constructions and Passive Requests',
+      sections: [
+        {
+          type: 'grammar-rule',
+          rule: 'Formal Dutch writing and correspondence rely heavily on specific sentence constructions that signal respect, distance, and authority. These include the "verzoeken + te + infinitive" pattern, the "worden verzocht" passive, and "gelieve + te + infinitive".',
+          explanation:
+            'In formal correspondence and official documents, direct imperatives ("Stuur ons een reactie") are replaced by polite infinitive constructions. The structure "Wij verzoeken u + te + infinitive" (We request you to …) is the workhorse of formal Dutch correspondence. The passive variant "U wordt verzocht + te + infinitive" is even more impersonal and appears in official notifications, public signs, and administrative communications. "Gelieve" is an archaic-formal word meaning "please be so kind as to" — it appears on formal forms, invoices, and official correspondence.',
+        },
+        {
+          type: 'grammar-table',
+          title: 'Formal request constructions',
+          headers: ['Construction', 'Example', 'Register'],
+          rows: [
+            ['verzoeken u te + inf', 'Wij verzoeken u het formulier in te vullen.', 'Formal correspondence'],
+            ['worden verzocht te + inf', 'U wordt verzocht uw identiteitsbewijs te tonen.', 'Official / administrative'],
+            ['gelieve te + inf', 'Gelieve dit formulier volledig in te vullen.', 'Very formal / archaic-formal'],
+            ['dienen te + inf', 'Het formulier dient volledig ingevuld te worden.', 'Formal obligation'],
+            ['gaarne + inf / gaarne + noun', 'Wij ontvangen uw reactie gaarne uiterlijk vrijdag.', 'Formal: "gaarne" = gladly/preferably'],
+            ['met vriendelijk verzoek om', 'Met vriendelijk verzoek om tijdige beantwoording.', 'Standard formal letter closing'],
+          ],
+          caption: '"Gelieve" is typically followed by "te + infinitive". It is never used in spoken Dutch, only in formal writing.',
+        },
+        {
+          type: 'grammar-table',
+          title: 'Formal letter phrases: openings and closings',
+          headers: ['Function', 'Formal phrase', 'Informal equivalent'],
+          rows: [
+            ['Opening salutation', 'Geachte heer/mevrouw [naam],', 'Hallo / Beste [naam],'],
+            ['Reference to previous contact', 'Naar aanleiding van uw schrijven van [datum]…', 'N.a.v. je mail van gisteren…'],
+            ['Stating purpose', 'In antwoord op uw vraag van [datum] delen wij u mede dat…', 'Hierbij mijn antwoord op je vraag.'],
+            ['Requesting action', 'Wij verzoeken u vriendelijk doch dringend…', 'Kun je even… / Wil je…'],
+            ['Closing (waiting for reply)', 'Wij zien uw reactie met belangstelling tegemoet.', 'Ik hoor graag van je.'],
+            ['Closing salutation', 'Met vriendelijke groet, / Hoogachtend,', 'Groeten, / Met vriendelijke groeten,'],
+          ],
+          caption: '"Hoogachtend" is the most formal closing in Dutch, equivalent to "Yours faithfully". "Met vriendelijke groet" is semi-formal, used in most professional contexts.',
+        },
+        {
+          type: 'common-mistakes',
+          mistakes: [
+            { incorrect: 'Gelieve het formulier invullen.', correct: 'Gelieve het formulier in te vullen.', explanation: '"Gelieve" requires "te" before the infinitive. For separable verbs, te goes between prefix and main verb: in te vullen.' },
+            { incorrect: 'Wij verzoeken u het formulier invult.', correct: 'Wij verzoeken u het formulier in te vullen.', explanation: '"Verzoeken u" is followed by "te + infinitive", not a conjugated verb form.' },
+          ],
+        },
+      ],
+    },
   ],
   exercises: [
     {
@@ -233,6 +280,92 @@ export const registerStyle: Topic = {
             options: ['Dit', 'Dat', 'Deze', 'Die'],
             correctIndex: 1,
             explanation: '"Dat" refers back to the proposal mentioned in the previous sentence (more distant reference). "Dit" would suggest the proposal was just mentioned immediately before.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'b2-rs-sb-1',
+      type: 'sentence-builder',
+      instruction: 'Build the formal sentence from the given words.',
+      difficulty: 'guided',
+      content: {
+        type: 'sentence-builder',
+        items: [
+          {
+            availableWords: ['Wij', 'verzoeken', 'u', 'het', 'formulier', 'in', 'te', 'vullen'],
+            correctSentence: 'Wij verzoeken u het formulier in te vullen.',
+            englishPrompt: 'We request you to fill in the form.',
+          },
+          {
+            availableWords: ['U', 'wordt', 'verzocht', 'uw', 'identiteitsbewijs', 'te', 'tonen'],
+            correctSentence: 'U wordt verzocht uw identiteitsbewijs te tonen.',
+            englishPrompt: 'You are requested to show your identity document.',
+          },
+          {
+            availableWords: ['Wij', 'zien', 'uw', 'reactie', 'met', 'tegemoet', 'belangstelling'],
+            correctSentence: 'Wij zien uw reactie met belangstelling tegemoet.',
+            englishPrompt: 'We look forward to your response.',
+          },
+          {
+            availableWords: ['Naar', 'aanleiding', 'van', 'uw', 'schrijven', 'van', '10', 'februari'],
+            correctSentence: 'Naar aanleiding van uw schrijven van 10 februari',
+            englishPrompt: 'Following your letter of 10 February (opening phrase)',
+          },
+        ],
+      },
+    },
+    {
+      id: 'b2-rs-wo-1',
+      type: 'word-order',
+      instruction: 'Put the words in the correct order to form a formal sentence.',
+      difficulty: 'guided',
+      content: {
+        type: 'word-order',
+        items: [
+          {
+            shuffledWords: ['verzoeken', 'Wij', 'reactie', 'spoedig', 'u', 'zo', 'mogelijk', 'een', 'toe', 'zenden', 'te'],
+            correctOrder: ['Wij', 'verzoeken', 'u', 'zo', 'spoedig', 'mogelijk', 'een', 'reactie', 'toe', 'te', 'zenden'],
+            translation: 'We request you to send us a reply as soon as possible.',
+          },
+          {
+            shuffledWords: ['Gelieve', 'dit', 'formulier', 'in', 'volledig', 'te', 'vullen'],
+            correctOrder: ['Gelieve', 'dit', 'formulier', 'volledig', 'in', 'te', 'vullen'],
+            translation: 'Please be so kind as to fill in this form completely.',
+          },
+          {
+            shuffledWords: ['ontvangen', 'Wij', 'u', 'informeren', 'zodra', 'graarne', 'wij', 'bericht'],
+            correctOrder: ['Wij', 'informeren', 'u', 'graarne', 'zodra', 'wij', 'bericht', 'ontvangen'],
+            translation: 'We will gladly inform you as soon as we receive a message.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'b2-rs-trans-1',
+      type: 'translation',
+      instruction: 'Translate into formal Dutch.',
+      difficulty: 'open',
+      content: {
+        type: 'translation',
+        items: [
+          {
+            english: 'We request you to submit the completed form before 1 March.',
+            correctDutch: 'Wij verzoeken u het ingevulde formulier vóór 1 maart in te dienen.',
+            acceptableAnswers: ['Wij verzoeken u vriendelijk het ingevulde formulier vóór 1 maart in te dienen.'],
+            keyVocabulary: [{ dutch: 'verzoeken u te', english: 'request you to' }, { dutch: 'indienen', english: 'to submit' }],
+          },
+          {
+            english: 'You are requested to report any changes in your situation within two weeks.',
+            correctDutch: 'U wordt verzocht eventuele wijzigingen in uw situatie binnen twee weken te melden.',
+            acceptableAnswers: ['U wordt vriendelijk verzocht wijzigingen in uw situatie binnen twee weken door te geven.'],
+            keyVocabulary: [{ dutch: 'wordt verzocht', english: 'is/are requested' }, { dutch: 'wijzigingen', english: 'changes' }],
+          },
+          {
+            english: 'We look forward to receiving your response.',
+            correctDutch: 'Wij zien uw reactie met belangstelling tegemoet.',
+            acceptableAnswers: ['Wij ontvangen uw reactie graarne.', 'Met vriendelijke groet en in afwachting van uw reactie.'],
+            keyVocabulary: [{ dutch: 'met belangstelling tegemoetzien', english: 'to look forward to' }],
           },
         ],
       },

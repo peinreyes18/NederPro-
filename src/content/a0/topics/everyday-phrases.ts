@@ -345,5 +345,86 @@ export const everydayPhrases: Topic = {
         ],
       },
     },
+    {
+      id: 'a0-phrases-err-1',
+      type: 'error-correction',
+      instruction: 'Correct the polite phrase mistake.',
+      difficulty: 'guided',
+      content: {
+        type: 'error-correction',
+        items: [
+          {
+            incorrectSentence: 'Alstublieft, heb ik een koffie?',
+            correctedSentence: 'Mag ik een koffie, alstublieft?',
+            errorExplanation: 'To request something politely, use "Mag ik … alstublieft?" (May I have … please?). "Alstublieft" comes at the end as a polite addition.',
+          },
+          {
+            incorrectSentence: 'Dank jij wel.',
+            correctedSentence: 'Dank je wel.',
+            errorExplanation: '"Dank je wel" (informal thank you) uses "je", not "jij". "Jij" is the stressed form of the pronoun and is not used in this fixed expression.',
+          },
+          {
+            incorrectSentence: 'Sorry, ik niet begrijp.',
+            correctedSentence: 'Sorry, ik begrijp het niet.',
+            errorExplanation: 'The verb "begrijp" must come directly after the subject "ik". The object "het" goes after the verb, and "niet" goes at the end.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a0-phrases-trans-1',
+      type: 'translation',
+      instruction: 'Translate the everyday phrase into Dutch.',
+      difficulty: 'guided',
+      content: {
+        type: 'translation',
+        items: [
+          {
+            english: 'Excuse me.',
+            correctDutch: 'Pardon.',
+            acceptableAnswers: ['Sorry.', 'Excuseer.'],
+            keyVocabulary: [{ dutch: 'pardon', english: 'excuse me (also used to get attention)' }],
+          },
+          {
+            english: 'Can you repeat that?',
+            correctDutch: 'Kunt u dat herhalen?',
+            acceptableAnswers: ['Kun je dat herhalen?', 'Kunt u dat nog een keer zeggen?'],
+            keyVocabulary: [{ dutch: 'herhalen', english: 'to repeat' }],
+          },
+          {
+            english: 'I do not understand.',
+            correctDutch: 'Ik begrijp het niet.',
+            acceptableAnswers: ['Ik snap het niet.'],
+            keyVocabulary: [{ dutch: 'begrijpen', english: 'to understand' }],
+          },
+        ],
+      },
+    },
+    {
+      id: 'a0-phrases-sb-1',
+      type: 'sentence-builder',
+      instruction: 'Build the polite phrase from the given words.',
+      difficulty: 'open',
+      content: {
+        type: 'sentence-builder',
+        items: [
+          {
+            availableWords: ['Mag', 'ik', 'een', 'koffie', 'alstublieft', '?'],
+            correctSentence: 'Mag ik een koffie alstublieft?',
+            englishPrompt: 'May I have a coffee please?',
+          },
+          {
+            availableWords: ['Spreekt', 'u', 'Engels', '?'],
+            correctSentence: 'Spreekt u Engels?',
+            englishPrompt: 'Do you speak English? (formal)',
+          },
+          {
+            availableWords: ['langzamer', 'Kunt', 'spreken', 'u', '?'],
+            correctSentence: 'Kunt u langzamer spreken?',
+            englishPrompt: 'Can you speak more slowly?',
+          },
+        ],
+      },
+    },
   ],
 };

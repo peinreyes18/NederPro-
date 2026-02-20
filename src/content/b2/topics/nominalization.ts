@@ -123,6 +123,61 @@ export const nominalization: Topic = {
         },
       ],
     },
+    {
+      id: 'nom-4',
+      title: 'Nominalizations in Authentic Texts: Recognition and Rewriting',
+      sections: [
+        {
+          type: 'grammar-rule',
+          rule: 'A key B2 skill is recognising nominalizations in formal texts and understanding how to "unpack" them back into verb-based clauses — and equally, how to compress verb-based clauses into noun phrases when writing.',
+          explanation:
+            'Dutch formal texts — government communications, academic papers, business reports — are dense with nominalizations. Readers must decode them quickly; writers must produce them accurately. The test is bidirectional: can you identify what verb or adjective underlies a nominalization ("de uitvoering" ← uitvoeren), and can you transform a plain clause into a formal noun phrase?',
+        },
+        {
+          type: 'examples',
+          title: 'Unpacking nominalizations from formal Dutch',
+          examples: [
+            { dutch: 'Na de beoordeling van de aanvraag ontvangt u een beslissing.', english: 'After the assessment of the application, you will receive a decision.', highlight: 'de beoordeling', note: 'de beoordeling ← beoordelen (to assess/evaluate)' },
+            { dutch: 'De uitvoering van dit beleid vereist samenwerking tussen alle afdelingen.', english: 'The execution of this policy requires cooperation between all departments.', highlight: 'De uitvoering … samenwerking', note: 'uitvoering ← uitvoeren; samenwerking ← samenwerken' },
+            { dutch: 'Wij verzoeken u uw medewerking te verlenen aan de implementatie van dit traject.', english: 'We request your cooperation in the implementation of this process.', highlight: 'uw medewerking … de implementatie', note: 'medewerking ← meewerken; implementatie ← implementeren' },
+            { dutch: 'Ingevolge de inwerkingtreding van de nieuwe wet dienen bedrijven hun beleid aan te passen.', english: 'Following the entry into force of the new law, companies must adjust their policy.', highlight: 'de inwerkingtreding', note: 'inwerkingtreding ← in werking treden (to come into force)' },
+          ],
+        },
+        {
+          type: 'grammar-table',
+          title: 'Common compound nominalizations in official Dutch',
+          headers: ['Nominalization', 'Underlying verb/phrase', 'English'],
+          rows: [
+            ['de inwerkingtreding', 'in werking treden', 'entry into force'],
+            ['de indiensttreding', 'in dienst treden', 'start of employment / taking up post'],
+            ['de gegevensverwerking', 'gegevens verwerken', 'data processing'],
+            ['de besluitvorming', 'besluiten vormen / nemen', 'decision-making'],
+            ['de beleidsvorming', 'beleid vormen', 'policy formation'],
+            ['de kwaliteitsborging', 'kwaliteit borgen', 'quality assurance'],
+            ['de dienstverlening', 'diensten verlenen', 'service provision'],
+            ['de taakverdeling', 'taken verdelen', 'division of tasks / task allocation'],
+            ['de samenwerking', 'samenwerken', 'cooperation'],
+            ['de oplevering', 'opleveren', 'delivery / completion (of a project)'],
+          ],
+          caption: 'Compound nominalizations are highly frequent in Dutch administrative, legal, and HR language. Recognising their component parts speeds up reading.',
+        },
+        {
+          type: 'note',
+          content: 'Over-nominalizing conversational or informal text makes it stilted. The goal is register-appropriate use: nominalizations belong in formal writing, not casual emails or spoken Dutch.',
+          variant: 'warning',
+        },
+        {
+          type: 'workplace-context',
+          scenario: 'Reading a Dutch government or HR document',
+          examples: [
+            { dutch: 'Bij de indiensttreding dient de medewerker een kopie van het identiteitsbewijs te overleggen.', english: 'Upon starting employment, the employee must provide a copy of their identity document.' },
+            { dutch: 'De besluitvorming omtrent het nieuwe beleid is nog in volle gang.', english: 'The decision-making regarding the new policy is still in full swing.' },
+            { dutch: 'Wij waarderen uw medewerking aan de kwaliteitsborging van onze dienstverlening.', english: 'We appreciate your cooperation in the quality assurance of our service provision.' },
+          ],
+          note: 'Each of these sentences contains 2–4 nominalizations. This density is normal in formal Dutch; it is a skill in itself to read fluently.',
+        },
+      ],
+    },
   ],
   exercises: [
     {
@@ -212,6 +267,51 @@ export const nominalization: Topic = {
           { before: 'De', after: 'van het nieuwe systeem verloopt soepel. (implementeren)', correctAnswer: 'implementatie', hint: 'implementeren → de implementatie.' },
           { before: 'De', after: 'voor de kwaliteit ligt bij het management. (verantwoordelijk zijn voor)', correctAnswer: 'verantwoordelijkheid', hint: 'verantwoordelijk zijn voor → de verantwoordelijkheid voor.' },
         ],
+      },
+    },
+    {
+      id: 'b2-nom-sb-1',
+      type: 'sentence-builder',
+      instruction: 'Build the formal sentence using the nominalized noun phrase.',
+      difficulty: 'guided',
+      content: {
+        type: 'sentence-builder',
+        items: [
+          {
+            availableWords: ['De', 'samenwerking', 'alle', 'tussen', 'afdelingen', 'is', 'essentieel'],
+            correctSentence: 'De samenwerking tussen alle afdelingen is essentieel.',
+            englishPrompt: 'Cooperation between all departments is essential.',
+          },
+          {
+            availableWords: ['Na', 'de', 'evaluatie', 'wordt', 'een', 'genomen', 'beslissing'],
+            correctSentence: 'Na de evaluatie wordt een beslissing genomen.',
+            englishPrompt: 'After the evaluation, a decision will be made.',
+          },
+          {
+            availableWords: ['De', 'verantwoordelijkheid', 'de', 'voor', 'uitvoering', 'bij', 'het', 'ligt', 'management'],
+            correctSentence: 'De verantwoordelijkheid voor de uitvoering ligt bij het management.',
+            englishPrompt: 'Responsibility for the execution lies with the management.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'b2-nom-wp-1',
+      type: 'writing-prompt',
+      instruction: 'Rewrite the following informal paragraph as a formal document section. Replace at least four verb-based clauses with nominalizations.',
+      difficulty: 'open',
+      content: {
+        type: 'writing-prompt',
+        prompt: 'Herschrijf de onderstaande informele tekst als een formele alinea met behulp van nominalisering.',
+        context: 'Informal source text: "We hebben het systeem geïmplementeerd en de medewerkers zijn opgeleid. Daarna hebben we de kwaliteit gecontroleerd. We denken dat het goed werkt en stellen voor dit verder uit te rollen."',
+        guidelines: [
+          'Convert "hebben geïmplementeerd" → "de implementatie van"',
+          'Convert "zijn opgeleid" → "de opleiding van"',
+          'Convert "hebben gecontroleerd" → "de kwaliteitscontrole"',
+          'Use passive or impersonal constructions (er wordt, men)',
+          'End with a formal recommendation',
+        ],
+        sampleResponse: 'Na de implementatie van het systeem en de opleiding van de medewerkers heeft een kwaliteitscontrole plaatsgevonden. Op basis van deze bevindingen lijkt de werking van het systeem bevredigend. De uitrol naar de overige afdelingen wordt dan ook aanbevolen.',
       },
     },
     {

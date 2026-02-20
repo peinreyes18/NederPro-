@@ -87,6 +87,59 @@ export const advancedModalVerbs: Topic = {
       ],
     },
     {
+      id: 'amv-4',
+      title: 'Modal Verbs in the Past: Conditional and Reported Contexts',
+      sections: [
+        {
+          type: 'grammar-rule',
+          rule: 'Modal verbs in the past express what was required, permitted, or inferred at a previous time, and are essential for reported speech, hypotheticals, and formal narrative.',
+          explanation:
+            'The past tense of Dutch modals uses the imperfectum (moest, mocht, kon, wilde, zou) or a perfect construction with a modal infinitive (heeft moeten, had kunnen, zou hebben). At B2, the key challenge is distinguishing "moest" (was obliged to — and did it) from "had moeten" (should have — but did not). Similarly, "kon" (was able to) vs. "had kunnen" (could have, but didn\'t). These distinctions matter in business writing, formal reports, and formal complaints.',
+        },
+        {
+          type: 'grammar-table',
+          title: 'Past modals: simple vs. perfect',
+          headers: ['Form', 'Meaning', 'Example', 'Implication'],
+          rows: [
+            ['moest + inf', 'was obliged to (did it)', 'Ik moest het rapport afmaken.', 'I had to — and I did.'],
+            ['had moeten + inf', 'should have (didn\'t)', 'Ik had het rapport eerder moeten afmaken.', 'I should have — but I didn\'t.'],
+            ['kon + inf', 'was able to (neutral)', 'Ze kon de vergadering bijwonen.', 'She was able to attend.'],
+            ['had kunnen + inf', 'could have (but didn\'t)', 'Ze had de vergadering bij kunnen wonen.', 'She could have attended — but didn\'t.'],
+            ['mocht + inf', 'was permitted to (past)', 'Hij mocht vroeg vertrekken.', 'He was allowed to leave early.'],
+            ['had mogen + inf', 'should have been allowed / ought to', 'Dit had niet mogen gebeuren.', 'This should not have been allowed to happen.'],
+            ['zou + inf', 'was supposed to / would', 'Ze zou om 9 uur komen.', 'She was supposed to come at 9.'],
+            ['zou hebben + inf', 'would have (counterfactual)', 'Ze zou het gedaan hebben als ze tijd had gehad.', 'She would have done it if she had had time.'],
+          ],
+          caption: 'The perfect modal construction (had + modal infinitive) always implies the action did NOT happen.',
+        },
+        {
+          type: 'examples',
+          title: 'In formal context',
+          examples: [
+            { dutch: 'Het project had eerder afgerond moeten worden — de vertraging had vermeden kunnen worden.', english: 'The project should have been completed earlier — the delay could have been avoided.', highlight: 'had moeten worden … had kunnen worden' },
+            { dutch: 'Ze zou de klant informeren, maar heeft dat niet gedaan.', english: 'She was supposed to inform the client, but she did not.', highlight: 'zou … informeren' },
+            { dutch: 'Dit had niet mogen gebeuren onder de geldende regelgeving.', english: 'This should not have been allowed to happen under the applicable regulations.', highlight: 'had niet mogen gebeuren' },
+          ],
+        },
+        {
+          type: 'common-mistakes',
+          mistakes: [
+            { incorrect: 'Ik moest het eerder doen maar heb het niet gedaan.', correct: 'Ik had het eerder moeten doen.', explanation: '"Moest" implies the obligation was fulfilled. To express a missed obligation (should have but didn\'t), use "had moeten + infinitive".' },
+            { incorrect: 'Ze kon de fout vermijden maar deed dat niet.', correct: 'Ze had de fout kunnen vermijden.', explanation: '"Kon" is neutral past ability. "Had kunnen" specifically implies the action was possible but was not taken.' },
+          ],
+        },
+        {
+          type: 'workplace-context',
+          scenario: 'Formal incident reports and project evaluations',
+          examples: [
+            { dutch: 'In de evaluatie werd vastgesteld dat de risico\'s eerder gesignaleerd hadden moeten worden.', english: 'The evaluation established that the risks should have been identified earlier.' },
+            { dutch: 'De leverancier zou de goederen op dinsdag leveren, maar heeft de afspraak niet nagekomen.', english: 'The supplier was supposed to deliver the goods on Tuesday but did not honour the agreement.' },
+          ],
+          note: '"Had moeten" and "had kunnen" are the backbone of formal complaint letters, audit reports, and incident evaluations in Dutch.',
+        },
+      ],
+    },
+    {
       id: 'amv-3',
       title: 'Aspectual Verbs: gaan, komen, blijven, blijken, schijnen',
       sections: [
@@ -227,6 +280,94 @@ export const advancedModalVerbs: Topic = {
             explanation: '"Kan niet kloppen" = it is not possible that it is correct / it cannot be right. This is an epistemic assessment of probability.',
           },
         ],
+      },
+    },
+    {
+      id: 'b2-amv-mc-3',
+      type: 'multiple-choice',
+      instruction: 'Choose the correct past modal construction.',
+      difficulty: 'guided',
+      content: {
+        type: 'multiple-choice',
+        questions: [
+          {
+            question: 'The deadline passed and the report was never submitted. → "Het rapport ___ voor maandag ingediend ___."',
+            options: ['moest … worden', 'had … moeten worden ingediend', 'moet … zijn ingediend', 'heeft … moeten worden'],
+            correctIndex: 1,
+            explanation: '"Had moeten worden ingediend" expresses a past obligation that was not fulfilled (should have been submitted, but wasn\'t). "Moest worden" would imply it was submitted.',
+          },
+          {
+            question: '"Ze ___ eerder bellen — dan hadden we het probleem op tijd kunnen oplossen."',
+            options: ['moest', 'had moeten', 'heeft gemoeten', 'zou moeten'],
+            correctIndex: 1,
+            explanation: '"Had moeten" expresses a past obligation that was not fulfilled — she should have called earlier but didn\'t. "Moest" implies she did call.',
+          },
+          {
+            question: '"De leverancier ___ de goederen gisteren leveren, maar heeft dat niet gedaan."',
+            options: ['zou', 'moest', 'kon', 'mocht'],
+            correctIndex: 0,
+            explanation: '"Zou … leveren" = was supposed to deliver (planned/arranged but not done). This is the standard Dutch way to express a broken commitment.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'b2-amv-fill-2',
+      type: 'fill-in-the-blank',
+      instruction: 'Fill in the correct past modal form.',
+      difficulty: 'guided',
+      content: {
+        type: 'fill-in-the-blank',
+        sentences: [
+          { before: 'Dit', after: 'niet mogen gebeuren. Het is in strijd met de regels.', correctAnswer: 'had', hint: '"Had niet mogen gebeuren" = should not have been allowed to happen.' },
+          { before: 'Ze', after: 'de vergadering bij kunnen wonen, maar ze was ziek.', correctAnswer: 'had', hint: '"Had kunnen" = could have (but didn\'t).' },
+          { before: 'Het project', after: 'eerder afgerond moeten worden.', correctAnswer: 'had', hint: '"Had moeten worden" = should have been (unfulfilled past obligation).' },
+          { before: 'Hij', after: 'ons eerder informeren, maar deed dat niet.', correctAnswer: 'zou', hint: '"Zou … informeren" = was supposed to inform (broken commitment).' },
+        ],
+      },
+    },
+    {
+      id: 'b2-amv-wo-1',
+      type: 'word-order',
+      instruction: 'Put the words in the correct order.',
+      difficulty: 'guided',
+      content: {
+        type: 'word-order',
+        items: [
+          {
+            shuffledWords: ['eerder', 'had', 'Dit', 'gemeld', 'moeten', 'worden'],
+            correctOrder: ['Dit', 'had', 'eerder', 'gemeld', 'moeten', 'worden'],
+            translation: 'This should have been reported earlier.',
+          },
+          {
+            shuffledWords: ['het', 'Ze', 'had', 'kunnen', 'voorkomen', 'probleem'],
+            correctOrder: ['Ze', 'had', 'het', 'probleem', 'kunnen', 'voorkomen'],
+            translation: 'She could have prevented the problem.',
+          },
+          {
+            shuffledWords: ['om', 'zou', 'Hij', 'uur', 'negen', 'aanwezig', 'zijn'],
+            correctOrder: ['Hij', 'zou', 'om', 'negen', 'uur', 'aanwezig', 'zijn'],
+            translation: 'He was supposed to be present at nine o\'clock.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'b2-amv-wp-1',
+      type: 'writing-prompt',
+      instruction: 'Write a short formal evaluation paragraph (5–6 sentences) describing what went wrong in a project or process, using past modal constructions.',
+      difficulty: 'open',
+      content: {
+        type: 'writing-prompt',
+        prompt: 'Schrijf een formele evaluatieparagraaf over wat er mis is gegaan in een project of proces.',
+        context: 'Think of a real or imagined situation: a delayed project, a miscommunication, a missed deadline, or a procedural error.',
+        guidelines: [
+          'Use at least one "had moeten" construction (unfulfilled obligation)',
+          'Use at least one "had kunnen" construction (missed possibility)',
+          'Use "zou … maar" to describe a broken commitment',
+          'Keep a formal, impersonal tone (avoid "ik"; prefer passive or "men")',
+        ],
+        sampleResponse: 'Tijdens de evaluatie van het project is gebleken dat de risico\'s eerder gesignaleerd hadden moeten worden. De projectleider zou de stakeholders maandelijks informeren, maar heeft dit slechts eenmaal gedaan. Hierdoor had een groot deel van de vertraging voorkomen kunnen worden. Bovendien had er eerder een noodplan opgesteld moeten zijn. Deze bevindingen dienen in het volgende project ter harte te worden genomen.',
       },
     },
     {

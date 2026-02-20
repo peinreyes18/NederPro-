@@ -28,6 +28,66 @@ const referenceTopics = [
     description: 'Dutch prepositions of place, time, and direction with usage examples.',
     level: 'A2+',
   },
+  {
+    id: 'past-tenses',
+    title: 'Past Tenses',
+    description: 'Perfectum and imperfectum formation, hebben vs. zijn, and common irregular past participles.',
+    level: 'A2+',
+  },
+  {
+    id: 'modal-verbs',
+    title: 'Modal Verbs',
+    description: 'Full conjugation of kunnen, mogen, moeten, willen, zullen, and hoeven with usage notes.',
+    level: 'A2+',
+  },
+  {
+    id: 'separable-verbs',
+    title: 'Separable Verbs',
+    description: 'How separable verbs split in different clause types, with a list of common examples.',
+    level: 'A2+',
+  },
+  {
+    id: 'adjectives',
+    title: 'Adjectives',
+    description: 'Inflection rules (de/het, definite/indefinite), spelling changes, and comparative/superlative forms.',
+    level: 'A2+',
+  },
+  {
+    id: 'pronouns',
+    title: 'Pronouns',
+    description: 'Personal, reflexive, and possessive pronoun tables with usage notes.',
+    level: 'A1+',
+  },
+  {
+    id: 'negation',
+    title: 'Negation',
+    description: 'When to use niet vs. geen, position of niet, and other negative words.',
+    level: 'A1+',
+  },
+  {
+    id: 'conjunctions',
+    title: 'Conjunctions',
+    description: 'Coordinating conjunctions (no word order change) and subordinating conjunctions (verb to end).',
+    level: 'A2+',
+  },
+  {
+    id: 'irregular-verbs',
+    title: 'Irregular Verbs',
+    description: 'Full conjugation table for 20 essential irregular verbs — present, imperfectum, and perfectum.',
+    level: 'A2+',
+  },
+  {
+    id: 'subordinate-clauses',
+    title: 'Subordinate Clauses',
+    description: 'Verb position in subordinate clauses, relative pronouns (die/dat/wie/waar), and clause types.',
+    level: 'B1+',
+  },
+  {
+    id: 'numbers-quantities',
+    title: 'Numbers & Quantities',
+    description: 'Cardinal and ordinal numbers, plus useful quantity expressions like een beetje, veel, and genoeg.',
+    level: 'A0+',
+  },
 ];
 
 export default function ReferencePage() {

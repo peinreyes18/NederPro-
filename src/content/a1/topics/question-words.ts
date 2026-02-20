@@ -373,5 +373,54 @@ export const questionWords: Topic = {
         ],
       },
     },
+    {
+      id: 'a1-qw-sb-1',
+      type: 'sentence-builder',
+      instruction: 'Build the question from the given words.',
+      difficulty: 'guided',
+      content: {
+        type: 'sentence-builder',
+        items: [
+          {
+            availableWords: ['Wat', 'is', 'uw', 'naam', '?'],
+            correctSentence: 'Wat is uw naam?',
+            englishPrompt: 'What is your name? (formal)',
+          },
+          {
+            availableWords: ['Waarom', 'ben', 'je', 'laat', '?'],
+            correctSentence: 'Waarom ben je laat?',
+            englishPrompt: 'Why are you late?',
+          },
+          {
+            availableWords: ['Hoeveel', 'kost', 'het', '?'],
+            correctSentence: 'Hoeveel kost het?',
+            englishPrompt: 'How much does it cost?',
+          },
+          {
+            availableWords: ['Heb', 'je', 'vragen', '?'],
+            correctSentence: 'Heb je vragen?',
+            englishPrompt: 'Do you have questions?',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a1-qw-wp-1',
+      type: 'writing-prompt',
+      instruction: 'Write 4–5 questions you would ask a new colleague on their first day at work. Use different question words.',
+      difficulty: 'open',
+      content: {
+        type: 'writing-prompt',
+        prompt: 'Schrijf 4–5 vragen die je aan een nieuwe collega zou stellen op zijn/haar eerste werkdag.',
+        context: 'Think about information you would want to know: their name, where they live, what they do, why they chose this job, how long they have been learning Dutch, etc.',
+        guidelines: [
+          'Use at least 4 different question words (wie, wat, waar, wanneer, waarom, hoe, hoeveel, welke/welk)',
+          'Include at least one yes/no question (verb first)',
+          'Use both formal (u) and informal (je) forms',
+          'Check that each question has correct word order (V2 for open questions, verb-first for yes/no)',
+        ],
+        sampleResponse: 'Hoe heet jij? Waar woon je? Wat doe je in je vrije tijd? Spreek je al lang Nederlands? Waarom heb je voor dit bedrijf gekozen?',
+      },
+    },
   ],
 };

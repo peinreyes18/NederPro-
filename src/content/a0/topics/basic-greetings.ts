@@ -339,5 +339,85 @@ export const basicGreetings: Topic = {
         ],
       },
     },
+    {
+      id: 'a0-greet-err-1',
+      type: 'error-correction',
+      instruction: 'Correct the greeting or introduction mistake.',
+      difficulty: 'guided',
+      content: {
+        type: 'error-correction',
+        items: [
+          {
+            incorrectSentence: 'Ik ben naam Jan.',
+            correctedSentence: 'Ik heet Jan.',
+            errorExplanation: 'To say your name in Dutch, use "Ik heet [naam]" or "Mijn naam is [naam]". "Ik ben naam" is not correct.',
+          },
+          {
+            incorrectSentence: 'Dag, hoe gaat het jij?',
+            correctedSentence: 'Dag, hoe gaat het met jou?',
+            errorExplanation: '"Hoe gaat het?" is followed by "met" + the person: "Hoe gaat het met jou?" or "Hoe gaat het met u?" (formal).',
+          },
+          {
+            incorrectSentence: 'Goede morgen, meneer.',
+            correctedSentence: 'Goedemorgen, meneer.',
+            errorExplanation: '"Goedemorgen" is written as one word in Dutch, not two.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a0-greet-trans-1',
+      type: 'translation',
+      instruction: 'Translate the greeting or phrase into Dutch.',
+      difficulty: 'guided',
+      content: {
+        type: 'translation',
+        items: [
+          {
+            english: 'Good morning! (formal)',
+            correctDutch: 'Goedemorgen!',
+            acceptableAnswers: ['Goedemorgen'],
+            keyVocabulary: [{ dutch: 'goedemorgen', english: 'good morning' }],
+          },
+          {
+            english: 'Nice to meet you.',
+            correctDutch: 'Aangenaam.',
+            acceptableAnswers: ['Aangenaam kennis te maken.', 'Leuk je te ontmoeten.'],
+            keyVocabulary: [{ dutch: 'aangenaam', english: 'nice to meet you (formal)' }],
+          },
+          {
+            english: 'See you tomorrow!',
+            correctDutch: 'Tot morgen!',
+            keyVocabulary: [{ dutch: 'tot morgen', english: 'see you tomorrow' }],
+          },
+        ],
+      },
+    },
+    {
+      id: 'a0-greet-sb-1',
+      type: 'sentence-builder',
+      instruction: 'Build the greeting or introduction from the given words.',
+      difficulty: 'open',
+      content: {
+        type: 'sentence-builder',
+        items: [
+          {
+            availableWords: ['Mijn', 'naam', 'is', 'Anna', '.'],
+            correctSentence: 'Mijn naam is Anna.',
+            englishPrompt: 'My name is Anna.',
+          },
+          {
+            availableWords: ['Ik', 'kom', 'uit', 'Nederland', '.'],
+            correctSentence: 'Ik kom uit Nederland.',
+            englishPrompt: 'I come from the Netherlands.',
+          },
+          {
+            availableWords: ['Hoe', 'gaat', 'met', 'het', 'u', '?'],
+            correctSentence: 'Hoe gaat het met u?',
+            englishPrompt: 'How are you? (formal)',
+          },
+        ],
+      },
+    },
   ],
 };

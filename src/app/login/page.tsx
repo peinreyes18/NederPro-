@@ -37,7 +37,8 @@ function LoginForm() {
         setError(error);
       }
     } else {
-      router.push('/progress');
+      const next = searchParams.get('next') || '/progress';
+      router.push(next);
     }
   }
 

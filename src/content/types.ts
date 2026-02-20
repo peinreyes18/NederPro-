@@ -236,10 +236,16 @@ export interface ExamSection {
 
 export interface ExamQuestion {
   id: string;
-  type: 'multiple-choice' | 'true-false';
+  type: 'multiple-choice' | 'true-false' | 'writing';
   question: string;
   options: string[];
   correctIndex: number;
+  // writing-type fields (ignored for multiple-choice / true-false)
+  writingPrompt?: string;
+  writingContext?: string;
+  writingGuidelines?: string[];
+  writingSampleResponse?: string;
+  writingKeyPhrases?: string[];
   explanation?: string;
   topicArea?: string;
 }

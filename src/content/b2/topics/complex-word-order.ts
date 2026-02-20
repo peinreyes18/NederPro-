@@ -307,6 +307,36 @@ export const complexWordOrder: Topic = {
       },
     },
     {
+      id: 'b2-cwo-rc-1',
+      type: 'reading-comprehension',
+      instruction: 'Read the text and answer the word-order questions.',
+      difficulty: 'guided',
+      content: {
+        type: 'reading-comprehension',
+        passage: 'Tijdens de vergadering van gisteren heeft de directeur meegedeeld dat het project, waaraan het team al maanden werkt, vertraging heeft opgelopen. Er werd vastgesteld dat de planning niet had kunnen worden nageleefd vanwege omstandigheden die zich buiten de invloed van het projectteam bevonden. Hierover had men eerder moeten communiceren. Gelukkig is er een oplossing gevonden waarop iedereen had gewacht: een herziene tijdlijn die rekening houdt met de beschikbare middelen.',
+        questions: [
+          {
+            question: 'Welk woord wordt gebruikt als r-pronoom voor "dit onderwerp" in de zin "Hierover had men eerder moeten communiceren"?',
+            options: ['"Hierover" (= over dit)', '"Erover" (= over het)', '"Daarover" (= over dat)', 'Er staat geen r-pronoom in deze zin.'],
+            correctAnswer: '"Hierover" (= over dit)',
+            explanation: '"Hierover" = hier + over. It is the r-pronoun for "over this matter" (referring to the problem just mentioned). "Hier" refers to something near/just introduced, "daar" refers to something more distant.',
+          },
+          {
+            question: 'In de zin "dat het project … vertraging heeft opgelopen" — why does "heeft opgelopen" come at the end?',
+            options: ['Because it is a past tense verb.', 'Because it is inside a subordinate clause introduced by "dat".', 'Because "opgelopen" is a separable verb.', 'Because the sentence starts with "Tijdens".'],
+            correctAnswer: 'Because it is inside a subordinate clause introduced by "dat".',
+            explanation: 'In a subordinate clause (introduced by "dat"), all verbs move to the end. "heeft opgelopen" (has incurred/suffered) is the verb cluster at the end of the "dat"-clause.',
+          },
+          {
+            question: '"Er werd vastgesteld dat de planning niet had kunnen worden nageleefd" — which verb cluster order is used?',
+            options: ['Green order: had – kunnen – worden nageleefd', 'Red order: nageleefd – worden – kunnen – had', 'Mixed order', 'There is only one verb.'],
+            correctAnswer: 'Green order: had – kunnen – worden nageleefd',
+            explanation: '"Had kunnen worden nageleefd" is the green order: auxiliary (had) – modal infinitive (kunnen) – passive infinitive (worden nageleefd). This is a passive perfect modal cluster.',
+          },
+        ],
+      },
+    },
+    {
       id: 'b2-cwo-wp-1',
       type: 'writing-prompt',
       instruction: 'Write a short paragraph (4–5 sentences) explaining a complex situation at work or in your studies, using subordinate clauses with verb clusters and at least one r-pronoun.',

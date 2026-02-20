@@ -407,5 +407,100 @@ export const negationNietGeen: Topic = {
         ],
       },
     },
+    {
+      id: 'a1-neg-sb-1',
+      type: 'sentence-builder',
+      instruction: 'Build the negative sentence from the given words.',
+      difficulty: 'guided',
+      content: {
+        type: 'sentence-builder',
+        items: [
+          {
+            availableWords: ['Ik', 'heb', 'geen', 'auto', '.'],
+            correctSentence: 'Ik heb geen auto.',
+            englishPrompt: 'I do not have a car.',
+          },
+          {
+            availableWords: ['De', 'manager', 'is', 'niet', 'aanwezig', '.'],
+            correctSentence: 'De manager is niet aanwezig.',
+            englishPrompt: 'The manager is not present.',
+          },
+          {
+            availableWords: ['Wij', 'gaan', 'niet', 'naar', 'het', 'kantoor', '.'],
+            correctSentence: 'Wij gaan niet naar het kantoor.',
+            englishPrompt: 'We are not going to the office.',
+          },
+          {
+            availableWords: ['Er', 'zijn', 'geen', 'problemen', '.'],
+            correctSentence: 'Er zijn geen problemen.',
+            englishPrompt: 'There are no problems.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a1-neg-rc-1',
+      type: 'reading-comprehension',
+      instruction: 'Read the short text and answer the questions about negation.',
+      difficulty: 'guided',
+      content: {
+        type: 'reading-comprehension',
+        passage: 'Mijn naam is Selin. Ik werk bij een klein bedrijf in Amsterdam. Ik heb geen auto, dus ik ga met de fiets naar het werk. Mijn collega Tom heeft wel een auto, maar hij rijdt niet elke dag. Hij werkt niet op vrijdag. Wij hebben geen grote vergaderruimte, maar dat is geen probleem.',
+        passageTitle: 'Selin en haar werk',
+        questions: [
+          {
+            question: 'Why does Selin use "geen" in "Ik heb geen auto"?',
+            options: [
+              'Because "auto" is a het-woord.',
+              'Because "auto" is a bare noun (negating "een auto").',
+              'Because it comes at the end of the sentence.',
+              'Because she is negating an adjective.',
+            ],
+            correctAnswer: 'Because "auto" is a bare noun (negating "een auto").',
+            explanation: '"Geen" replaces "een" when negating a noun with the indefinite article: "een auto" → "geen auto".',
+          },
+          {
+            question: 'In the sentence "hij rijdt niet elke dag" — where does "niet" go and why?',
+            options: [
+              'Before "elke dag" because it is negating the adverb/time expression.',
+              'At the end because it negates the verb.',
+              'Before "rijdt" because it is a verb.',
+              'After "dag" to emphasize the negation.',
+            ],
+            correctAnswer: 'Before "elke dag" because it is negating the adverb/time expression.',
+            explanation: '"Niet" goes before the specific element being negated. Here "niet elke dag" negates the time expression (not every day, just some days).',
+          },
+          {
+            question: 'The text says "dat is geen probleem". Why "geen" and not "niet"?',
+            options: [
+              'Because "probleem" is a het-woord.',
+              'Because "probleem" is a bare noun (no article here).',
+              'Because "geen" always comes before nouns.',
+              'Because the sentence ends with "geen".',
+            ],
+            correctAnswer: 'Because "probleem" is a bare noun (no article here).',
+            explanation: '"Dat is geen probleem" = "that is not a problem". "Probleem" has no article here, so use "geen" (not "niet een probleem").',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a1-neg-wp-1',
+      type: 'writing-prompt',
+      instruction: 'Write 4–5 sentences about yourself or your work situation using negation. Use both "niet" and "geen" at least once each.',
+      difficulty: 'open',
+      content: {
+        type: 'writing-prompt',
+        prompt: 'Schrijf 4–5 zinnen over jezelf of je werksituatie met ontkenning. Gebruik zowel "niet" als "geen".',
+        context: 'Think about what you do NOT have, do NOT do, are NOT, or do NOT know. For example: your languages, your daily routine, your possessions, your preferences.',
+        guidelines: [
+          'Use "geen" at least twice (negating bare or indefinite nouns)',
+          'Use "niet" at least twice (negating verbs, adjectives, or prepositional phrases)',
+          'Pay attention to position: "niet" before adjectives and prepositional phrases, end of clause for plain verb negation',
+          'Use a mix of formal and everyday vocabulary',
+        ],
+        sampleResponse: 'Ik heb geen auto, dus ik ga met de trein naar mijn werk. Ik spreek niet zo goed Nederlands, maar ik leer het. Op maandag ga ik niet naar kantoor — ik werk thuis. Mijn collega heeft geen Nederlandse les gevolgd, maar hij begrijpt het al goed.',
+      },
+    },
   ],
 };

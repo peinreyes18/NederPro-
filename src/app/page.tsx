@@ -174,19 +174,8 @@ export default function HomePage() {
         <div className="mb-10 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-2">Simple Pricing</h2>
           <p className="text-muted max-w-xl mx-auto">
-            Try everything free for 7 days. Then pick the plan that suits you.
+            Start with a 7-day free trial or subscribe right away. Cancel anytime.
           </p>
-        </div>
-
-        {/* Free trial banner */}
-        <div className="max-w-3xl mx-auto mb-8 rounded-xl border border-success/30 bg-success-light px-5 py-4 flex items-start gap-3">
-          <span className="text-success text-lg flex-shrink-0 mt-0.5">🎁</span>
-          <div>
-            <p className="text-sm font-semibold text-success">7-day free trial — no credit card required</p>
-            <p className="text-xs text-success/80 mt-0.5">
-              Full access to everything during the trial. Cancel before it ends and you will never be charged.
-            </p>
-          </div>
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 max-w-3xl mx-auto">
@@ -199,7 +188,7 @@ export default function HomePage() {
               €3.49<span className="text-lg font-normal text-muted"> / 2 wk</span>
             </p>
             <p className="text-sm text-muted mb-6">Best for a focused study sprint</p>
-            <ul className="space-y-2 text-sm text-primary-light flex-1 mb-8">
+            <ul className="space-y-2 text-sm text-primary-light flex-1 mb-6">
               {[
                 'All grammar levels: A1 → B2',
                 'Full exam practice library',
@@ -214,9 +203,17 @@ export default function HomePage() {
                 </li>
               ))}
             </ul>
-            <Link href="/signup">
-              <Button variant="outline" className="w-full">Start Free Trial</Button>
+            {/* Primary CTA */}
+            <Link href="/signup?plan=biweekly&trial=true">
+              <Button className="w-full mb-2">Try 7 Days Free → €3.49/2wk</Button>
             </Link>
+            {/* Secondary CTA */}
+            <Link href="/signup?plan=biweekly">
+              <Button variant="outline" className="w-full text-xs">Subscribe now at €3.49</Button>
+            </Link>
+            <p className="text-center text-xs text-muted mt-3">
+              Free trial requires card · auto-renews · cancel anytime
+            </p>
           </Card>
 
           {/* Monthly plan */}
@@ -231,11 +228,14 @@ export default function HomePage() {
               €4.49<span className="text-lg font-normal text-muted"> / mo</span>
             </p>
             <p className="text-sm text-muted mb-6">More time to reach your exam goal</p>
-            <ul className="space-y-2 text-sm text-primary-light flex-1 mb-8">
+            <ul className="space-y-2 text-sm text-primary-light flex-1 mb-6">
               {[
-                'Everything in the 2-week plan',
-                'Extra month to practise &amp; review',
-                'Cancel anytime',
+                'All grammar levels: A1 → B2',
+                'Full exam practice library',
+                'AI writing feedback',
+                'Listening &amp; writing exams',
+                'Vocabulary &amp; grammar reference',
+                'Progress tracking',
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-2">
                   <span className="text-accent mt-0.5 flex-shrink-0">✓</span>
@@ -243,14 +243,22 @@ export default function HomePage() {
                 </li>
               ))}
             </ul>
-            <Link href="/signup">
-              <Button className="w-full">Start Free Trial</Button>
+            {/* Primary CTA */}
+            <Link href="/signup?plan=monthly&trial=true">
+              <Button className="w-full mb-2">Try 7 Days Free → €4.49/mo</Button>
             </Link>
+            {/* Secondary CTA */}
+            <Link href="/signup?plan=monthly">
+              <Button variant="outline" className="w-full text-xs">Subscribe now at €4.49</Button>
+            </Link>
+            <p className="text-center text-xs text-muted mt-3">
+              Free trial requires card · auto-renews · cancel anytime
+            </p>
           </Card>
         </div>
 
         <p className="text-center text-xs text-muted mt-6">
-          After your free trial, you will be asked to choose a plan. No charge until then.
+          Your card is charged automatically when the 7-day trial ends unless you cancel first.
         </p>
       </section>
     </div>

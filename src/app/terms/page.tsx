@@ -63,9 +63,10 @@ export default function TermsPage() {
 
           <h3 className="font-semibold text-primary mb-2 mt-4">4.1 Free trial</h3>
           <p>
-            New users receive a 7-day free trial with full access to the Service. No payment
-            information is required to start a trial. If you do not subscribe before the trial
-            ends, access to paid features will be restricted automatically.
+            New users may start a 7-day free trial with full access to the Service. A valid
+            payment method is required to activate the trial. At the end of the 7-day period,
+            your chosen plan will begin automatically and your card will be charged unless you
+            cancel before the trial expires. You can cancel at any time from your account settings.
           </p>
 
           <h3 className="font-semibold text-primary mb-2 mt-4">4.2 Paid plans</h3>

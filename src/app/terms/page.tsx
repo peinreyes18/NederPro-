@@ -26,8 +26,8 @@ export default function TermsPage() {
           </p>
           <p className="mt-2">
             NederPro is operated as a personal project. For questions, contact us at{' '}
-            <a href="mailto:hello@nederpro.nl" className="text-accent hover:underline">
-              hello@nederpro.nl
+            <a href="mailto:nederprohelp@gmail.com" className="text-accent hover:underline">
+              nederprohelp@gmail.com
             </a>.
           </p>
         </section>

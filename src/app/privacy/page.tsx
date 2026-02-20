@@ -26,8 +26,8 @@ export default function PrivacyPolicyPage() {
           </p>
           <p className="mt-2">
             If you have any questions about this policy or how we handle your data, you can contact us at:{' '}
-            <a href="mailto:privacy@nederpro.nl" className="text-accent hover:underline">
-              privacy@nederpro.nl
+            <a href="mailto:nederprohelp@gmail.com" className="text-accent hover:underline">
+              nederprohelp@gmail.com
             </a>
           </p>
         </section>
@@ -154,8 +154,8 @@ export default function PrivacyPolicyPage() {
           </ul>
           <p className="mt-3">
             To exercise any of these rights, email us at{' '}
-            <a href="mailto:privacy@nederpro.nl" className="text-accent hover:underline">
-              privacy@nederpro.nl
+            <a href="mailto:nederprohelp@gmail.com" className="text-accent hover:underline">
+              nederprohelp@gmail.com
             </a>. We will respond within 30 days.
           </p>
           <p className="mt-2">

@@ -141,8 +141,8 @@ export default function CookiePolicyPage() {
           <h2 className="text-lg font-bold text-primary mb-3">5. Contact</h2>
           <p>
             Questions about our use of cookies? Email us at{' '}
-            <a href="mailto:privacy@nederpro.nl" className="text-accent hover:underline">
-              privacy@nederpro.nl
+            <a href="mailto:nederprohelp@gmail.com" className="text-accent hover:underline">
+              nederprohelp@gmail.com
             </a>.
           </p>
         </section>

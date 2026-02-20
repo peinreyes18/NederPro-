@@ -31,6 +31,9 @@ export default function Footer() {
             <Link href="/progress" className="hover:text-primary transition-colors">
               Progress
             </Link>
+            <Link href="/contact" className="hover:text-primary transition-colors">
+              Contact
+            </Link>
           </nav>
         </div>
 

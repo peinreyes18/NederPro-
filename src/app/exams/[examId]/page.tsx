@@ -10,6 +10,7 @@ import ExamResults from '@/components/exams/ExamResults';
 import Button from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 import { ExamQuestion } from '@/content/types';
+import ListeningPlayer from '@/components/exams/ListeningPlayer';
 
 export default function ExamPage() {
   const params = useParams();
@@ -218,11 +219,24 @@ export default function ExamPage() {
               </span>
             </div>
 
-            {/* Passage for current question (if any) */}
+            {/* Passage / audio for current question (if any) */}
             {(() => {
               const section = questionSections[currentQuestionIndex];
               if (!section?.passage) return null;
-              // Only show passage when it changes — detect if this is the first question in this section
+
+              // Listening exam: show audio player
+              if (exam.skill === 'listening') {
+                return (
+                  <ListeningPlayer
+                    key={section.id}
+                    text={section.passage}
+                    sectionTitle={section.passageTitle}
+                    maxPlays={2}
+                  />
+                );
+              }
+
+              // Reading exam: show passage as text
               return (
                 <div className="mb-6 bg-surface border border-border rounded-xl p-5">
                   {section.passageTitle && (

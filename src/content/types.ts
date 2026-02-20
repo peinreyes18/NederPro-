@@ -215,7 +215,7 @@ export interface ReadingComprehensionContent {
 export interface ExamPracticeTest {
   id: string;
   examType: 'inburgering-a2' | 'staatsexamen-nt2-i' | 'staatsexamen-nt2-ii' | 'knm';
-  skill: 'reading' | 'writing' | 'speaking' | 'knowledge';
+  skill: 'reading' | 'writing' | 'listening' | 'speaking' | 'knowledge';
   year?: number;
   title: string;
   description: string;

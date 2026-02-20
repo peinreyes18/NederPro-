@@ -32,8 +32,21 @@ export async function GET(request: NextRequest) {
 
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
-      // `next` will be '/reset-password' for password recovery links,
-      // or '/progress' for email confirmation links.
+      // Password reset links carry next=/reset-password — always honour that
+      if (next === '/reset-password') {
+        return NextResponse.redirect(`${origin}/reset-password`);
+      }
+
+      // Check if this user has completed onboarding yet
+      const { data: { user } } = await supabase.auth.getUser();
+      const onboardingDone = user?.user_metadata?.onboarding_completed === true;
+
+      if (!onboardingDone) {
+        // First-time login after email confirmation → onboarding wizard
+        return NextResponse.redirect(`${origin}/onboarding`);
+      }
+
+      // Returning user — send to intended destination
       return NextResponse.redirect(`${origin}${next}`);
     }
   }

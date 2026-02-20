@@ -174,25 +174,39 @@ export default function HomePage() {
         <div className="mb-10 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-2">Simple Pricing</h2>
           <p className="text-muted max-w-xl mx-auto">
-            Start for free. Unlock everything when you are ready.
+            Try everything free for 7 days. Then pick the plan that suits you.
           </p>
         </div>
 
+        {/* Free trial banner */}
+        <div className="max-w-3xl mx-auto mb-8 rounded-xl border border-success/30 bg-success-light px-5 py-4 flex items-start gap-3">
+          <span className="text-success text-lg flex-shrink-0 mt-0.5">🎁</span>
+          <div>
+            <p className="text-sm font-semibold text-success">7-day free trial — no credit card required</p>
+            <p className="text-xs text-success/80 mt-0.5">
+              Full access to everything during the trial. Cancel before it ends and you will never be charged.
+            </p>
+          </div>
+        </div>
+
         <div className="grid gap-6 sm:grid-cols-2 max-w-3xl mx-auto">
-          {/* Free tier */}
+          {/* 2-week plan */}
           <Card className="flex flex-col">
             <div className="mb-4">
-              <Badge>Free</Badge>
+              <Badge>2 Weeks</Badge>
             </div>
-            <p className="text-3xl font-extrabold text-primary mb-1">€0</p>
-            <p className="text-sm text-muted mb-6">No credit card required</p>
+            <p className="text-3xl font-extrabold text-primary mb-1">
+              €3.49<span className="text-lg font-normal text-muted"> / 2 wk</span>
+            </p>
+            <p className="text-sm text-muted mb-6">Best for a focused study sprint</p>
             <ul className="space-y-2 text-sm text-primary-light flex-1 mb-8">
               {[
-                'A1 grammar lessons',
-                'Core vocabulary sets',
-                'Exam practice previews',
-                'Grammar reference',
-                'Culture &amp; history pages',
+                'All grammar levels: A1 → B2',
+                'Full exam practice library',
+                'AI writing feedback',
+                'Listening &amp; writing exams',
+                'Vocabulary &amp; grammar reference',
+                'Progress tracking',
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-2">
                   <span className="text-success mt-0.5 flex-shrink-0">✓</span>
@@ -201,28 +215,27 @@ export default function HomePage() {
               ))}
             </ul>
             <Link href="/signup">
-              <Button variant="outline" className="w-full">Create Free Account</Button>
+              <Button variant="outline" className="w-full">Start Free Trial</Button>
             </Link>
           </Card>
 
-          {/* Pro tier */}
+          {/* Monthly plan */}
           <Card className="flex flex-col border-accent/40 relative">
             <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-              <Badge variant="accent">Most Popular</Badge>
+              <Badge variant="accent">Best Value</Badge>
             </div>
             <div className="mb-4">
-              <Badge variant="accent">Pro</Badge>
+              <Badge variant="accent">1 Month</Badge>
             </div>
-            <p className="text-3xl font-extrabold text-primary mb-1">€9<span className="text-lg font-normal text-muted">/mo</span></p>
-            <p className="text-sm text-muted mb-6">Cancel anytime</p>
+            <p className="text-3xl font-extrabold text-primary mb-1">
+              €4.49<span className="text-lg font-normal text-muted"> / mo</span>
+            </p>
+            <p className="text-sm text-muted mb-6">More time to reach your exam goal</p>
             <ul className="space-y-2 text-sm text-primary-light flex-1 mb-8">
               {[
-                'Everything in Free',
-                'All levels: A2, B1, B2',
-                'Full exam practice library',
-                'AI writing feedback',
-                'Listening &amp; writing exams',
-                'Progress tracking',
+                'Everything in the 2-week plan',
+                'Extra month to practise &amp; review',
+                'Cancel anytime',
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-2">
                   <span className="text-accent mt-0.5 flex-shrink-0">✓</span>
@@ -231,10 +244,14 @@ export default function HomePage() {
               ))}
             </ul>
             <Link href="/signup">
-              <Button className="w-full">Get Started</Button>
+              <Button className="w-full">Start Free Trial</Button>
             </Link>
           </Card>
         </div>
+
+        <p className="text-center text-xs text-muted mt-6">
+          After your free trial, you will be asked to choose a plan. No charge until then.
+        </p>
       </section>
     </div>
   );

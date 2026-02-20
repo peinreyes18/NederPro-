@@ -1,26 +1,15 @@
 'use client';
 
-import { useState, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
-import Badge from '@/components/ui/Badge';
-
-const planLabels: Record<string, { name: string; price: string; period: string }> = {
-  biweekly: { name: '2-Week Plan', price: '€3.49', period: '/ 2 weeks' },
-  monthly:  { name: 'Monthly Plan', price: '€4.49', period: '/ month' },
-};
 
 function SignUpForm() {
   const { signUp } = useAuth();
   const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const plan = searchParams.get('plan') ?? null;
-  const withTrial = searchParams.get('trial') === 'true';
-  const planInfo = plan ? planLabels[plan] : null;
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -65,12 +54,6 @@ function SignUpForm() {
           </Link>
           .
         </p>
-        {planInfo && (
-          <p className="text-xs text-muted mb-6">
-            After confirming your email, you will be taken to complete your{' '}
-            <strong className="text-primary">{planInfo.name}</strong> setup.
-          </p>
-        )}
         <Button variant="outline" onClick={() => router.push('/login')}>
           Go to sign in
         </Button>
@@ -80,32 +63,9 @@ function SignUpForm() {
 
   return (
     <Card>
-      {/* Plan context banner */}
-      {planInfo && (
-        <div className="mb-5 rounded-lg border border-accent/20 bg-accent-light/10 px-4 py-3">
-          <div className="flex items-center justify-between mb-1">
-            <p className="text-sm font-semibold text-primary">{planInfo.name}</p>
-            <Badge variant="accent">
-              {planInfo.price} {planInfo.period}
-            </Badge>
-          </div>
-          {withTrial ? (
-            <p className="text-xs text-primary-light">
-              🎁 7-day free trial included · card charged after trial ends · cancel anytime
-            </p>
-          ) : (
-            <p className="text-xs text-primary-light">
-              Subscription starts immediately after signup · cancel anytime
-            </p>
-          )}
-        </div>
-      )}
-
       <h1 className="text-2xl font-bold text-primary mb-2">Create an account</h1>
       <p className="text-primary-light text-sm mb-6">
-        {planInfo
-          ? 'Create your account to continue with your plan selection.'
-          : 'Save your progress and access it from any device.'}
+        Save your progress and access it from any device.
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -161,7 +121,7 @@ function SignUpForm() {
         )}
 
         <Button type="submit" disabled={loading} className="w-full">
-          {loading ? 'Creating account...' : planInfo ? `Create account & continue` : 'Create account'}
+          {loading ? 'Creating account...' : 'Create account'}
         </Button>
       </form>
 
@@ -185,9 +145,7 @@ function SignUpForm() {
 export default function SignUpPage() {
   return (
     <div className="max-w-md mx-auto px-4 py-16">
-      <Suspense fallback={<div className="text-muted text-sm">Loading...</div>}>
-        <SignUpForm />
-      </Suspense>
+      <SignUpForm />
     </div>
   );
 }

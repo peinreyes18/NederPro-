@@ -2,23 +2,20 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { createClient } from '@/lib/supabase';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
-import Badge from '@/components/ui/Badge';
 import { cn } from '@/lib/utils';
 
-type Tab = 'subscription' | 'password' | 'account';
+type Tab = 'password' | 'account';
 
 export default function AccountPage() {
   const { user, signOut } = useAuth();
   const router = useRouter();
-  const [tab, setTab] = useState<Tab>('subscription');
+  const [tab, setTab] = useState<Tab>('password');
 
   // ── Password change state ──
-  const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState<string | null>(null);
@@ -53,7 +50,6 @@ export default function AccountPage() {
       setPasswordError(error.message);
     } else {
       setPasswordSuccess(true);
-      setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
     }
@@ -74,7 +70,6 @@ export default function AccountPage() {
   }
 
   const tabs: { id: Tab; label: string }[] = [
-    { id: 'subscription', label: 'Subscription' },
     { id: 'password', label: 'Password' },
     { id: 'account', label: 'Account' },
   ];
@@ -103,69 +98,6 @@ export default function AccountPage() {
           </button>
         ))}
       </div>
-
-      {/* ── Subscription tab ── */}
-      {tab === 'subscription' && (
-        <Card>
-          <h2 className="text-lg font-semibold text-primary mb-4">Your Plan</h2>
-
-          {/* Current plan status — placeholder until Stripe is connected */}
-          <div className="rounded-xl border border-border bg-surface p-4 mb-6">
-            <div className="flex items-center justify-between mb-3">
-              <div>
-                <p className="text-sm font-semibold text-primary">Free Trial</p>
-                <p className="text-xs text-muted mt-0.5">Full access during trial period</p>
-              </div>
-              <Badge variant="accent">Active</Badge>
-            </div>
-            <p className="text-xs text-muted">
-              Subscription billing is not yet active. Choose a plan below to get notified when
-              payments go live.
-            </p>
-          </div>
-
-          {/* Plan options */}
-          <div className="grid gap-3 sm:grid-cols-2 mb-6">
-            {/* 2-week */}
-            <div className="rounded-xl border border-border p-4 flex flex-col gap-3">
-              <div>
-                <p className="text-sm font-bold text-primary">2-Week Plan</p>
-                <p className="text-2xl font-extrabold text-primary mt-1">
-                  €3.49<span className="text-sm font-normal text-muted"> / 2 wk</span>
-                </p>
-                <p className="text-xs text-muted mt-1">Auto-renews every 2 weeks</p>
-              </div>
-              <Button variant="outline" className="w-full" disabled>
-                Coming soon
-              </Button>
-            </div>
-            {/* Monthly */}
-            <div className="rounded-xl border border-accent/40 p-4 flex flex-col gap-3 relative">
-              <div className="absolute -top-2.5 left-1/2 -translate-x-1/2">
-                <Badge variant="accent">Best Value</Badge>
-              </div>
-              <div>
-                <p className="text-sm font-bold text-primary">Monthly Plan</p>
-                <p className="text-2xl font-extrabold text-primary mt-1">
-                  €4.49<span className="text-sm font-normal text-muted"> / mo</span>
-                </p>
-                <p className="text-xs text-muted mt-1">Auto-renews every month</p>
-              </div>
-              <Button className="w-full" disabled>
-                Coming soon
-              </Button>
-            </div>
-          </div>
-
-          <p className="text-xs text-muted">
-            Payment processing via Stripe is coming soon. Your account will be notified by email
-            when billing is ready.{' '}
-            <Link href="/pricing" className="text-accent hover:underline">
-              View pricing details
-            </Link>
-          </p>
-        </Card>
-      )}
 
       {/* ── Password tab ── */}
       {tab === 'password' && (

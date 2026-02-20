@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 // Paths that are always accessible without authentication
-const PUBLIC_PATHS = ['/', '/login', '/signup', '/auth/callback', '/pricing', '/privacy', '/cookies', '/terms'];
+const PUBLIC_PATHS = ['/', '/login', '/signup', '/auth/callback', '/privacy', '/cookies', '/terms'];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;

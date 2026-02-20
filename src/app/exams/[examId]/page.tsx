@@ -157,6 +157,7 @@ export default function ExamPage() {
           writingSelfAssess={writingSelfAssess}
           onRetry={handleRetry}
           onBackToExams={handleBackToExams}
+          examType={exam.examType}
         />
       </div>
     );
@@ -267,6 +268,7 @@ export default function ExamPage() {
               onWritingSelfAssess={handleWritingSelfAssess}
               showResult={false}
               questionNumber={currentQuestionIndex + 1}
+              examType={exam.examType}
             />
 
             {/* Navigation buttons */}

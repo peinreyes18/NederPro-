@@ -15,6 +15,7 @@ interface ExamResultsProps {
   writingSelfAssess?: number[];
   onRetry: () => void;
   onBackToExams: () => void;
+  examType?: ExamPracticeTest['examType'];
 }
 
 export default function ExamResults({
@@ -24,6 +25,7 @@ export default function ExamResults({
   writingSelfAssess = [],
   onRetry,
   onBackToExams,
+  examType,
 }: ExamResultsProps) {
   const { score, correctCount, totalMC, writingDoneCount, writingTotalCount, passed, topicBreakdown } = useMemo(() => {
     const allQuestions = exam.sections.flatMap((section) => section.questions);
@@ -261,6 +263,7 @@ export default function ExamResults({
                   writingSelfAssess={writingSelfAssess[index] ?? 0}
                   showResult={true}
                   questionNumber={index + 1}
+                  examType={examType ?? exam.examType}
                 />
               );
             })}

@@ -2,14 +2,22 @@
 
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
-import { ExamQuestion } from '@/content/types';
+import { ExamQuestion, ExamPracticeTest } from '@/content/types';
 import Button from '@/components/ui/Button';
+import WritingFeedback from '@/components/exams/WritingFeedback';
+import type { WritingFeedbackRequest } from '@/app/api/writing-feedback/route';
+
+const examLevelMap: Record<ExamPracticeTest['examType'], string> = {
+  'inburgering-a2': 'A2',
+  'staatsexamen-nt2-i': 'B1',
+  'staatsexamen-nt2-ii': 'B2',
+  'knm': 'A2',
+};
 
 interface ExamQuestionCardProps {
   question: ExamQuestion;
   selectedIndex: number | null;
   onSelect: (index: number) => void;
-  // For writing questions: the user's typed response
   writingAnswer?: string;
   onWritingChange?: (value: string) => void;
   // 0 = not self-assessed, 1 = did well, -1 = needs practice
@@ -17,6 +25,7 @@ interface ExamQuestionCardProps {
   onWritingSelfAssess?: (value: number) => void;
   showResult: boolean;
   questionNumber: number;
+  examType?: ExamPracticeTest['examType'];
 }
 
 export default function ExamQuestionCard({
@@ -29,6 +38,7 @@ export default function ExamQuestionCard({
   onWritingSelfAssess,
   showResult,
   questionNumber,
+  examType,
 }: ExamQuestionCardProps) {
   const [writingPhase, setWritingPhase] = useState<'writing' | 'review'>(
     showResult && question.type === 'writing' ? 'review' : 'writing'
@@ -38,10 +48,24 @@ export default function ExamQuestionCard({
   if (question.type === 'writing') {
     const keyPhrases = question.writingKeyPhrases ?? [];
 
-    // Check which key phrases appear in the answer (case-insensitive)
     const matchedPhrases = keyPhrases.filter((p) =>
       writingAnswer.toLowerCase().includes(p.toLowerCase())
     );
+
+    // Build the request object for AI feedback (used after review phase)
+    const feedbackRequest: WritingFeedbackRequest | null =
+      examType && writingAnswer.trim()
+        ? {
+            examLevel: examLevelMap[examType] ?? 'A2',
+            examType,
+            taskPrompt: question.writingPrompt ?? question.question,
+            taskContext: question.writingContext ?? '',
+            taskGuidelines: question.writingGuidelines ?? [],
+            sampleResponse: question.writingSampleResponse ?? '',
+            userResponse: writingAnswer,
+            keyPhrases,
+          }
+        : null;
 
     return (
       <div className="bg-background rounded-xl border border-border p-6 shadow-sm">
@@ -141,7 +165,7 @@ export default function ExamQuestionCard({
               </div>
             )}
 
-            {/* Self-assessment (only while exam is active, not in final results) */}
+            {/* Self-assessment (only while exam is active) */}
             {!showResult && (
               <div className="border border-border rounded-lg p-4">
                 <p className="text-sm font-medium text-primary mb-3">
@@ -162,6 +186,11 @@ export default function ExamQuestionCard({
                   </Button>
                 </div>
               </div>
+            )}
+
+            {/* AI Feedback — shown after self-assessment or in results view */}
+            {feedbackRequest && (writingSelfAssess !== 0 || showResult) && (
+              <WritingFeedback request={feedbackRequest} />
             )}
 
             {/* In results view: show self-assessment label */}
@@ -200,33 +229,24 @@ export default function ExamQuestionCard({
 
           if (showResult) {
             if (isCorrect) {
-              optionClasses =
-                'border-success bg-success-light text-success font-medium';
+              optionClasses = 'border-success bg-success-light text-success font-medium';
             } else if (isSelected && !isCorrect) {
-              optionClasses =
-                'border-error bg-error-light text-error font-medium';
+              optionClasses = 'border-error bg-error-light text-error font-medium';
             } else {
-              optionClasses =
-                'border-border bg-surface text-muted opacity-60';
+              optionClasses = 'border-border bg-surface text-muted opacity-60';
             }
           } else {
             if (isSelected) {
-              optionClasses =
-                'border-accent bg-accent-light/30 text-primary font-medium';
+              optionClasses = 'border-accent bg-accent-light/30 text-primary font-medium';
             } else {
-              optionClasses =
-                'border-border hover:border-accent/30 hover:bg-surface text-primary-light';
+              optionClasses = 'border-border hover:border-accent/30 hover:bg-surface text-primary-light';
             }
           }
 
           return (
             <button
               key={index}
-              onClick={() => {
-                if (!showResult) {
-                  onSelect(index);
-                }
-              }}
+              onClick={() => { if (!showResult) onSelect(index); }}
               disabled={showResult}
               className={cn(
                 'w-full text-left px-4 py-3 rounded-lg border transition-colors text-sm flex items-start gap-3',

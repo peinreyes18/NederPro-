@@ -17,6 +17,7 @@ import { staatsexamenNt2IIReading1 } from './staatsexamen-nt2-ii/reading-exam-1'
 import { staatsexamenNt2IIReading2 } from './staatsexamen-nt2-ii/reading-exam-2';
 import { staatsexamenNt2IIReading3 } from './staatsexamen-nt2-ii/reading-exam-3';
 import { staatsexamenNt2IIWriting1 } from './staatsexamen-nt2-ii/writing-exam-1';
+import { staatsexamenNt2IIListening1 } from './staatsexamen-nt2-ii/listening-exam-1';
 
 export const allExams: ExamPracticeTest[] = [
   knmPracticeExam3,
@@ -37,6 +38,7 @@ export const allExams: ExamPracticeTest[] = [
   staatsexamenNt2IIReading2,
   staatsexamenNt2IIReading3,
   staatsexamenNt2IIWriting1,
+  staatsexamenNt2IIListening1,
 ];
 
 export function getExamById(id: string): ExamPracticeTest | undefined {

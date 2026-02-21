@@ -1,6 +1,18 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import Card from '@/components/ui/Card';
+
+export const metadata: Metadata = {
+  title: 'Dutch Culture Tips',
+  description:
+    'Practical insights about Dutch culture, customs, and daily life in the Netherlands — greetings, cycling etiquette, workplace norms, holidays, food, and more. With useful Dutch vocabulary included.',
+  openGraph: {
+    title: 'Dutch Culture Tips | NederPro',
+    description:
+      'Understand Dutch customs, social norms, and daily life in the Netherlands. Essential cultural knowledge for newcomers and language learners.',
+  },
+};
 
 const cultureTips = [
   {

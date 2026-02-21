@@ -1,6 +1,18 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import Card from '@/components/ui/Card';
+
+export const metadata: Metadata = {
+  title: 'History of the Netherlands',
+  description:
+    'A chronological journey through Dutch history — from prehistoric terpen and Roman rule to the Golden Age, WWII, and the modern Netherlands. Essential context for Dutch language learners.',
+  openGraph: {
+    title: 'History of the Netherlands | NederPro',
+    description:
+      'Explore Dutch history from prehistory to the present. Understanding Dutch history helps you make sense of Dutch culture, values, and language.',
+  },
+};
 
 const historyEras = [
   {

@@ -7,6 +7,59 @@ import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import { levels } from '@/content/levels';
 
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.nl';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${BASE_URL}/#organization`,
+      name: 'NederPro',
+      url: BASE_URL,
+      description:
+        'Structured Dutch language learning for adults preparing to work and live in the Netherlands. Aligned with CEFR levels and official Dutch exam standards.',
+      contactPoint: {
+        '@type': 'ContactPoint',
+        email: 'nederprohelp@gmail.com',
+        contactType: 'customer support',
+      },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${BASE_URL}/#website`,
+      url: BASE_URL,
+      name: 'NederPro',
+      description: 'Learn Dutch online — grammar, vocabulary, exam practice, and cultural insights.',
+      publisher: { '@id': `${BASE_URL}/#organization` },
+      inLanguage: 'en',
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: { '@type': 'EntryPoint', urlTemplate: `${BASE_URL}/vocabulary?q={search_term_string}` },
+        'query-input': 'required name=search_term_string',
+      },
+    },
+    {
+      '@type': 'EducationalOrganization',
+      '@id': `${BASE_URL}/#educational-org`,
+      name: 'NederPro',
+      url: BASE_URL,
+      description: 'Online Dutch language school for adults. CEFR A0–B2 courses aligned with the Inburgeringsexamen and Staatsexamen NT2.',
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Dutch Language Courses',
+        itemListElement: [
+          { '@type': 'Course', name: 'Dutch A0 – Starter', description: 'Absolute beginner Dutch: alphabet, greetings, numbers, and basic phrases.', url: `${BASE_URL}/levels/a0`, inLanguage: 'nl', educationalLevel: 'Beginner' },
+          { '@type': 'Course', name: 'Dutch A1 – Breakthrough', description: 'Foundation Dutch grammar: verbs, articles, word order, and basic sentences.', url: `${BASE_URL}/levels/a1`, inLanguage: 'nl', educationalLevel: 'Beginner' },
+          { '@type': 'Course', name: 'Dutch A2 – Elementary', description: 'Intermediate Dutch: past tense, modal verbs, separable verbs. Inburgering exam prep.', url: `${BASE_URL}/levels/a2`, inLanguage: 'nl', educationalLevel: 'Elementary' },
+          { '@type': 'Course', name: 'Dutch B1 – Intermediate', description: 'Advanced grammar and fluency building for the Staatsexamen NT2 Programma I.', url: `${BASE_URL}/levels/b1`, inLanguage: 'nl', educationalLevel: 'Intermediate' },
+          { '@type': 'Course', name: 'Dutch B2 – Upper Intermediate', description: 'Complex Dutch structures for the Staatsexamen NT2 Programma II.', url: `${BASE_URL}/levels/b2`, inLanguage: 'nl', educationalLevel: 'Upper Intermediate' },
+        ],
+      },
+    },
+  ],
+};
+
 const features = [
   {
     icon: '📐',
@@ -64,6 +117,12 @@ export default async function HomePage() {
 
   return (
     <div>
+      {/* JSON-LD structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-background border-b border-border">
         <div className="absolute inset-0 bg-gradient-to-br from-accent-light/50 via-transparent to-transparent" />

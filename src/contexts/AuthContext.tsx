@@ -45,7 +45,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       password,
       options: { emailRedirectTo: redirectTo },
     });
-    return { error: error?.message ?? null };
+    const msg = error?.message;
+    const clean = !msg || msg === '{}' ? 'Something went wrong. Please try again.' : msg;
+    return { error: error ? clean : null };
   }, []);
 
   const signIn = useCallback(async (email: string, password: string) => {

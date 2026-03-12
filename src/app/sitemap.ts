@@ -3,7 +3,7 @@ import { allExams } from '@/content/exams';
 import { levels } from '@/content/levels';
 import { vocabularyCategories } from '@/content/vocabulary';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.nl';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.com';
 
 // Culture tip IDs (from culture/page.tsx)
 const cultureTipIds = [

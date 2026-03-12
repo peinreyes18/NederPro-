@@ -19,15 +19,26 @@ export const metadata: Metadata = {
   description:
     'A structured, grammar-focused Dutch learning program for adults preparing to work and live in the Netherlands. Aligned with CEFR levels and official Dutch exam standards.',
   keywords: [
+    'learn Dutch',
     'Dutch learning',
     'Dutch grammar',
     'NT2',
     'Inburgeringsexamen',
     'Staatsexamen NT2',
-    'KNM',
-    'CEFR',
-    'learn Dutch',
+    'KNM exam',
+    'CEFR Dutch',
     'Nederlands leren',
+    'Dutch for beginners',
+    'Dutch language course',
+    'Dutch online',
+    'Dutch A1 A2 B1 B2',
+    'Dutch exam practice',
+    'Dutch vocabulary',
+    'integrate Netherlands',
+    'inburgering',
+    'Dutch for immigrants',
+    'learn Dutch online free',
+    'Dutch grammar exercises',
   ],
   authors: [{ name: 'NederPro' }],
   creator: 'NederPro',
@@ -74,6 +85,19 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'NederPro',
+  url: BASE_URL,
+  description: 'Structured Dutch learning for adults — grammar, vocabulary, exam prep aligned with CEFR and Dutch inburgering standards.',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${BASE_URL}/vocabulary?q={search_term_string}`,
+    'query-input': 'required name=search_term_string',
+  },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -82,6 +106,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `

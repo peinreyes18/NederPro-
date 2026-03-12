@@ -115,10 +115,10 @@ const features = [
 
 export default async function HomePage() {
   // Redirect logged-in users straight to their dashboard
-  try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    if (supabaseUrl && supabaseKey) {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (supabaseUrl && supabaseKey) {
+    try {
       const cookieStore = await cookies();
       const supabase = createServerClient(supabaseUrl, supabaseKey, {
         cookies: {
@@ -128,9 +128,10 @@ export default async function HomePage() {
       });
       const { data: { session } } = await supabase.auth.getSession();
       if (session) redirect('/progress');
+    } catch (err) {
+      // Re-throw Next.js redirect so it still works; swallow Supabase errors
+      if ((err as { digest?: string })?.digest?.startsWith('NEXT_REDIRECT')) throw err;
     }
-  } catch {
-    // If Supabase is unavailable, render the homepage anyway
   }
 
   return (

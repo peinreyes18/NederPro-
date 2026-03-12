@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   authors: [{ name: 'NederPro' }],
   creator: 'NederPro',
   verification: {
-    google: 'garOHoaDiMjSQ_8PLPB62Ejqx42e08F5n3UbmF8q-5g',
+    google: 'yIYuxjoUECMQ_TPZGNxJyHFhbsEUA_avOG3VaGHJLpk',
   },
   openGraph: {
     type: 'website',

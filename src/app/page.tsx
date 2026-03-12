@@ -1,7 +1,4 @@
 import type { Metadata } from 'next';
-import { redirect } from 'next/navigation';
-import { cookies } from 'next/headers';
-import { createServerClient } from '@supabase/ssr';
 import Link from 'next/link';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
@@ -113,27 +110,7 @@ const features = [
   },
 ];
 
-export default async function HomePage() {
-  // Redirect logged-in users straight to their dashboard
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (supabaseUrl && supabaseKey) {
-    try {
-      const cookieStore = await cookies();
-      const supabase = createServerClient(supabaseUrl, supabaseKey, {
-        cookies: {
-          getAll() { return cookieStore.getAll(); },
-          setAll() {},
-        },
-      });
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) redirect('/progress');
-    } catch (err) {
-      // Re-throw Next.js redirect so it still works; swallow Supabase errors
-      if ((err as { digest?: string })?.digest?.startsWith('NEXT_REDIRECT')) throw err;
-    }
-  }
-
+export default function HomePage() {
   return (
     <div>
       {/* JSON-LD structured data */}

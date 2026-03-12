@@ -27,8 +27,8 @@ export async function generateMetadata({
   const topic = getTopic(levelId, topicId);
   const level = getLevel(levelId);
   return {
-    title: `${topic?.title || 'Topic'} - ${level?.shortName || ''} | NederPro`,
-    description: topic?.subtitle || `Learn ${topic?.title} in Dutch`,
+    title: `${topic?.title || 'Topic'} — ${level?.shortName || ''} Dutch Grammar`,
+    description: `${topic?.subtitle || `Learn ${topic?.title} in Dutch`} — Free Dutch grammar lesson at ${level?.shortName || ''} level with exercises. Part of NederPro's structured Dutch learning programme.`,
   };
 }
 

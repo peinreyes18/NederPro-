@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { getVocabularyCategory } from '@/content/vocabulary';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.nl';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.com';
 
 export async function generateMetadata({
   params,

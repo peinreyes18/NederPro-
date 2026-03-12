@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { getExamById } from '@/content/exams';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.nl';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.com';
 
 const examTypeLabels: Record<string, string> = {
   knm: 'KNM – Kennis van de Nederlandse Maatschappij',

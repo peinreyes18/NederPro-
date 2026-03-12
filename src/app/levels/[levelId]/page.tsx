@@ -23,8 +23,8 @@ export async function generateMetadata({
   const { levelId } = await params;
   const level = getLevel(levelId);
   return {
-    title: `${level?.name || 'Level'} | NederPro`,
-    description: level?.description || 'Dutch grammar topics',
+    title: `${level?.name || 'Level'} Dutch Grammar`,
+    description: `${level?.description || 'Dutch grammar topics'} Free Dutch grammar lessons at ${level?.shortName || ''} level, aligned with CEFR and the Dutch inburgering exam.`,
   };
 }
 

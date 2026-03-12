@@ -4,6 +4,39 @@ import { useState, useEffect, useRef } from 'react';
 import { SpeakingContent } from '@/content/types';
 import Button from '@/components/ui/Button';
 
+// Minimal Web Speech API types (not included in TS dom lib by default)
+interface SpeechRecognitionResult {
+  readonly length: number;
+  [index: number]: { transcript: string; confidence: number };
+}
+interface SpeechRecognitionResultList {
+  readonly length: number;
+  [index: number]: SpeechRecognitionResult;
+}
+interface SpeechRecognitionResultEvent {
+  readonly results: SpeechRecognitionResultList;
+}
+interface SpeechRecognitionInstance {
+  lang: string;
+  interimResults: boolean;
+  maxAlternatives: number;
+  onstart: (() => void) | null;
+  onend: (() => void) | null;
+  onerror: ((e: unknown) => void) | null;
+  onresult: ((e: SpeechRecognitionResultEvent) => void) | null;
+  start(): void;
+  abort(): void;
+}
+type SpeechRecognitionConstructor = new () => SpeechRecognitionInstance;
+
+function getSpeechRecognition(): SpeechRecognitionConstructor | undefined {
+  if (typeof window === 'undefined') return undefined;
+  const w = window as unknown as Record<string, unknown>;
+  return (w['SpeechRecognition'] ?? w['webkitSpeechRecognition']) as
+    | SpeechRecognitionConstructor
+    | undefined;
+}
+
 // Levenshtein distance for fuzzy pronunciation matching
 function levenshtein(a: string, b: string): number {
   const matrix: number[][] = [];
@@ -52,7 +85,7 @@ export default function Speaking({ content, instruction, onSubmit, disabled }: S
   const indexRef = useRef(0);
   const attemptsRef = useRef(0);
   const correctCountRef = useRef(0);
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
 
   const [index, setIndex] = useState(0);
   const [attempts, setAttempts] = useState(0);
@@ -62,12 +95,7 @@ export default function Speaking({ content, instruction, onSubmit, disabled }: S
   const [supported, setSupported] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const SpeechRec =
-      typeof window !== 'undefined'
-        ? (window as unknown as { SpeechRecognition?: typeof SpeechRecognition; webkitSpeechRecognition?: typeof SpeechRecognition }).SpeechRecognition ||
-          (window as unknown as { webkitSpeechRecognition?: typeof SpeechRecognition }).webkitSpeechRecognition
-        : undefined;
-    setSupported(!!SpeechRec);
+    setSupported(!!getSpeechRecognition());
     return () => {
       recognitionRef.current?.abort();
     };
@@ -75,7 +103,7 @@ export default function Speaking({ content, instruction, onSubmit, disabled }: S
 
   const currentItem = items[index];
 
-  const handleNext = (wasCorrect: boolean, finalCorrectCount: number) => {
+  const handleNext = (finalCorrectCount: number) => {
     const nextIndex = indexRef.current + 1;
     if (nextIndex >= items.length) {
       const passing = finalCorrectCount >= Math.ceil(items.length * 0.6);
@@ -98,10 +126,7 @@ export default function Speaking({ content, instruction, onSubmit, disabled }: S
   const startListening = () => {
     if (listening || !supported) return;
 
-    const SpeechRec =
-      (window as unknown as { SpeechRecognition?: typeof SpeechRecognition }).SpeechRecognition ||
-      (window as unknown as { webkitSpeechRecognition?: typeof SpeechRecognition }).webkitSpeechRecognition;
-
+    const SpeechRec = getSpeechRecognition();
     if (!SpeechRec) return;
 
     const recognition = new SpeechRec();
@@ -119,7 +144,7 @@ export default function Speaking({ content, instruction, onSubmit, disabled }: S
       setAttempts(attemptsRef.current);
     };
 
-    recognition.onresult = (event: SpeechRecognitionEvent) => {
+    recognition.onresult = (event: SpeechRecognitionResultEvent) => {
       setListening(false);
 
       // Gather all alternative transcripts
@@ -141,7 +166,7 @@ export default function Speaking({ content, instruction, onSubmit, disabled }: S
         correctCountRef.current += 1;
         const newCorrectCount = correctCountRef.current;
         setItemStatus('correct');
-        setTimeout(() => handleNext(true, newCorrectCount), 1500);
+        setTimeout(() => handleNext(newCorrectCount), 1500);
       } else if (newAttempts >= MAX_ATTEMPTS) {
         setItemStatus('out-of-attempts');
       } else {
@@ -166,9 +191,7 @@ export default function Speaking({ content, instruction, onSubmit, disabled }: S
         <p className="text-sm text-muted mb-6">Please use Google Chrome or Microsoft Edge to complete this exercise.</p>
         <Button
           variant="ghost"
-          onClick={() =>
-            onSubmit(true, 'skipped', 'Speech recognition not supported — exercise skipped.')
-          }
+          onClick={() => onSubmit(true, 'skipped', 'Speech recognition not supported — exercise skipped.')}
         >
           Skip Exercise
         </Button>
@@ -268,10 +291,7 @@ export default function Speaking({ content, instruction, onSubmit, disabled }: S
               Last heard: &ldquo;<span className="font-medium">{heardText}</span>&rdquo;
             </p>
           )}
-          <Button
-            size="sm"
-            onClick={() => handleNext(false, correctCountRef.current)}
-          >
+          <Button size="sm" onClick={() => handleNext(correctCountRef.current)}>
             {index + 1 < items.length ? 'Next Word →' : 'Finish'}
           </Button>
         </div>

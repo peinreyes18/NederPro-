@@ -9,7 +9,7 @@ export const inburgeringA2Reading3: ExamPracticeTest = {
     'Practice reading exam at A2 level. Read short Dutch texts (signs, letters, notices, forms) and answer multiple-choice questions. Topics: public transport, appointments, neighbourhood, leisure.',
   timeLimitMinutes: 40,
   passingScore: 70,
-  totalQuestions: 25,
+  totalQuestions: 24,
   sections: [
     {
       id: 'a2r3-s1',

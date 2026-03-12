@@ -1,6 +1,20 @@
+import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
+
+export const metadata: Metadata = {
+  title: 'NederPro — Structured Dutch Grammar Learning',
+  description:
+    'Learn Dutch systematically — grammar-first, CEFR-aligned, and built for adults preparing to work and live in the Netherlands. Covers A0 to B2, Inburgeringsexamen, and Staatsexamen NT2.',
+  openGraph: {
+    title: 'NederPro — Structured Dutch Grammar Learning',
+    description:
+      'Grammar-first Dutch learning for adults. Aligned with CEFR levels and official Dutch exams (Inburgeringsexamen, Staatsexamen NT2). Serious language learning — no childish games.',
+    url: 'https://nederpro.com',
+    type: 'website',
+  },
+};
 import Link from 'next/link';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';

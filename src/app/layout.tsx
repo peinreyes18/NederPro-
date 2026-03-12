@@ -8,7 +8,7 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.nl';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),

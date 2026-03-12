@@ -9,7 +9,7 @@ export const staatsexamenNt2IReading4: ExamPracticeTest = {
     'Practice reading exam at B1 level. Read longer Dutch texts and answer comprehension questions. Topics: digital privacy, sustainable living, neighbourhood watch, healthcare costs, pension reform, and Dutch civic life.',
   timeLimitMinutes: 75,
   passingScore: 60,
-  totalQuestions: 30,
+  totalQuestions: 29,
   sections: [
     {
       id: 'nt2-i-r4-s1',

@@ -100,6 +100,16 @@ export const alphabetPronunciation: Topic = {
             hint: 'sounds like English "ya"',
           },
           {
+            dutchText: 'nee',
+            englishTranslation: 'no',
+            hint: 'long "ee" sound — like "nay"',
+          },
+          {
+            dutchText: 'dag',
+            englishTranslation: 'hello / bye',
+            hint: 'short "a" — like "dakh" with a soft g',
+          },
+          {
             dutchText: 'goed',
             englishTranslation: 'good',
             hint: 'start with the guttural Dutch "g"',
@@ -115,9 +125,29 @@ export const alphabetPronunciation: Topic = {
             hint: '"ui" is a unique Dutch sound — rounded lips',
           },
           {
+            dutchText: 'kat',
+            englishTranslation: 'cat',
+            hint: 'short "a" — similar to English "cat"',
+          },
+          {
+            dutchText: 'rood',
+            englishTranslation: 'red',
+            hint: 'long "oo" sound — "roht"',
+          },
+          {
             dutchText: 'nacht',
             englishTranslation: 'night',
             hint: '"ch" is a guttural sound, like clearing your throat',
+          },
+          {
+            dutchText: 'wit',
+            englishTranslation: 'white',
+            hint: 'short "i" — like English "wit"',
+          },
+          {
+            dutchText: 'groot',
+            englishTranslation: 'big / large',
+            hint: 'guttural "g" + long "oo"',
           },
           {
             dutchText: 'water',
@@ -130,7 +160,7 @@ export const alphabetPronunciation: Topic = {
     {
       id: 'a0-alpha-speak-2',
       type: 'speaking',
-      instruction: 'Practice these slightly harder Dutch words. Focus on the vowel sounds.',
+      instruction: 'Practice these Dutch words with tricky vowel sounds. Take your time.',
       difficulty: 'guided',
       content: {
         type: 'speaking',
@@ -146,6 +176,16 @@ export const alphabetPronunciation: Topic = {
             hint: '"eu" — round your lips as if to say "oo" but say "ee"',
           },
           {
+            dutchText: 'vrij',
+            englishTranslation: 'free',
+            hint: '"ij" sounds like "ay" in "my" — "fray"',
+          },
+          {
+            dutchText: 'blauw',
+            englishTranslation: 'blue',
+            hint: '"au" sounds like "ow" in "how"',
+          },
+          {
             dutchText: 'school',
             englishTranslation: 'school',
             hint: '"sch" = "s" + guttural "ch"',
@@ -154,6 +194,16 @@ export const alphabetPronunciation: Topic = {
             dutchText: 'maan',
             englishTranslation: 'moon',
             hint: 'long "aa" sound — hold it a little longer',
+          },
+          {
+            dutchText: 'oud',
+            englishTranslation: 'old',
+            hint: '"ou" sounds like "ow" in "how"',
+          },
+          {
+            dutchText: 'nieuw',
+            englishTranslation: 'new',
+            hint: '"ie" + "uw" — "neew"',
           },
           {
             dutchText: 'trein',
@@ -165,6 +215,59 @@ export const alphabetPronunciation: Topic = {
             dutchText: 'goedemorgen',
             englishTranslation: 'good morning',
             hint: 'guttural "g" at the start — "khoo-deh-MOR-khen"',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a0-alpha-speak-3',
+      type: 'speaking',
+      instruction: 'Try these useful everyday Dutch words and phrases. Speak slowly and clearly.',
+      difficulty: 'open',
+      content: {
+        type: 'speaking',
+        items: [
+          {
+            dutchText: 'dankjewel',
+            englishTranslation: 'thank you',
+            hint: '"dank-yuh-vel" — j sounds like English "y"',
+          },
+          {
+            dutchText: 'alsjeblieft',
+            englishTranslation: 'please / here you go',
+            hint: '"als-yuh-bleeft" — very common Dutch word',
+          },
+          {
+            dutchText: 'goedenavond',
+            englishTranslation: 'good evening',
+            hint: '"khoo-den-AH-font" — guttural "g"',
+          },
+          {
+            dutchText: 'welkom',
+            englishTranslation: 'welcome',
+            hint: '"vel-kom" — Dutch "w" is soft',
+          },
+          {
+            dutchText: 'hoe gaat het',
+            englishTranslation: 'how are you',
+            hint: '"hoo khat het" — guttural "g" in gaat',
+            acceptableAnswers: ['hoe gaat het?', 'hoe gaat het'],
+          },
+          {
+            dutchText: 'tot ziens',
+            englishTranslation: 'goodbye',
+            hint: '"tot zeens" — "ie" sounds like "ee"',
+          },
+          {
+            dutchText: 'ik heet',
+            englishTranslation: 'my name is',
+            hint: '"ik hayt" — "ee" is a long vowel',
+            acceptableAnswers: ['ik heet'],
+          },
+          {
+            dutchText: 'uitspraak',
+            englishTranslation: 'pronunciation',
+            hint: '"ui" diphthong + "spraak" — "owt-sprahk"',
           },
         ],
       },

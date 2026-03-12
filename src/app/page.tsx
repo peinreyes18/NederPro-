@@ -21,7 +21,7 @@ import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import { levels } from '@/content/levels';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.nl';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.com';
 
 const jsonLd = {
   '@context': 'https://schema.org',

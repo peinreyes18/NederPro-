@@ -2,6 +2,11 @@ import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
+import Link from 'next/link';
+import Button from '@/components/ui/Button';
+import Card from '@/components/ui/Card';
+import Badge from '@/components/ui/Badge';
+import { levels } from '@/content/levels';
 
 export const metadata: Metadata = {
   title: 'NederPro — Structured Dutch Grammar Learning',
@@ -15,11 +20,6 @@ export const metadata: Metadata = {
     type: 'website',
   },
 };
-import Link from 'next/link';
-import Button from '@/components/ui/Button';
-import Card from '@/components/ui/Card';
-import Badge from '@/components/ui/Badge';
-import { levels } from '@/content/levels';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.com';
 

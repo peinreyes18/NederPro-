@@ -6,20 +6,96 @@ import Breadcrumb from '@/components/layout/Breadcrumb';
 import LevelCardProgress from '@/components/progress/LevelCardProgress';
 import { levels } from '@/content/levels';
 
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.com';
+
 export const metadata: Metadata = {
   title: 'Dutch Grammar Levels',
   description:
-    'Structured Dutch grammar lessons from A1 to B2+. Follow the CEFR path from absolute beginner to advanced — aligned with Inburgeringsexamen and Staatsexamen NT2.',
+    'Structured Dutch grammar lessons from A0 to B2. Follow the CEFR path from absolute beginner to advanced — aligned with Inburgeringsexamen and Staatsexamen NT2.',
   openGraph: {
     title: 'Dutch Grammar Levels — NederPro',
     description:
-      'CEFR-aligned Dutch grammar lessons from A1 to B2+. Structured progression toward official Dutch exam certification.',
+      'CEFR-aligned Dutch grammar lessons from A0 to B2. Structured progression toward official Dutch exam certification.',
+    url: `${BASE_URL}/levels`,
+    type: 'website',
   },
+};
+
+const itemListJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Dutch Grammar Levels — CEFR A0 to B2',
+  description:
+    'Free structured Dutch grammar lessons from A0 to B2, aligned with the CEFR framework and Dutch integration exams (Inburgeringsexamen, Staatsexamen NT2).',
+  url: `${BASE_URL}/levels`,
+  numberOfItems: levels.length,
+  itemListElement: levels.map((level, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: `${level.name} Dutch Grammar`,
+    description: level.description,
+    url: `${BASE_URL}/levels/${level.id}`,
+  })),
+};
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What CEFR levels does NederPro cover?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'NederPro covers Dutch grammar from A0 (absolute beginner) through B2 (advanced), following the Common European Framework of Reference for Languages (CEFR). Each level builds on the previous one.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Which level should I start with?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'If you have never studied Dutch before, start at A0 (Starter). If you know basic greetings and simple phrases, try A1 (Breakthrough). If you can hold simple conversations, start at A2 (Waystage).',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Is NederPro free to use?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes, all Dutch grammar lessons and exercises on NederPro are completely free. There are no hidden fees or subscriptions required.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What is the Inburgeringsexamen?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'The Inburgeringsexamen (civic integration exam) is a Dutch language and society exam required for immigrants living in the Netherlands. It tests Dutch at A2 level. NederPro\'s A1 and A2 levels prepare you for this exam.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What is the Staatsexamen NT2?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'The Staatsexamen NT2 (State Exam Dutch as a Second Language) is a higher-level Dutch exam available at B1 (Programma I) and B2 (Programma II). It is often required for university admission or professional registration in the Netherlands.',
+      },
+    },
+  ],
 };
 
 export default function LevelsPage() {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       <Breadcrumb items={[{ label: 'Levels' }]} />
 
       <h1 className="text-3xl font-bold text-primary mb-2">Choose Your Level</h1>

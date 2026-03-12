@@ -9,6 +9,8 @@ import MarkLessonRead from '@/components/progress/MarkLessonRead';
 import { getTopic, getAdjacentTopics, getLevel, getTopicsForLevel } from '@/lib/content-loader';
 import { levels } from '@/content/levels';
 
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.com';
+
 export function generateStaticParams() {
   return levels.flatMap((level) =>
     getTopicsForLevel(level.id).map((topic) => ({
@@ -26,9 +28,17 @@ export async function generateMetadata({
   const { levelId, topicId } = await params;
   const topic = getTopic(levelId, topicId);
   const level = getLevel(levelId);
+  const title = `${topic?.title || 'Topic'} — ${level?.shortName || ''} Dutch Grammar`;
+  const description = `${topic?.subtitle || `Learn ${topic?.title} in Dutch`} — Free Dutch grammar lesson at ${level?.shortName || ''} level with exercises. Part of NederPro's structured Dutch learning programme.`;
   return {
-    title: `${topic?.title || 'Topic'} — ${level?.shortName || ''} Dutch Grammar`,
-    description: `${topic?.subtitle || `Learn ${topic?.title} in Dutch`} — Free Dutch grammar lesson at ${level?.shortName || ''} level with exercises. Part of NederPro's structured Dutch learning programme.`,
+    title,
+    description,
+    openGraph: {
+      title: `${title} | NederPro`,
+      description,
+      url: `${BASE_URL}/levels/${levelId}/${topicId}`,
+      type: 'article',
+    },
   };
 }
 
@@ -46,8 +56,47 @@ export default async function TopicPage({
     notFound();
   }
 
+  const learningResourceJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'LearningResource',
+    name: `${topic.title} — ${level.shortName} Dutch Grammar`,
+    description:
+      topic.subtitle ??
+      `Learn ${topic.title} in Dutch. Free grammar lesson at ${level.shortName} level with interactive exercises.`,
+    url: `${BASE_URL}/levels/${levelId}/${topicId}`,
+    educationalLevel: level.shortName,
+    teaches: topic.title,
+    timeRequired: `PT${topic.estimatedMinutes}M`,
+    inLanguage: 'en',
+    isAccessibleForFree: true,
+    learningResourceType: 'lesson',
+    isPartOf: {
+      '@type': 'Course',
+      name: `${level.name} Dutch Grammar`,
+      url: `${BASE_URL}/levels/${levelId}`,
+      provider: {
+        '@type': 'Organization',
+        name: 'NederPro',
+        url: BASE_URL,
+      },
+    },
+    ...(prev
+      ? { position: undefined }
+      : {}),
+    author: {
+      '@type': 'Organization',
+      name: 'NederPro',
+      url: BASE_URL,
+    },
+  };
+
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(learningResourceJsonLd) }}
+      />
+
       <MarkLessonRead levelId={levelId} topicId={topicId} />
 
       <Breadcrumb

@@ -424,5 +424,88 @@ export const alphabetPronunciation: Topic = {
         ],
       },
     },
+    {
+      id: 'a0-alpha-speak-1',
+      type: 'speaking',
+      instruction: 'Say each Dutch word out loud. Tap the microphone and speak clearly.',
+      difficulty: 'controlled',
+      content: {
+        type: 'speaking',
+        items: [
+          {
+            dutchText: 'ja',
+            englishTranslation: 'yes',
+            hint: 'sounds like English "ya"',
+          },
+          {
+            dutchText: 'goed',
+            englishTranslation: 'good',
+            hint: 'start with the guttural Dutch "g"',
+          },
+          {
+            dutchText: 'boek',
+            englishTranslation: 'book',
+            hint: '"oe" sounds like "oo" in moon',
+          },
+          {
+            dutchText: 'huis',
+            englishTranslation: 'house',
+            hint: '"ui" is a unique Dutch sound — rounded lips',
+          },
+          {
+            dutchText: 'nacht',
+            englishTranslation: 'night',
+            hint: '"ch" is a guttural sound, like clearing your throat',
+          },
+          {
+            dutchText: 'water',
+            englishTranslation: 'water',
+            hint: 'Dutch "w" is softer than English, between "v" and "w"',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a0-alpha-speak-2',
+      type: 'speaking',
+      instruction: 'Practice these slightly harder Dutch words. Focus on the vowel sounds.',
+      difficulty: 'guided',
+      content: {
+        type: 'speaking',
+        items: [
+          {
+            dutchText: 'mooi',
+            englishTranslation: 'beautiful',
+            hint: '"oo" + "ee" blended together',
+          },
+          {
+            dutchText: 'neus',
+            englishTranslation: 'nose',
+            hint: '"eu" — round your lips as if to say "oo" but say "ee"',
+          },
+          {
+            dutchText: 'school',
+            englishTranslation: 'school',
+            hint: '"sch" = "s" + guttural "ch"',
+          },
+          {
+            dutchText: 'maan',
+            englishTranslation: 'moon',
+            hint: 'long "aa" sound — hold it a little longer',
+          },
+          {
+            dutchText: 'trein',
+            englishTranslation: 'train',
+            hint: '"ei" sounds like "ay" in "my"',
+            acceptableAnswers: ['trien', 'train'],
+          },
+          {
+            dutchText: 'goedemorgen',
+            englishTranslation: 'good morning',
+            hint: 'guttural "g" at the start — "khoo-deh-MOR-khen"',
+          },
+        ],
+      },
+    },
   ],
 };

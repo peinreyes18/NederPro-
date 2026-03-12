@@ -110,7 +110,8 @@ export type ExerciseType =
   | 'translation'
   | 'error-correction'
   | 'writing-prompt'
-  | 'reading-comprehension';
+  | 'reading-comprehension'
+  | 'speaking';
 
 export interface Exercise {
   id: string;
@@ -129,7 +130,18 @@ export type ExerciseContent =
   | TranslationContent
   | ErrorCorrectionContent
   | WritingPromptContent
-  | ReadingComprehensionContent;
+  | ReadingComprehensionContent
+  | SpeakingContent;
+
+export interface SpeakingContent {
+  type: 'speaking';
+  items: {
+    dutchText: string;
+    englishTranslation: string;
+    acceptableAnswers?: string[];
+    hint?: string;
+  }[];
+}
 
 export interface FillInTheBlankContent {
   type: 'fill-in-the-blank';

@@ -115,19 +115,23 @@ const features = [
 
 export default async function HomePage() {
   // Redirect logged-in users straight to their dashboard
-  const cookieStore = await cookies();
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() { return cookieStore.getAll(); },
-        setAll() {},
-      },
+  try {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (supabaseUrl && supabaseKey) {
+      const cookieStore = await cookies();
+      const supabase = createServerClient(supabaseUrl, supabaseKey, {
+        cookies: {
+          getAll() { return cookieStore.getAll(); },
+          setAll() {},
+        },
+      });
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) redirect('/progress');
     }
-  );
-  const { data: { session } } = await supabase.auth.getSession();
-  if (session) redirect('/progress');
+  } catch {
+    // If Supabase is unavailable, render the homepage anyway
+  }
 
   return (
     <div>

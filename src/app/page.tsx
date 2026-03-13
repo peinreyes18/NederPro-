@@ -138,35 +138,18 @@ export default function HomePage() {
               grammar progression and aligned with official Dutch language exams.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
-              <Link href="/levels">
-                <Button size="lg">Start Learning</Button>
+              <Link href="/signup">
+                <Button size="lg">Start free trial</Button>
               </Link>
-              <Link href="/vocabulary">
+              <Link href="/login">
                 <Button size="lg" variant="outline">
-                  Vocabulary
-                </Button>
-              </Link>
-              <Link href="/reference">
-                <Button size="lg" variant="outline">
-                  Grammar Reference
-                </Button>
-              </Link>
-              <Link href="/exams">
-                <Button size="lg" variant="outline">
-                  Exam Practice
-                </Button>
-              </Link>
-              <Link href="/culture">
-                <Button size="lg" variant="outline">
-                  Culture Tips
-                </Button>
-              </Link>
-              <Link href="/history">
-                <Button size="lg" variant="outline">
-                  Dutch History
+                  Sign in
                 </Button>
               </Link>
             </div>
+            <p className="mt-4 text-sm text-muted">
+              €4.49/month · 7-day free trial · Cancel anytime
+            </p>
           </div>
         </div>
       </section>
@@ -239,6 +222,69 @@ export default function HomePage() {
               </Card>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section className="border-t border-border">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 py-16 sm:py-20 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-2">Simple pricing</h2>
+          <p className="text-muted mb-8">
+            1-week free trial, then choose your plan. Everything included.
+          </p>
+
+          <div className="grid sm:grid-cols-2 gap-4 text-left">
+            {/* Biweekly */}
+            <Card>
+              <p className="text-sm font-semibold text-muted mb-1">Every 2 weeks</p>
+              <div className="flex items-end gap-1.5 mb-4">
+                <span className="text-3xl font-extrabold text-primary">€2.49</span>
+                <span className="text-muted mb-1">/ 2 weeks</span>
+              </div>
+              <ul className="space-y-2 mb-6">
+                {['All content & exercises', 'AI writing feedback', 'Exam practice', 'Cancel anytime'].map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-sm text-primary-light">
+                    <svg className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                    </svg>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <Link href="/signup">
+                <Button variant="outline" className="w-full">Start free trial</Button>
+              </Link>
+            </Card>
+
+            {/* Monthly */}
+            <Card className="border-accent/40 ring-1 ring-accent/20">
+              <div className="flex items-center justify-between mb-1">
+                <p className="text-sm font-semibold text-muted">Monthly</p>
+                <span className="text-xs font-semibold text-accent bg-accent-light px-2 py-0.5 rounded-full">Best value</span>
+              </div>
+              <div className="flex items-end gap-1.5 mb-4">
+                <span className="text-3xl font-extrabold text-primary">€3.49</span>
+                <span className="text-muted mb-1">/ month</span>
+              </div>
+              <ul className="space-y-2 mb-6">
+                {['All content & exercises', 'AI writing feedback', 'Exam practice', 'Cancel anytime'].map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-sm text-primary-light">
+                    <svg className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                    </svg>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <Link href="/signup">
+                <Button className="w-full">Start free trial →</Button>
+              </Link>
+            </Card>
+          </div>
+
+          <p className="text-xs text-muted mt-6">
+            7-day free trial on all plans. No credit card required at signup.
+          </p>
         </div>
       </section>
 

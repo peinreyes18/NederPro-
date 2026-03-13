@@ -3,18 +3,40 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import { useSubscription } from '@/hooks/useSubscription';
 import { createClient } from '@/lib/supabase';
 import { deleteAccount } from '@/app/actions/deleteAccount';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 
-type Tab = 'password' | 'account';
+type Tab = 'subscription' | 'password' | 'account';
 
 export default function AccountPage() {
   const { user, signOut } = useAuth();
+  const { subscription, isLoading: subLoading } = useSubscription();
   const router = useRouter();
-  const [tab, setTab] = useState<Tab>('password');
+  const [tab, setTab] = useState<Tab>('subscription');
+  const [portalLoading, setPortalLoading] = useState(false);
+  const [portalError, setPortalError] = useState<string | null>(null);
+
+  async function handleManageBilling() {
+    setPortalLoading(true);
+    setPortalError(null);
+    try {
+      const res = await fetch('/api/stripe/portal', { method: 'POST' });
+      const data = await res.json();
+      if (!res.ok) {
+        setPortalError(data.error ?? 'Something went wrong.');
+        setPortalLoading(false);
+        return;
+      }
+      window.location.href = data.url;
+    } catch {
+      setPortalError('Something went wrong. Please try again.');
+      setPortalLoading(false);
+    }
+  }
 
   // ── Password change state ──
   const [newPassword, setNewPassword] = useState('');
@@ -78,6 +100,7 @@ export default function AccountPage() {
   }
 
   const tabs: { id: Tab; label: string }[] = [
+    { id: 'subscription', label: 'Subscription' },
     { id: 'password', label: 'Password' },
     { id: 'account', label: 'Account' },
   ];
@@ -106,6 +129,80 @@ export default function AccountPage() {
           </button>
         ))}
       </div>
+
+      {/* ── Subscription tab ── */}
+      {tab === 'subscription' && (
+        <Card>
+          <h2 className="text-lg font-semibold text-primary mb-4">Subscription</h2>
+
+          {subLoading ? (
+            <p className="text-sm text-muted">Loading…</p>
+          ) : !subscription ? (
+            <div>
+              <p className="text-sm text-muted mb-4">You don&apos;t have an active subscription.</p>
+              <Button onClick={() => router.push('/subscribe')}>Start free trial</Button>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {/* Status badge */}
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-medium text-primary">Status:</span>
+                <span className={cn(
+                  'text-xs font-semibold px-2.5 py-1 rounded-full',
+                  subscription.status === 'active' && 'bg-accent-light text-accent',
+                  subscription.status === 'trialing' && 'bg-accent-light text-accent',
+                  subscription.status === 'past_due' && 'bg-error-light text-error',
+                  subscription.status === 'canceled' && 'bg-surface text-muted',
+                )}>
+                  {subscription.status === 'trialing' ? 'Free trial' :
+                   subscription.status === 'active' ? 'Active' :
+                   subscription.status === 'past_due' ? 'Payment failed' :
+                   'Canceled'}
+                </span>
+              </div>
+
+              {subscription.status === 'trialing' && subscription.trial_end && (
+                <p className="text-sm text-muted">
+                  Trial ends:{' '}
+                  <span className="text-primary font-medium">
+                    {new Date(subscription.trial_end).toLocaleDateString('en-GB', {
+                      day: 'numeric', month: 'long', year: 'numeric',
+                    })}
+                  </span>
+                </p>
+              )}
+
+              {subscription.status === 'active' && subscription.current_period_end && (
+                <p className="text-sm text-muted">
+                  Next billing date:{' '}
+                  <span className="text-primary font-medium">
+                    {new Date(subscription.current_period_end).toLocaleDateString('en-GB', {
+                      day: 'numeric', month: 'long', year: 'numeric',
+                    })}
+                  </span>
+                </p>
+              )}
+
+              {portalError && (
+                <p className="text-sm text-error bg-error-light rounded-lg px-3 py-2">
+                  {portalError}
+                </p>
+              )}
+
+              <Button
+                variant="outline"
+                onClick={handleManageBilling}
+                disabled={portalLoading}
+              >
+                {portalLoading ? 'Opening portal…' : 'Manage billing'}
+              </Button>
+              <p className="text-xs text-muted">
+                Update your payment method, view invoices, or cancel your subscription via the Stripe billing portal.
+              </p>
+            </div>
+          )}
+        </Card>
+      )}
 
       {/* ── Password tab ── */}
       {tab === 'password' && (

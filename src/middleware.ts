@@ -2,7 +2,7 @@ import { createServerClient } from '@supabase/ssr';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-// Paths that are always accessible without authentication
+// Paths that are always accessible without authentication or a subscription
 const PUBLIC_PATHS = [
   '/',
   '/login',
@@ -11,6 +11,7 @@ const PUBLIC_PATHS = [
   '/reset-password',
   '/onboarding',
   '/auth/callback',
+  '/subscribe',
   '/privacy',
   '/cookies',
   '/terms',
@@ -25,7 +26,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Allow Next.js internals and static files
+  // Allow Next.js internals, static files, and all API routes
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
@@ -64,6 +65,20 @@ export async function middleware(request: NextRequest) {
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('next', pathname);
     return NextResponse.redirect(loginUrl);
+  }
+
+  // Check subscription status
+  const { data: subscription } = await supabase
+    .from('subscriptions')
+    .select('status')
+    .eq('user_id', session.user.id)
+    .single();
+
+  const hasAccess =
+    subscription?.status === 'active' || subscription?.status === 'trialing';
+
+  if (!hasAccess) {
+    return NextResponse.redirect(new URL('/subscribe', request.url));
   }
 
   return response;

@@ -127,9 +127,9 @@ function SignUpForm() {
 
   return (
     <Card>
-      <h1 className="text-2xl font-bold text-primary mb-2">Create an account</h1>
+      <h1 className="text-2xl font-bold text-primary mb-2">Start your free trial</h1>
       <p className="text-primary-light text-sm mb-6">
-        Save your progress and access it from any device.
+        7 days free — no credit card required at signup. Then from €2.49.
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -185,7 +185,7 @@ function SignUpForm() {
         )}
 
         <Button type="submit" disabled={loading} className="w-full">
-          {loading ? 'Creating account...' : 'Create account'}
+          {loading ? 'Creating account...' : 'Create account & start trial'}
         </Button>
       </form>
 

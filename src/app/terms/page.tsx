@@ -78,7 +78,7 @@ export default function TermsPage() {
             </li>
             <li className="flex items-start gap-2">
               <span className="text-accent mt-0.5 flex-shrink-0">•</span>
-              <span><strong className="text-primary">Monthly Plan</strong> — €4.49 per month, billed monthly, cancel anytime.</span>
+              <span><strong className="text-primary">Biweekly Plan</strong> — €2.49 every 2 weeks, cancel anytime. <strong className="text-primary">Monthly Plan</strong> — €3.49 per month, cancel anytime.</span>
             </li>
           </ul>
           <p>

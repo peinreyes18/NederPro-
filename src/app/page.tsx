@@ -148,7 +148,7 @@ export default function HomePage() {
               </Link>
             </div>
             <p className="mt-4 text-sm text-muted">
-              €4.49/month · 7-day free trial · Cancel anytime
+              From €2.49 · 7-day free trial · Cancel anytime
             </p>
           </div>
         </div>

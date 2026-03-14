@@ -53,7 +53,9 @@ export async function POST(request: NextRequest) {
           trial_end: sub.trial_end
             ? new Date(sub.trial_end * 1000).toISOString()
             : null,
-          current_period_end: new Date(sub.current_period_end * 1000).toISOString(),
+          current_period_end: sub.items.data[0]?.current_period_end
+            ? new Date(sub.items.data[0].current_period_end * 1000).toISOString()
+            : null,
           updated_at: new Date().toISOString(),
         },
         { onConflict: 'user_id' }
@@ -70,7 +72,9 @@ export async function POST(request: NextRequest) {
           trial_end: sub.trial_end
             ? new Date(sub.trial_end * 1000).toISOString()
             : null,
-          current_period_end: new Date(sub.current_period_end * 1000).toISOString(),
+          current_period_end: sub.items.data[0]?.current_period_end
+            ? new Date(sub.items.data[0].current_period_end * 1000).toISOString()
+            : null,
           updated_at: new Date().toISOString(),
         })
         .eq('stripe_subscription_id', sub.id);

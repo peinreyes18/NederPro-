@@ -63,6 +63,31 @@ export async function POST(request: NextRequest) {
       break;
     }
 
+    case 'customer.subscription.created': {
+      const sub = event.data.object as Stripe.Subscription;
+      const customer = await stripe.customers.retrieve(sub.customer as string);
+      const userId = (customer as Stripe.Customer).metadata?.supabase_user_id;
+      if (!userId) break;
+
+      await supabaseAdmin.from('subscriptions').upsert(
+        {
+          user_id: userId,
+          stripe_customer_id: sub.customer as string,
+          stripe_subscription_id: sub.id,
+          status: sub.status,
+          trial_end: sub.trial_end
+            ? new Date(sub.trial_end * 1000).toISOString()
+            : null,
+          current_period_end: sub.items.data[0]?.current_period_end
+            ? new Date(sub.items.data[0].current_period_end * 1000).toISOString()
+            : null,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: 'user_id' }
+      );
+      break;
+    }
+
     case 'customer.subscription.updated': {
       const sub = event.data.object as Stripe.Subscription;
       await supabaseAdmin

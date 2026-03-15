@@ -58,6 +58,9 @@ const PUBLIC_PREFIXES = [
   '/reference',
   '/culture',
   '/history',
+  // Exam guide pages — high-intent SEO landing pages
+  '/inburgeringsexamen',
+  '/staatsexamen-nt2',
 ];
 
 function isPublic(pathname: string): boolean {

@@ -122,7 +122,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-background border-b border-border">
         <div className="absolute inset-0 bg-gradient-to-br from-accent-light/50 via-transparent to-transparent" />
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-16 pb-12 sm:py-28">
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-14 pb-12 sm:pt-24 sm:pb-20">
           <div className="max-w-3xl">
             <p className="text-sm font-semibold text-accent uppercase tracking-wider mb-4">
               Structured Dutch Learning
@@ -150,6 +150,21 @@ export default function HomePage() {
             <p className="mt-4 text-sm text-muted">
               From €2.49 · 7-day free trial · Cancel anytime
             </p>
+
+            {/* Trust strip */}
+            <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3">
+              {[
+                { icon: '📚', text: '44 grammar topics across A0–B2' },
+                { icon: '🎯', text: 'Aligned with Inburgeringsexamen & NT2' },
+                { icon: '🤖', text: 'AI-powered writing feedback' },
+                { icon: '⚡', text: 'No credit card to start' },
+              ].map((item) => (
+                <div key={item.text} className="flex items-center gap-2 text-sm text-muted">
+                  <span>{item.icon}</span>
+                  <span>{item.text}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

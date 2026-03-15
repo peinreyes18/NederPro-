@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import LessonContent from '@/components/lesson/LessonContent';
+import LessonSignupNudge from '@/components/lesson/LessonSignupNudge';
 import Button from '@/components/ui/Button';
 import Badge from '@/components/ui/Badge';
 import MarkLessonRead from '@/components/progress/MarkLessonRead';
@@ -130,6 +131,9 @@ export default async function TopicPage({
           </div>
         ))
       )}
+
+      {/* Sign-up nudge for unauthenticated visitors */}
+      <LessonSignupNudge />
 
       {/* Navigation */}
       <div className="border-t border-border pt-6 mt-8 mb-24 sm:mb-0">

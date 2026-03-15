@@ -1,6 +1,12 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
+
+export const metadata: Metadata = {
+  title: 'Welcome to NederPro!',
+  robots: { index: false, follow: false },
+};
 
 export default function SubscribeSuccessPage() {
   return (

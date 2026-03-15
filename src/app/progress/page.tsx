@@ -8,6 +8,7 @@ import Badge from '@/components/ui/Badge';
 import Button from '@/components/ui/Button';
 import { useProgress } from '@/hooks/useProgress';
 import { levels } from '@/content/levels';
+import { getTopic } from '@/lib/content-loader';
 import { getLevelCompletionPercent, getOverallStats } from '@/lib/progress';
 import { formatDate } from '@/lib/utils';
 
@@ -117,15 +118,21 @@ export default function ProgressPage() {
     for (const level of levels) {
       const levelData = progress.levels[level.id];
       if (!levelData) continue;
-      const inProgress = level.topicIds.find((t) => levelData.topicsInProgress.includes(t));
-      if (inProgress) return { levelId: level.id, topicId: inProgress, levelName: level.shortName };
+      const inProgressId = level.topicIds.find((t) => levelData.topicsInProgress.includes(t));
+      if (inProgressId) {
+        const topic = getTopic(level.id, inProgressId);
+        return { levelId: level.id, topicId: inProgressId, levelName: level.shortName, topicTitle: topic?.title ?? inProgressId };
+      }
     }
     // Fall back to next not-started topic in the earliest active level
     for (const level of levels) {
       const levelData = progress.levels[level.id];
       if (!levelData) continue;
-      const next = level.topicIds.find((t) => !levelData.topicsCompleted.includes(t));
-      if (next) return { levelId: level.id, topicId: next, levelName: level.shortName };
+      const nextId = level.topicIds.find((t) => !levelData.topicsCompleted.includes(t));
+      if (nextId) {
+        const topic = getTopic(level.id, nextId);
+        return { levelId: level.id, topicId: nextId, levelName: level.shortName, topicTitle: topic?.title ?? nextId };
+      }
     }
     return null;
   })();
@@ -150,7 +157,7 @@ export default function ProgressPage() {
               <div>
                 <p className="text-xs font-semibold text-accent uppercase tracking-wider mb-0.5">Continue Learning</p>
                 <p className="font-semibold text-primary text-sm">
-                  {continueTopic.levelName} · {continueTopic.topicId.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}
+                  {continueTopic.levelName} · {continueTopic.topicTitle}
                 </p>
               </div>
             </div>

@@ -4,6 +4,8 @@ import Breadcrumb from '@/components/layout/Breadcrumb';
 import Card from '@/components/ui/Card';
 import Alert from '@/components/ui/Alert';
 
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.com';
+
 interface PhraseItem {
   dutch: string;
   english: string;
@@ -680,8 +682,55 @@ export default async function HistoryEraPage({
   const prevEra = currentIndex > 0 ? eraIds[currentIndex - 1] : null;
   const nextEra = currentIndex < eraIds.length - 1 ? eraIds[currentIndex + 1] : null;
 
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: era.title,
+    description: era.intro,
+    url: `${BASE_URL}/history/${eraId}`,
+    inLanguage: 'en',
+    author: {
+      '@type': 'Organization',
+      name: 'NederPro',
+      url: BASE_URL,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'NederPro',
+      url: BASE_URL,
+    },
+  };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'History',
+        item: `${BASE_URL}/history`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: era.title,
+        item: `${BASE_URL}/history/${eraId}`,
+      },
+    ],
+  };
+
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+
       <Breadcrumb
         items={[
           { label: 'History', href: '/history' },

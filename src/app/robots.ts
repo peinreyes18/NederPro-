@@ -34,6 +34,7 @@ export default function robots(): MetadataRoute.Robots {
           '/signup',
           '/forgot-password',
           '/reset-password',
+          '/subscribe',
           '/auth/',
           '/api/',
           '/preview',

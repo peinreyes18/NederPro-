@@ -33,10 +33,47 @@ export async function generateMetadata({
   };
 }
 
-export default function VocabularyCategoryLayout({
+export default async function VocabularyCategoryLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: Promise<{ categoryId: string }>;
 }) {
-  return <>{children}</>;
+  const { categoryId } = await params;
+  const category = getVocabularyCategory(categoryId);
+
+  const jsonLd = category
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: `${category.name} – Dutch Vocabulary`,
+        description: category.description,
+        url: `${BASE_URL}/vocabulary/${categoryId}`,
+        numberOfItems: category.words.length,
+        inLanguage: 'nl',
+        itemListElement: category.words.slice(0, 10).map((word, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: `${word.dutch} — ${word.english}`,
+        })),
+        isPartOf: {
+          '@type': 'WebSite',
+          name: 'NederPro',
+          url: BASE_URL,
+        },
+      }
+    : null;
+
+  return (
+    <>
+      {jsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      )}
+      {children}
+    </>
+  );
 }

@@ -53,6 +53,59 @@ export async function generateMetadata({
   };
 }
 
-export default function ExamLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+export default async function ExamLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ examId: string }>;
+}) {
+  const { examId } = await params;
+  const exam = getExamById(examId);
+
+  const jsonLd = exam
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'Quiz',
+        name: exam.title,
+        description: exam.description,
+        url: `${BASE_URL}/exams/${examId}`,
+        educationalAlignment: {
+          '@type': 'AlignmentObject',
+          alignmentType: 'educationalLevel',
+          targetName:
+            exam.examType === 'staatsexamen-nt2-ii'
+              ? 'B2'
+              : exam.examType === 'staatsexamen-nt2-i'
+              ? 'B1'
+              : 'A2',
+        },
+        timeRequired: `PT${exam.timeLimitMinutes}M`,
+        numberOfQuestions: exam.totalQuestions,
+        isAccessibleForFree: true,
+        inLanguage: 'nl',
+        author: {
+          '@type': 'Organization',
+          name: 'NederPro',
+          url: BASE_URL,
+        },
+        isPartOf: {
+          '@type': 'WebSite',
+          name: 'NederPro',
+          url: BASE_URL,
+        },
+      }
+    : null;
+
+  return (
+    <>
+      {jsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      )}
+      {children}
+    </>
+  );
 }

@@ -35,6 +35,20 @@ const historyEraIds = [
   'postwar-modern',
 ];
 
+// Reference topic IDs (from reference/[topic]/page.tsx)
+const referenceTopicIds = [
+  'verb-conjugation',
+  'de-het-list',
+  'word-order-rules',
+  'past-tenses',
+  'modal-verbs',
+  'separable-verbs',
+  'adjectives',
+  'irregular-verbs',
+  'subordinate-clauses',
+  'numbers-quantities',
+];
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
@@ -116,12 +130,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     };
-    const topicPages = level.topicIds.map((topicId) => ({
-      url: `${BASE_URL}/levels/${level.id}/${topicId}`,
-      lastModified: now,
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    }));
+    const topicPages = level.topicIds.flatMap((topicId) => [
+      {
+        url: `${BASE_URL}/levels/${level.id}/${topicId}`,
+        lastModified: now,
+        changeFrequency: 'monthly' as const,
+        priority: 0.7,
+      },
+      {
+        url: `${BASE_URL}/levels/${level.id}/${topicId}/exercises`,
+        lastModified: now,
+        changeFrequency: 'monthly' as const,
+        priority: 0.6,
+      },
+    ]);
     return [levelPage, ...topicPages];
   });
 
@@ -134,11 +156,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   // ── Vocabulary pages ─────────────────────────────────────────────────────
-  const vocabPages: MetadataRoute.Sitemap = vocabularyCategories.map((cat) => ({
-    url: `${BASE_URL}/vocabulary/${cat.id}`,
+  const vocabPages: MetadataRoute.Sitemap = vocabularyCategories.flatMap((cat) => [
+    {
+      url: `${BASE_URL}/vocabulary/${cat.id}`,
+      lastModified: now,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/vocabulary/${cat.id}/practice`,
+      lastModified: now,
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    },
+  ]);
+
+  // ── Reference pages ──────────────────────────────────────────────────────
+  const referencePages: MetadataRoute.Sitemap = referenceTopicIds.map((id) => ({
+    url: `${BASE_URL}/reference/${id}`,
     lastModified: now,
     changeFrequency: 'monthly' as const,
-    priority: 0.7,
+    priority: 0.6,
   }));
 
   // ── Culture tip pages ────────────────────────────────────────────────────
@@ -162,6 +200,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...levelPages,
     ...examPages,
     ...vocabPages,
+    ...referencePages,
     ...culturePages,
     ...historyPages,
   ];

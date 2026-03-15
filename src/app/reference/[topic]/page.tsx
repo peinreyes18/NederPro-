@@ -5,6 +5,8 @@ import GrammarTable from '@/components/lesson/GrammarTable';
 import Alert from '@/components/ui/Alert';
 import { GrammarTableSection } from '@/content/types';
 
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.com';
+
 const referenceTables: Record<
   string,
   { title: string; sections: { table: GrammarTableSection; note?: string }[] }
@@ -709,8 +711,55 @@ export default async function ReferenceTopicPage({
     notFound();
   }
 
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Reference',
+        item: `${BASE_URL}/reference`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: data.title,
+        item: `${BASE_URL}/reference/${topicId}`,
+      },
+    ],
+  };
+
+  const howToJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: `${data.title} | Dutch Grammar Reference`,
+    description: `Dutch grammar reference table for ${data.title}. Quick lookup guide for learners of Dutch at all levels.`,
+    url: `${BASE_URL}/reference/${topicId}`,
+    inLanguage: 'nl',
+    author: {
+      '@type': 'Organization',
+      name: 'NederPro',
+      url: BASE_URL,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'NederPro',
+      url: BASE_URL,
+    },
+  };
+
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
+      />
+
       <Breadcrumb
         items={[
           { label: 'Reference', href: '/reference' },

@@ -290,7 +290,7 @@ export default function InburgeringsexamenPage() {
                       ))}
                     </div>
                     <Link href={step.href}>
-                      <Button size="sm" variant={i === 2 ? 'default' : 'outline'}>
+                      <Button size="sm" variant={i === 2 ? 'primary' : 'outline'}>
                         {i === 0 ? 'Start A0 — free' : i === 1 ? 'Go to A1 lessons' : 'Go to A2 lessons'}
                       </Button>
                     </Link>

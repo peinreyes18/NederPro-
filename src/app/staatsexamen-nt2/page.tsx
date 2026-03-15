@@ -273,7 +273,7 @@ export default function StaatsexamenNT2Page() {
                     </div>
                     <p className="text-sm text-primary-light mb-3">{step.description}</p>
                     <Link href={step.href}>
-                      <Button size="sm" variant={i === studyPath.length - 1 ? 'default' : 'outline'}>
+                      <Button size="sm" variant={i === studyPath.length - 1 ? 'primary' : 'outline'}>
                         Study {step.level} →
                       </Button>
                     </Link>

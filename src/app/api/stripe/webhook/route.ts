@@ -2,12 +2,26 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { stripe } from '@/lib/stripe';
 import Stripe from 'stripe';
+import { sendWelcomeEmail, sendWinbackEmail } from '@/lib/email';
 
 // Use service role key to bypass RLS for webhook writes
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
+
+/** Pull email + display name from Supabase auth for a given user ID */
+async function getUserProfile(userId: string): Promise<{ email: string; firstName?: string; goal?: string; level?: string } | null> {
+  const { data } = await supabaseAdmin.auth.admin.getUserById(userId);
+  if (!data?.user) return null;
+  const email = data.user.email;
+  if (!email) return null;
+  const meta = data.user.user_metadata ?? {};
+  const firstName = meta.full_name?.split(' ')[0] || meta.name?.split(' ')[0] || undefined;
+  const goal = meta.onboarding_goal ?? undefined;
+  const level = meta.onboarding_level ?? undefined;
+  return { email, firstName, goal, level };
+}
 
 export async function POST(request: NextRequest) {
   const body = await request.text();
@@ -44,15 +58,17 @@ export async function POST(request: NextRequest) {
       const userId = (customer as Stripe.Customer).metadata?.supabase_user_id;
       if (!userId) break;
 
+      const trialEnd = sub.trial_end
+        ? new Date(sub.trial_end * 1000).toISOString()
+        : null;
+
       await supabaseAdmin.from('subscriptions').upsert(
         {
           user_id: userId,
           stripe_customer_id: customerId,
           stripe_subscription_id: sub.id,
           status: sub.status,
-          trial_end: sub.trial_end
-            ? new Date(sub.trial_end * 1000).toISOString()
-            : null,
+          trial_end: trialEnd,
           current_period_end: sub.items.data[0]?.current_period_end
             ? new Date(sub.items.data[0].current_period_end * 1000).toISOString()
             : null,
@@ -60,6 +76,22 @@ export async function POST(request: NextRequest) {
         },
         { onConflict: 'user_id' }
       );
+
+      // ── Send welcome email ──────────────────────────────────────────────────
+      const profile = await getUserProfile(userId);
+      if (profile) {
+        const trialEndDate = trialEnd
+          ? new Date(trialEnd).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+          : undefined;
+        await sendWelcomeEmail({
+          to: profile.email,
+          firstName: profile.firstName,
+          goal: profile.goal,
+          level: profile.level,
+          trialEndDate,
+        }).catch(console.error); // don't fail the webhook if email fails
+      }
+
       break;
     }
 
@@ -115,6 +147,19 @@ export async function POST(request: NextRequest) {
           updated_at: new Date().toISOString(),
         })
         .eq('stripe_subscription_id', sub.id);
+
+      // ── Send winback email ──────────────────────────────────────────────────
+      const customer = await stripe.customers.retrieve(sub.customer as string);
+      const userId = (customer as Stripe.Customer).metadata?.supabase_user_id;
+      if (userId) {
+        const profile = await getUserProfile(userId);
+        if (profile) {
+          await sendWinbackEmail({
+            to: profile.email,
+            firstName: profile.firstName,
+          }).catch(console.error);
+        }
+      }
       break;
     }
   }

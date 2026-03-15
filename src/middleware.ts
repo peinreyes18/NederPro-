@@ -61,6 +61,9 @@ const PUBLIC_PREFIXES = [
   // Exam guide pages — high-intent SEO landing pages
   '/inburgeringsexamen',
   '/staatsexamen-nt2',
+  // Info pages
+  '/pricing',
+  '/about',
 ];
 
 function isPublic(pathname: string): boolean {

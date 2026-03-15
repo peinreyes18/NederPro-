@@ -127,7 +127,7 @@ export default function OGImage() {
             fontWeight: '500',
           }}
         >
-          nederpro.nl
+          nederpro.com
         </div>
       </div>
     ),

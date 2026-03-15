@@ -4,6 +4,7 @@ import { allExams } from '@/content/exams';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import Button from '@/components/ui/Button';
+import LessonSignupNudge from '@/components/lesson/LessonSignupNudge';
 
 export const metadata: Metadata = {
   title: 'Exam Practice',
@@ -165,6 +166,11 @@ export default function ExamsPage() {
           </div>
         </section>
       ))}
+
+      {/* Signup nudge for logged-out visitors */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 pb-16">
+        <LessonSignupNudge />
+      </div>
     </div>
   );
 }

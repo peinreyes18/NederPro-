@@ -6,6 +6,7 @@ import Badge from '@/components/ui/Badge';
 import QuizBanner from '@/components/vocabulary/QuizBanner';
 import VocabularySearch from '@/components/vocabulary/VocabularySearch';
 import SearchResults from '@/components/vocabulary/SearchResults';
+import LessonSignupNudge from '@/components/lesson/LessonSignupNudge';
 import { vocabularyCategories } from '@/content/vocabulary';
 import { useVocabularySearch } from '@/hooks/useVocabularySearch';
 
@@ -43,6 +44,7 @@ export default function VocabularyPageContent() {
               </Link>
             ))}
           </div>
+          <LessonSignupNudge />
         </>
       )}
     </>

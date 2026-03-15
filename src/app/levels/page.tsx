@@ -4,6 +4,7 @@ import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import LevelCardProgress from '@/components/progress/LevelCardProgress';
+import LessonSignupNudge from '@/components/lesson/LessonSignupNudge';
 import { levels } from '@/content/levels';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.com';
@@ -63,7 +64,7 @@ const faqJsonLd = {
       name: 'Is NederPro free to use?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Yes, all Dutch grammar lessons and exercises on NederPro are completely free. There are no hidden fees or subscriptions required.',
+        text: 'All Dutch grammar lessons on NederPro are free to read. Interactive exercises, exam practice, vocabulary quizzes, and progress tracking require a subscription, which starts with a 7-day free trial. No credit card is required to start.',
       },
     },
     {
@@ -141,6 +142,8 @@ export default function LevelsPage() {
           );
         })}
       </div>
+
+      <LessonSignupNudge />
     </div>
   );
 }

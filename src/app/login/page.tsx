@@ -20,6 +20,11 @@ function LoginForm() {
   // Banner shown when arriving after ?confirmed=1 (future use — for magic link / OTP flows)
   const confirmed = searchParams.get('confirmed') === '1';
 
+  // Show a soft nudge when redirected from a protected page
+  const nextPath = searchParams.get('next');
+  const protectedPaths = ['/levels', '/vocabulary', '/exams', '/reference', '/culture', '/history', '/progress', '/account'];
+  const isProtectedRedirect = nextPath && protectedPaths.some((p) => nextPath.startsWith(p));
+
   useEffect(() => {
     if (searchParams.get('error') === 'confirmation_failed') {
       setError(
@@ -58,6 +63,19 @@ function LoginForm() {
 
   return (
     <Card>
+      {/* Soft gate nudge — shown when redirected from a protected page */}
+      {isProtectedRedirect && !confirmed && (
+        <div className="rounded-xl border border-accent/30 bg-accent-light px-4 py-3 mb-5 flex items-start gap-2.5">
+          <svg className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+          <p className="text-sm text-accent font-medium">
+            Sign in to access this page — or{' '}
+            <a href="/signup" className="underline font-semibold">start a free trial</a> if you don&apos;t have an account yet.
+          </p>
+        </div>
+      )}
+
       {/* Email confirmed banner */}
       {confirmed && (
         <div className="rounded-xl border border-success/30 bg-success-light px-4 py-3 mb-5 flex items-start gap-2.5">

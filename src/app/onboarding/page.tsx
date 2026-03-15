@@ -210,7 +210,7 @@ function StepDone({ goal, level }: { goal: string; level: string }) {
 // ── Main wizard ────────────────────────────────────────────────────────────────
 
 export default function OnboardingPage() {
-  const { user } = useAuth();
+  const { user, isSubscribed } = useAuth();
   const router = useRouter();
 
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -278,7 +278,12 @@ export default function OnboardingPage() {
     }
 
     setSaving(false);
-    router.push(`/levels/${level}`);
+    // Send unsubscribed users to the subscribe page first, then to their level
+    if (!isSubscribed) {
+      router.push(`/subscribe`);
+    } else {
+      router.push(`/levels/${level}`);
+    }
   }
 
   return (

@@ -122,7 +122,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-background border-b border-border">
         <div className="absolute inset-0 bg-gradient-to-br from-accent-light/50 via-transparent to-transparent" />
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-20 sm:py-28">
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-16 pb-12 sm:py-28">
           <div className="max-w-3xl">
             <p className="text-sm font-semibold text-accent uppercase tracking-wider mb-4">
               Structured Dutch Learning
@@ -171,7 +171,10 @@ export default function HomePage() {
               <Link
                 key={level.id}
                 href={hasContent ? `/levels/${level.id}` : '#'}
-                className={!hasContent ? 'pointer-events-none' : ''}
+                className={[
+                  !hasContent ? 'pointer-events-none' : '',
+                  'last:sm:col-span-2 last:lg:col-span-1',
+                ].join(' ').trim()}
               >
                 <Card hover={hasContent} className={!hasContent ? 'opacity-50' : ''}>
                   <div className="flex items-center justify-between mb-3">

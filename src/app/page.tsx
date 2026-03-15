@@ -218,6 +218,54 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Exam Paths */}
+      <section className="border-t border-border bg-accent-light/30">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+          <div className="mb-8">
+            <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-2">Preparing for an official exam?</h2>
+            <p className="text-muted max-w-xl">
+              NederPro is built around the two main Dutch language exams. Read our complete preparation guides.
+            </p>
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2">
+            <Link href="/inburgeringsexamen">
+              <Card hover className="h-full">
+                <div className="flex items-start gap-4">
+                  <span className="text-3xl flex-shrink-0">🏛️</span>
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="font-bold text-primary">Inburgeringsexamen</h3>
+                      <Badge variant="accent">A2</Badge>
+                    </div>
+                    <p className="text-sm text-muted leading-relaxed mb-3">
+                      The Dutch civic integration exam required for most non-EU immigrants. Covers KNM, ONA, MAP, and Dutch at A2 level.
+                    </p>
+                    <span className="text-sm font-semibold text-accent">Read the full guide →</span>
+                  </div>
+                </div>
+              </Card>
+            </Link>
+            <Link href="/staatsexamen-nt2">
+              <Card hover className="h-full">
+                <div className="flex items-start gap-4">
+                  <span className="text-3xl flex-shrink-0">🎓</span>
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="font-bold text-primary">Staatsexamen NT2</h3>
+                      <Badge variant="accent">B1 / B2</Badge>
+                    </div>
+                    <p className="text-sm text-muted leading-relaxed mb-3">
+                      The Dutch state language exam for university admission, professional registration, and advanced proficiency.
+                    </p>
+                    <span className="text-sm font-semibold text-accent">Read the full guide →</span>
+                  </div>
+                </div>
+              </Card>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Features */}
       <section className="bg-surface border-t border-border">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20">

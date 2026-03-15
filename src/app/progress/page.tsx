@@ -112,11 +112,54 @@ export default function ProgressPage() {
 
   if (!hasActivity) return <EmptyState />;
 
+  // Find the most recent in-progress topic to surface as "Continue Learning"
+  const continueTopic = (() => {
+    for (const level of levels) {
+      const levelData = progress.levels[level.id];
+      if (!levelData) continue;
+      const inProgress = level.topicIds.find((t) => levelData.topicsInProgress.includes(t));
+      if (inProgress) return { levelId: level.id, topicId: inProgress, levelName: level.shortName };
+    }
+    // Fall back to next not-started topic in the earliest active level
+    for (const level of levels) {
+      const levelData = progress.levels[level.id];
+      if (!levelData) continue;
+      const next = level.topicIds.find((t) => !levelData.topicsCompleted.includes(t));
+      if (next) return { levelId: level.id, topicId: next, levelName: level.shortName };
+    }
+    return null;
+  })();
+
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
       <Breadcrumb items={[{ label: 'Progress' }]} />
 
-      <h1 className="text-3xl font-bold text-primary mb-8">Your Progress</h1>
+      <h1 className="text-3xl font-bold text-primary mb-6">Your Progress</h1>
+
+      {/* Continue Learning CTA */}
+      {continueTopic && (
+        <Link href={`/levels/${continueTopic.levelId}/${continueTopic.topicId}`}>
+          <div className="mb-8 rounded-2xl border border-accent/30 bg-accent-light px-6 py-5 flex items-center justify-between gap-4 hover:border-accent/60 transition-colors cursor-pointer">
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center flex-shrink-0">
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-accent uppercase tracking-wider mb-0.5">Continue Learning</p>
+                <p className="font-semibold text-primary text-sm">
+                  {continueTopic.levelName} · {continueTopic.topicId.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}
+                </p>
+              </div>
+            </div>
+            <svg className="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </Link>
+      )}
 
       {/* Stats overview */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">

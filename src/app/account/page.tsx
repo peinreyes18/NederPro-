@@ -105,11 +105,28 @@ export default function AccountPage() {
     { id: 'account', label: 'Account' },
   ];
 
+  // Calculate days remaining in trial
+  const trialDaysLeft = subscription?.trial_end
+    ? Math.max(0, Math.ceil((new Date(subscription.trial_end).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
+    : null;
+
+  const planLabel = subscription?.plan === 'monthly' ? 'Monthly (€3.49/month)'
+    : subscription?.plan === 'biweekly' ? 'Every 2 weeks (€2.49/2 weeks)'
+    : null;
+
   return (
     <div className="max-w-2xl mx-auto px-4 sm:px-6 py-12">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-primary">Account Settings</h1>
-        <p className="text-sm text-muted mt-1">{user?.email}</p>
+      <div className="mb-8 flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-primary">Account Settings</h1>
+          <p className="text-sm text-muted mt-1">{user?.email}</p>
+        </div>
+        <button
+          onClick={async () => { await signOut(); router.push('/'); }}
+          className="text-sm text-muted hover:text-primary transition-colors flex-shrink-0 mt-1"
+        >
+          Sign out →
+        </button>
       </div>
 
       {/* Tab bar */}
@@ -137,41 +154,72 @@ export default function AccountPage() {
 
           {subLoading ? (
             <p className="text-sm text-muted">Loading…</p>
-          ) : !subscription ? (
+          ) : !subscription || subscription.status === 'canceled' ? (
             <div>
-              <p className="text-sm text-muted mb-4">You don&apos;t have an active subscription.</p>
-              <Button onClick={() => router.push('/subscribe')}>Start free trial</Button>
+              <p className="text-sm text-muted mb-4">
+                {subscription?.status === 'canceled'
+                  ? 'Your subscription has been canceled. Resubscribe anytime to regain full access.'
+                  : 'You don\'t have an active subscription.'}
+              </p>
+              <Button onClick={() => router.push('/subscribe')}>
+                {subscription?.status === 'canceled' ? 'Resubscribe' : 'Start free trial'}
+              </Button>
             </div>
           ) : (
             <div className="space-y-4">
-              {/* Status badge */}
-              <div className="flex items-center gap-3">
-                <span className="text-sm font-medium text-primary">Status:</span>
+              {/* Trial countdown banner */}
+              {subscription.status === 'trialing' && trialDaysLeft !== null && (
+                <div className={cn(
+                  'rounded-xl px-4 py-3 border',
+                  trialDaysLeft <= 2
+                    ? 'bg-error-light border-error/30'
+                    : 'bg-accent-light border-accent/30'
+                )}>
+                  <p className={cn('text-sm font-semibold', trialDaysLeft <= 2 ? 'text-error' : 'text-accent')}>
+                    {trialDaysLeft === 0
+                      ? 'Your trial ends today'
+                      : trialDaysLeft === 1
+                      ? '1 day left in your free trial'
+                      : `${trialDaysLeft} days left in your free trial`}
+                  </p>
+                  <p className="text-xs text-muted mt-0.5">
+                    Add a payment method to keep access after your trial ends — no charge until{' '}
+                    {new Date(subscription.trial_end!).toLocaleDateString('en-GB', { day: 'numeric', month: 'long' })}.
+                  </p>
+                </div>
+              )}
+
+              {/* Status + plan */}
+              <div className="flex flex-wrap items-center gap-3">
                 <span className={cn(
                   'text-xs font-semibold px-2.5 py-1 rounded-full',
                   subscription.status === 'active' && 'bg-accent-light text-accent',
                   subscription.status === 'trialing' && 'bg-accent-light text-accent',
                   subscription.status === 'past_due' && 'bg-error-light text-error',
-                  subscription.status === 'canceled' && 'bg-surface text-muted',
                 )}>
-                  {subscription.status === 'trialing' ? 'Free trial' :
-                   subscription.status === 'active' ? 'Active' :
-                   subscription.status === 'past_due' ? 'Payment failed' :
-                   'Canceled'}
+                  {subscription.status === 'trialing' ? 'Free trial'
+                    : subscription.status === 'active' ? 'Active'
+                    : 'Payment failed'}
                 </span>
+                {planLabel && (
+                  <span className="text-sm text-muted">{planLabel}</span>
+                )}
               </div>
 
-              {subscription.status === 'trialing' && subscription.trial_end && (
-                <p className="text-sm text-muted">
-                  Trial ends:{' '}
-                  <span className="text-primary font-medium">
-                    {new Date(subscription.trial_end).toLocaleDateString('en-GB', {
-                      day: 'numeric', month: 'long', year: 'numeric',
-                    })}
-                  </span>
-                </p>
+              {/* Past due recovery */}
+              {subscription.status === 'past_due' && (
+                <div className="rounded-xl bg-error-light border border-error/30 px-4 py-3">
+                  <p className="text-sm font-semibold text-error mb-1">Payment failed</p>
+                  <p className="text-xs text-muted mb-3">
+                    Your last payment didn&apos;t go through. Update your payment method to keep access.
+                  </p>
+                  <Button onClick={handleManageBilling} disabled={portalLoading}>
+                    {portalLoading ? 'Opening portal…' : 'Update payment method'}
+                  </Button>
+                </div>
               )}
 
+              {/* Active billing info */}
               {subscription.status === 'active' && subscription.current_period_end && (
                 <p className="text-sm text-muted">
                   Next billing date:{' '}
@@ -189,16 +237,16 @@ export default function AccountPage() {
                 </p>
               )}
 
-              <Button
-                variant="outline"
-                onClick={handleManageBilling}
-                disabled={portalLoading}
-              >
-                {portalLoading ? 'Opening portal…' : 'Manage billing'}
-              </Button>
-              <p className="text-xs text-muted">
-                Update your payment method, view invoices, or cancel your subscription via the Stripe billing portal.
-              </p>
+              {subscription.status !== 'past_due' && (
+                <>
+                  <Button variant="outline" onClick={handleManageBilling} disabled={portalLoading}>
+                    {portalLoading ? 'Opening portal…' : 'Manage billing'}
+                  </Button>
+                  <p className="text-xs text-muted">
+                    Update your payment method, view invoices, or cancel via the Stripe billing portal.
+                  </p>
+                </>
+              )}
             </div>
           )}
         </Card>

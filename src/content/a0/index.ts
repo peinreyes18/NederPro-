@@ -7,6 +7,9 @@ import { daysMonthsSeasons } from './topics/days-months-seasons';
 import { tellingTime } from './topics/telling-time';
 import { colorsDescriptions } from './topics/colors-descriptions';
 import { familyMembers } from './topics/family-members';
+import { possessivePronouns } from './topics/possessive-pronouns';
+import { basicPrepositions } from './topics/basic-prepositions';
+import { erIsErZijn } from './topics/er-is-er-zijn';
 
 export const a0Topics: Topic[] = [
   alphabetPronunciation,
@@ -17,4 +20,7 @@ export const a0Topics: Topic[] = [
   tellingTime,
   colorsDescriptions,
   familyMembers,
+  possessivePronouns,
+  basicPrepositions,
+  erIsErZijn,
 ];

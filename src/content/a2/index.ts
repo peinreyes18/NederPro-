@@ -9,6 +9,8 @@ import { imperfectum } from './topics/imperfectum';
 import { reflexiveVerbs } from './topics/reflexive-verbs';
 import { comparativeSuperlative } from './topics/comparative-superlative';
 import { formalEmailWriting } from './topics/formal-email-writing';
+import { futureTense } from './topics/future-tense';
+import { indirectQuestions } from './topics/indirect-questions';
 
 export const a2Topics: Topic[] = [
   perfectumRegular,
@@ -21,4 +23,6 @@ export const a2Topics: Topic[] = [
   reflexiveVerbs,
   comparativeSuperlative,
   formalEmailWriting,
+  futureTense,
+  indirectQuestions,
 ];

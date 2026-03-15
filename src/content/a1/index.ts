@@ -7,6 +7,9 @@ import { hebbenZijn } from './topics/hebben-zijn';
 import { negationNietGeen } from './topics/negation-niet-geen';
 import { questionWords } from './topics/question-words';
 import { adjectivesBasics } from './topics/adjectives-basics';
+import { objectPronouns } from './topics/object-pronouns';
+import { pluralNouns } from './topics/plural-nouns';
+import { diminutives } from './topics/diminutives';
 
 export const a1Topics: Topic[] = [
   presentTenseRegular,
@@ -17,4 +20,7 @@ export const a1Topics: Topic[] = [
   negationNietGeen,
   questionWords,
   adjectivesBasics,
+  objectPronouns,
+  pluralNouns,
+  diminutives,
 ];

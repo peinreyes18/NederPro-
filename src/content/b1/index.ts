@@ -9,6 +9,8 @@ import { conditionalSentences } from './topics/conditional-sentences';
 import { reportedSpeech } from './topics/reported-speech';
 import { conjunctionsConnectors } from './topics/conjunctions-connectors';
 import { participlesAdjectives } from './topics/participles-adjectives';
+import { omTeConstructions } from './topics/om-te-constructions';
+import { expressingContrast } from './topics/expressing-contrast';
 
 export const b1Topics: Topic[] = [
   pluralFormation,
@@ -21,4 +23,6 @@ export const b1Topics: Topic[] = [
   reportedSpeech,
   conjunctionsConnectors,
   participlesAdjectives,
+  omTeConstructions,
+  expressingContrast,
 ];

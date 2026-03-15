@@ -126,7 +126,7 @@ export default function RootLayout({
             `,
           }}
         />
-        {/* Google Analytics 4 — only active when NEXT_PUBLIC_GA_MEASUREMENT_ID is set */}
+        {/* Google Analytics 4 — consent mode default deny (GDPR compliant for EU users) */}
         {GA_ID && (
           <>
             <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
@@ -136,6 +136,21 @@ export default function RootLayout({
                   window.dataLayer = window.dataLayer || [];
                   function gtag(){dataLayer.push(arguments);}
                   gtag('js', new Date());
+                  gtag('consent', 'default', {
+                    analytics_storage: 'denied',
+                    ad_storage: 'denied',
+                    ad_user_data: 'denied',
+                    ad_personalization: 'denied',
+                    wait_for_update: 500
+                  });
+                  (function() {
+                    try {
+                      var c = localStorage.getItem('nederpro_cookie_consent');
+                      if (c === 'accepted') {
+                        gtag('consent', 'update', { analytics_storage: 'granted' });
+                      }
+                    } catch(e) {}
+                  })();
                   gtag('config', '${GA_ID}', { page_path: window.location.pathname });
                 `,
               }}

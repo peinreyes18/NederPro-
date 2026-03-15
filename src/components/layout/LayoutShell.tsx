@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation';
 import Header from './Header';
 import Footer from './Footer';
+import CookieConsent from './CookieConsent';
 import { ThemeContext, useThemeProvider } from '@/hooks/useTheme';
 import dynamic from 'next/dynamic';
 import { VerbProvider } from '@/components/verbs/VerbContext';
@@ -36,6 +37,7 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
           <main className="flex-1">{children}</main>
           <Footer />
           <VerbModal />
+          <CookieConsent />
         </VerbProvider>
       </ThemeContext.Provider>
     </AuthProvider>

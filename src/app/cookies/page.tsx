@@ -77,15 +77,44 @@ export default function CookiePolicyPage() {
                 Consent required
               </span>
             </div>
-            <div className="px-4 py-3">
+            <div className="px-4 py-3 space-y-3">
               <p>
-                We may use analytics tools to understand how users interact with NederPro in aggregate.
-                This helps us identify which lessons are most useful and where users encounter difficulties.
-                All analytics data is anonymised before processing — we never see individual user behaviour.
+                We use Google Analytics 4 to understand how visitors interact with NederPro in aggregate —
+                which pages are most useful, where learners spend time, and where they encounter difficulties.
+                This helps us improve the content and user experience.
               </p>
-              <p className="mt-2 text-muted italic">
-                Currently, no third-party analytics cookies are set. If this changes we will update
-                this policy and ask for your consent.
+              <p>
+                Analytics are only activated after you give consent via the cookie banner. If you decline,
+                Google Analytics operates in consent-denied mode: it records only anonymous, aggregated
+                signals (no cookies set, no cross-site tracking, no personal data stored).
+              </p>
+              <table className="w-full text-xs border border-border rounded-lg overflow-hidden mt-2">
+                <thead>
+                  <tr className="bg-surface text-primary font-semibold text-left">
+                    <th className="px-3 py-2 border-b border-border">Cookie</th>
+                    <th className="px-3 py-2 border-b border-border">Purpose</th>
+                    <th className="px-3 py-2 border-b border-border">Duration</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {[
+                    ['_ga', 'Google Analytics — distinguishes users', '2 years'],
+                    ['_ga_*', 'Google Analytics — session state', '2 years'],
+                    ['nederpro_cookie_consent', 'Stores your cookie consent choice (local storage)', 'Persistent'],
+                  ].map(([name, purpose, duration], i) => (
+                    <tr key={i}>
+                      <td className="px-3 py-2 font-mono text-primary">{name}</td>
+                      <td className="px-3 py-2">{purpose}</td>
+                      <td className="px-3 py-2 text-muted">{duration}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p className="text-muted text-xs">
+                Data is processed by Google LLC under the{' '}
+                <a href="https://business.safety.google/adsprocessorterms/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+                  Google Ads Data Processing Terms
+                </a>. No data is shared with advertisers.
               </p>
             </div>
           </div>

@@ -38,6 +38,8 @@ export default function robots(): MetadataRoute.Robots {
           '/auth/',
           '/api/',
           '/preview',
+          // Subscriber-only interactive features within public content trees
+          '/vocabulary/quiz',
         ],
       },
       {

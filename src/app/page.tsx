@@ -4,6 +4,7 @@ import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import { levels } from '@/content/levels';
+import HeroCta from '@/components/home/HeroCta';
 
 export const metadata: Metadata = {
   title: 'NederPro — Structured Dutch Grammar Learning',
@@ -137,19 +138,7 @@ export default function HomePage() {
               for adults who want to work and live in the Netherlands. Built around real
               grammar progression and aligned with official Dutch language exams.
             </p>
-            <div className="mt-10 flex flex-wrap gap-4">
-              <Link href="/signup">
-                <Button size="lg">Start free trial</Button>
-              </Link>
-              <Link href="/login">
-                <Button size="lg" variant="outline">
-                  Sign in
-                </Button>
-              </Link>
-            </div>
-            <p className="mt-4 text-sm text-muted">
-              From €2.49 · 7-day free trial · Cancel anytime
-            </p>
+            <HeroCta />
 
             {/* Trust strip */}
             <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3">

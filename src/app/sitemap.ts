@@ -35,15 +35,19 @@ const historyEraIds = [
   'postwar-modern',
 ];
 
-// Reference topic IDs (from reference/[topic]/page.tsx)
+// Reference topic IDs (from reference/[topic]/page.tsx) — must match referenceTopics in reference/page.tsx
 const referenceTopicIds = [
   'verb-conjugation',
   'de-het-list',
   'word-order-rules',
+  'prepositions',
   'past-tenses',
   'modal-verbs',
   'separable-verbs',
   'adjectives',
+  'pronouns',
+  'negation',
+  'conjunctions',
   'irregular-verbs',
   'subordinate-clauses',
   'numbers-quantities',
@@ -123,6 +127,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   // ── Level pages ──────────────────────────────────────────────────────────
+  // Note: /exercises pages are subscriber-only (redirect to login) — exclude from sitemap
   const levelPages: MetadataRoute.Sitemap = levels.flatMap((level) => {
     const levelPage = {
       url: `${BASE_URL}/levels/${level.id}`,
@@ -130,20 +135,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     };
-    const topicPages = level.topicIds.flatMap((topicId) => [
-      {
-        url: `${BASE_URL}/levels/${level.id}/${topicId}`,
-        lastModified: now,
-        changeFrequency: 'monthly' as const,
-        priority: 0.7,
-      },
-      {
-        url: `${BASE_URL}/levels/${level.id}/${topicId}/exercises`,
-        lastModified: now,
-        changeFrequency: 'monthly' as const,
-        priority: 0.6,
-      },
-    ]);
+    const topicPages = level.topicIds.map((topicId) => ({
+      url: `${BASE_URL}/levels/${level.id}/${topicId}`,
+      lastModified: now,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    }));
     return [levelPage, ...topicPages];
   });
 
@@ -156,20 +153,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   // ── Vocabulary pages ─────────────────────────────────────────────────────
-  const vocabPages: MetadataRoute.Sitemap = vocabularyCategories.flatMap((cat) => [
-    {
-      url: `${BASE_URL}/vocabulary/${cat.id}`,
-      lastModified: now,
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${BASE_URL}/vocabulary/${cat.id}/practice`,
-      lastModified: now,
-      changeFrequency: 'monthly' as const,
-      priority: 0.6,
-    },
-  ]);
+  // Note: /practice pages are subscriber-only (redirect to login) — exclude from sitemap
+  const vocabPages: MetadataRoute.Sitemap = vocabularyCategories.map((cat) => ({
+    url: `${BASE_URL}/vocabulary/${cat.id}`,
+    lastModified: now,
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
 
   // ── Reference pages ──────────────────────────────────────────────────────
   const referencePages: MetadataRoute.Sitemap = referenceTopicIds.map((id) => ({

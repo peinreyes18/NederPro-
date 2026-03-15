@@ -120,6 +120,33 @@ export default async function TopicPage({
         )}
       </div>
 
+      {/* Exam-aligned callout */}
+      {level.examInfo && (
+        <div className="mb-6 flex items-start gap-3 rounded-xl border border-accent/30 bg-accent-light/20 px-4 py-3 text-sm">
+          <span className="flex-shrink-0 text-base">📋</span>
+          <p className="text-primary-light leading-relaxed">
+            <strong className="text-primary">Exam relevant:</strong>{' '}
+            {level.examInfo.includes('Inburgeringsexamen') ? (
+              <>
+                This topic is covered in the{' '}
+                <Link href="/inburgeringsexamen" className="text-accent hover:underline font-medium">
+                  Inburgeringsexamen
+                </Link>
+                . {levelId === 'a1' ? 'You\'re building the foundation now — A2 is the target level.' : 'You\'re studying at the required exam level.'}
+              </>
+            ) : (
+              <>
+                This topic is covered in the{' '}
+                <Link href="/staatsexamen-nt2" className="text-accent hover:underline font-medium">
+                  Staatsexamen NT2
+                </Link>{' '}
+                ({level.examInfo.includes('Programma II') ? 'Programma II — B2 level' : 'Programma I — B1 level'}).
+              </>
+            )}
+          </p>
+        </div>
+      )}
+
       {/* Lesson content */}
       {topic.lesson ? (
         <LessonContent lesson={topic.lesson} />

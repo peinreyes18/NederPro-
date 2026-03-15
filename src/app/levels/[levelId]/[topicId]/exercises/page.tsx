@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import ExerciseContainer from '@/components/exercises/ExerciseContainer';
-import { getTopic, getLevel, getTopicsForLevel } from '@/lib/content-loader';
+import { getTopic, getLevel, getTopicsForLevel, getAdjacentTopics } from '@/lib/content-loader';
 import { levels } from '@/content/levels';
 
 export function generateStaticParams() {
@@ -36,6 +36,7 @@ export default async function ExercisesPage({
   const { levelId, topicId } = await params;
   const topic = getTopic(levelId, topicId);
   const level = getLevel(levelId);
+  const { next } = getAdjacentTopics(levelId, topicId);
 
   if (!topic || !level) {
     notFound();
@@ -66,6 +67,7 @@ export default async function ExercisesPage({
         levelId={levelId}
         topicId={topicId}
         backUrl={`/levels/${levelId}/${topicId}`}
+        nextTopic={next ? { id: next.id, title: next.title, levelId } : undefined}
       />
     </div>
   );

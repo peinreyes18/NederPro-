@@ -33,6 +33,7 @@ interface ExerciseContainerProps {
   levelId: string;
   topicId: string;
   backUrl: string;
+  nextTopic?: { id: string; title: string; levelId: string };
 }
 
 export default function ExerciseContainer({
@@ -40,6 +41,7 @@ export default function ExerciseContainer({
   levelId,
   topicId,
   backUrl,
+  nextTopic,
 }: ExerciseContainerProps) {
   const router = useRouter();
   const {
@@ -79,6 +81,8 @@ export default function ExerciseContainer({
         totalExercises={total}
         onRetry={reset}
         onBack={() => router.push(backUrl)}
+        nextTopic={nextTopic}
+        onNext={nextTopic ? () => router.push(`/levels/${nextTopic.levelId}/${nextTopic.id}`) : undefined}
       />
     );
   }

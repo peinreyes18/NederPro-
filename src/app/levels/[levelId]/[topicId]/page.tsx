@@ -132,7 +132,7 @@ export default async function TopicPage({
       )}
 
       {/* Navigation */}
-      <div className="border-t border-border pt-6 mt-8">
+      <div className="border-t border-border pt-6 mt-8 mb-24 sm:mb-0">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
             {prev && (
@@ -145,7 +145,7 @@ export default async function TopicPage({
           </div>
 
           <Link href={`/levels/${levelId}/${topicId}/exercises`}>
-            <Button size="lg">Start Exercises</Button>
+            <Button size="lg">Start Exercises →</Button>
           </Link>
 
           <div>
@@ -158,6 +158,13 @@ export default async function TopicPage({
             )}
           </div>
         </div>
+      </div>
+
+      {/* Sticky exercises bar — visible on mobile while scrolling */}
+      <div className="fixed bottom-0 left-0 right-0 sm:hidden bg-background/95 backdrop-blur border-t border-border px-4 py-3 z-40">
+        <Link href={`/levels/${levelId}/${topicId}/exercises`} className="block">
+          <Button size="lg" className="w-full">Start Exercises →</Button>
+        </Link>
       </div>
     </div>
   );

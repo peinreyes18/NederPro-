@@ -502,7 +502,7 @@ export default function VocabularyPracticePage({
     notFound();
   }
 
-  const { recordWordResult } = useVocabProgress();
+  const { recordWordResult, enqueueForSRS } = useVocabProgress();
 
   const [practiceMode, setPracticeMode] = useState<PracticeMode>('multiple-choice');
   const [questions, setQuestions] = useState<Question[]>(() =>
@@ -523,7 +523,9 @@ export default function VocabularyPracticePage({
       setAnswered(true);
       setLastCorrect(correct);
       recordWordResult(categoryId, questions[currentIndex].word.dutch, correct);
+      // Enqueue into SRS queue on first correct answer
       if (correct) {
+        enqueueForSRS(categoryId, questions[currentIndex].word.dutch);
         setCorrectCount((c) => c + 1);
       } else {
         setMissedWords((prev) => {
@@ -532,7 +534,7 @@ export default function VocabularyPracticePage({
         });
       }
     },
-    [currentIndex, questions, recordWordResult, categoryId]
+    [currentIndex, questions, recordWordResult, enqueueForSRS, categoryId]
   );
 
   const handleNext = useCallback(() => {
@@ -599,7 +601,10 @@ export default function VocabularyPracticePage({
           categoryName={category.name}
           categoryIcon={category.icon}
           categoryId={categoryId}
-          onRecordWord={(dutchWord, correct) => recordWordResult(categoryId, dutchWord, correct)}
+          onRecordWord={(dutchWord, correct) => {
+            recordWordResult(categoryId, dutchWord, correct);
+            if (correct) enqueueForSRS(categoryId, dutchWord);
+          }}
         />
       </div>
     );

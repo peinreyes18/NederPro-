@@ -560,5 +560,56 @@ export const wordOrderMainClause: Topic = {
         ],
       },
     },
+  {
+    id: 'a1-word-order-listening-1',
+    type: 'listening-comprehension',
+    instruction: 'Listen to the conversation and answer the questions. Pay attention to word order.',
+    difficulty: 'guided',
+    content: {
+      type: 'listening-comprehension',
+      situation: 'A short conversation between two neighbours outside their apartments.',
+      audioText:
+        'Goedemiddag! Gaat u vanavond naar de markt? Ja, vanavond ga ik naar de markt. Koopt u daar altijd groenten? Soms koop ik groenten, maar meestal koop ik fruit. Morgen bak ik een taart met dat fruit. Dat klinkt lekker! Elke zondag bak ik iets voor mijn familie.',
+      maxPlays: 2,
+      questions: [
+        {
+          question: 'In "Vanavond ga ik naar de markt" — why does "ga" come before "ik"?',
+          options: [
+            'Because "ga" is a modal verb',
+            'Because the sentence starts with a time expression, causing inversion',
+            'Because "ik" is always placed after the verb in Dutch',
+            'It is a mistake; the correct order is "Vanavond ik ga"',
+          ],
+          correctIndex: 1,
+          explanation:
+            'When a sentence starts with an adverb or time expression (vanavond), the finite verb moves to second position, pushing the subject after it. This is called inversion.',
+        },
+        {
+          question: 'What does the speaker usually buy at the market?',
+          options: [
+            'Vegetables',
+            'Bread',
+            'Fruit',
+            'Both vegetables and fruit equally',
+          ],
+          correctIndex: 2,
+          explanation:
+            '"Meestal koop ik fruit" — usually (mostly) the speaker buys fruit. "Soms" (sometimes) is vegetables, "meestal" (usually/mostly) is fruit.',
+        },
+        {
+          question: 'Which sentence shows correct Dutch word order after a time expression?',
+          options: [
+            'Morgen ik bak een taart.',
+            'Morgen bak ik een taart.',
+            'Morgen een taart bak ik.',
+            'Ik morgen bak een taart.',
+          ],
+          correctIndex: 1,
+          explanation:
+            '"Morgen bak ik een taart" — the verb (bak) must be in second position. After the time word "morgen", the subject and verb swap: verb-subject (inversion).',
+        },
+      ],
+    },
+  },
   ],
 };

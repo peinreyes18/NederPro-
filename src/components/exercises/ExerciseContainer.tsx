@@ -27,6 +27,7 @@ const ErrorCorrection = dynamic(() => import('./ErrorCorrection'), { loading: Ex
 const WritingPrompt = dynamic(() => import('./WritingPrompt'), { loading: ExerciseSkeleton });
 const ReadingComprehension = dynamic(() => import('./ReadingComprehension'), { loading: ExerciseSkeleton });
 const Speaking = dynamic(() => import('./Speaking'), { loading: ExerciseSkeleton });
+const ListeningComprehension = dynamic(() => import('./ListeningComprehension'), { loading: ExerciseSkeleton });
 
 interface ExerciseContainerProps {
   exercises: Exercise[];
@@ -196,6 +197,16 @@ export default function ExerciseContainer({
 
         {currentExercise.content.type === 'speaking' && (
           <Speaking
+            key={currentExercise.id}
+            content={currentExercise.content}
+            instruction={exerciseInstruction}
+            onSubmit={handleSubmit}
+            disabled={state === 'submitted'}
+          />
+        )}
+
+        {currentExercise.content.type === 'listening-comprehension' && (
+          <ListeningComprehension
             key={currentExercise.id}
             content={currentExercise.content}
             instruction={exerciseInstruction}

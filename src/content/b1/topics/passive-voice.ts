@@ -446,5 +446,56 @@ export const passiveVoice: Topic = {
         sampleResponse: 'De vergadering werd om 9 uur geopend door de manager. Alle resultaten van het kwartaal werden besproken. Er zijn nieuwe doelen gesteld voor het komende kwartaal. De presentatie is daarna verstuurd naar alle medewerkers.',
       },
     },
+  {
+    id: 'b1-passive-voice-listening-1',
+    type: 'listening-comprehension',
+    instruction: 'Listen to the radio news update and answer the questions about passive constructions.',
+    difficulty: 'open',
+    content: {
+      type: 'listening-comprehension',
+      situation: 'A short news item on Dutch radio about a new hospital opening.',
+      audioText:
+        'Vandaag wordt het nieuwe ziekenhuis in Nijmegen officieel geopend door de minister van Volksgezondheid. Het gebouw is ontworpen door een internationaal architectenbureau. De bouw werd vorig jaar afgerond, maar de opening werd uitgesteld vanwege de corona-maatregelen. Alle patiënten worden verwacht volgende week overgeplaatst te worden. Het personeel is al opgeleid en de apparatuur is geïnstalleerd. Er worden ook meer dan tweehonderd nieuwe banen gecreëerd.',
+      maxPlays: 2,
+      questions: [
+        {
+          question: 'Who is officially opening the new hospital?',
+          options: [
+            'The mayor of Nijmegen',
+            'The minister of Health',
+            'The architect',
+            'The director of the hospital',
+          ],
+          correctIndex: 1,
+          explanation:
+            '"wordt geopend door de minister van Volksgezondheid" — the passive construction "wordt geopend door" means "is being opened by". The agent is the minister of Health.',
+        },
+        {
+          question: 'Why was the opening delayed?',
+          options: [
+            'Because of construction problems',
+            'Because of budget issues',
+            'Because of corona measures',
+            'Because the staff was not ready',
+          ],
+          correctIndex: 2,
+          explanation:
+            '"de opening werd uitgesteld vanwege de corona-maatregelen" — the past passive "werd uitgesteld" means "was postponed". The reason was corona measures.',
+        },
+        {
+          question: 'Which passive construction describes an already-completed action?',
+          options: [
+            'worden overgeplaatst',
+            'wordt geopend',
+            'worden gecreëerd',
+            'is geïnstalleerd',
+          ],
+          correctIndex: 3,
+          explanation:
+            '"is geïnstalleerd" is the perfect passive (zijn + past participle), describing a completed action. The others use "worden" which indicates an ongoing or future action.',
+        },
+      ],
+    },
+  },
   ],
 };

@@ -111,7 +111,8 @@ export type ExerciseType =
   | 'error-correction'
   | 'writing-prompt'
   | 'reading-comprehension'
-  | 'speaking';
+  | 'speaking'
+  | 'listening-comprehension';
 
 export interface Exercise {
   id: string;
@@ -131,7 +132,8 @@ export type ExerciseContent =
   | ErrorCorrectionContent
   | WritingPromptContent
   | ReadingComprehensionContent
-  | SpeakingContent;
+  | SpeakingContent
+  | ListeningComprehensionContent;
 
 export interface SpeakingContent {
   type: 'speaking';
@@ -219,6 +221,22 @@ export interface ReadingComprehensionContent {
     options?: string[];
     correctAnswer: string;
     explanation?: string;
+  }[];
+}
+
+export interface ListeningComprehensionContent {
+  type: 'listening-comprehension';
+  /** Dutch text that will be read aloud via TTS */
+  audioText: string;
+  /** Optional scene-setting description shown above the player (not read aloud) */
+  situation?: string;
+  /** How many times the learner may replay the audio (default: 2) */
+  maxPlays?: number;
+  questions: {
+    question: string;
+    options: string[];
+    correctIndex: number;
+    explanation: string;
   }[];
 }
 

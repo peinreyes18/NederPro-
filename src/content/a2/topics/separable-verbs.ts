@@ -629,5 +629,56 @@ export const separableVerbs: Topic = {
         ],
       },
     },
+  {
+    id: 'a2-separable-verbs-listening-1',
+    type: 'listening-comprehension',
+    instruction: 'Listen to the phone conversation and answer the questions about separable verbs.',
+    difficulty: 'guided',
+    content: {
+      type: 'listening-comprehension',
+      situation: 'A woman calls her husband during his lunch break to discuss their evening plans.',
+      audioText:
+        'Hallo schat, wanneer kom je thuis? Ik kom om zes uur thuis. Oké. Kun jij onderweg de hond uitlaten? Ja, ik laat hem even uit. Goed. En zet jij dan de computer even aan voor de kinderen? Ja hoor, ik zet hem aan. Wacht, ik moet de vergadering nu afmaken. Ik bel je later terug. Oké, tot straks!',
+      maxPlays: 2,
+      questions: [
+        {
+          question: 'In "ik kom om zes uur thuis", where does the separable prefix go?',
+          options: [
+            'Directly after "ik"',
+            'At the end of the clause',
+            'Directly before the verb',
+            'In the middle of the sentence',
+          ],
+          correctIndex: 1,
+          explanation:
+            '"Ik kom om zes uur thuis" — the prefix "thuis" (from "thuiskomen") goes to the end of the main clause. The verb "kom" stays in second position.',
+        },
+        {
+          question: 'What does the husband need to do with the dog?',
+          options: [
+            'Feed the dog',
+            'Walk the dog',
+            'Wash the dog',
+            'Lock the dog inside',
+          ],
+          correctIndex: 1,
+          explanation:
+            '"De hond uitlaten" means to walk / let out the dog. "Ik laat hem even uit" — the prefix "uit" goes to the end.',
+        },
+        {
+          question: 'In "ik moet de vergadering nu afmaken" — why does the prefix stay attached?',
+          options: [
+            'Because "moet" is a modal verb, the infinitive stays whole at the end',
+            'Because "afmaken" is not separable in this sentence',
+            'Because the sentence is negative',
+            'Because the prefix only separates in questions',
+          ],
+          correctIndex: 0,
+          explanation:
+            'After a modal verb (moet, kan, wil, mag), the main verb appears as an infinitive at the end of the clause. The prefix does NOT separate: "moet afmaken" (not "maakt af").',
+        },
+      ],
+    },
+  },
   ],
 };

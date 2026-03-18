@@ -641,5 +641,51 @@ export const perfectumRegular: Topic = {
         ],
       },
     },
+  {
+    id: 'a2-perfectum-regular-listening-1',
+    type: 'listening-comprehension',
+    instruction: 'Listen to the voicemail message and answer the questions about the perfect tense.',
+    difficulty: 'guided',
+    content: {
+      type: 'listening-comprehension',
+      situation: 'A voicemail message left by a colleague at the end of the working day.',
+      audioText:
+        'Hallo Miriam, met Pieter. Ik heb vandaag heel veel gewerkt. Ik heb de rapporten gemaild en ik heb ook met de klant gebeld. De klant heeft het contract getekend! Daarna heb ik een vergadering gepland voor volgende week dinsdag. Ik heb ook nog snel het kantoor opgeruimd. Ik heb een goede dag gehad. Tot morgen!',
+      maxPlays: 2,
+      questions: [
+        {
+          question: 'What did Pieter do with the reports?',
+          options: [
+            'He printed them.',
+            'He mailed them.',
+            'He deleted them.',
+            'He read them.',
+          ],
+          correctIndex: 1,
+          explanation:
+            '"Ik heb de rapporten gemaild" — he mailed the reports. The perfect tense "heb + gemaild" is used.',
+        },
+        {
+          question: 'What did the client do?',
+          options: [
+            'The client called.',
+            'The client cancelled the meeting.',
+            'The client signed the contract.',
+            'The client sent a report.',
+          ],
+          correctIndex: 2,
+          explanation:
+            '"De klant heeft het contract getekend" — the client signed the contract. "Heeft getekend" is the perfect tense of "tekenen".',
+        },
+        {
+          question: 'What auxiliary verb is used in all these perfect tense sentences?',
+          options: ['zijn', 'hebben', 'worden', 'kunnen'],
+          correctIndex: 1,
+          explanation:
+            'All sentences use "hebben" as auxiliary: "heb gewerkt", "heb gemaild", "heb gebeld". These are transitive or non-movement verbs that take "hebben".',
+        },
+      ],
+    },
+  },
   ],
 };

@@ -524,5 +524,51 @@ export const presentTenseRegular: Topic = {
         ],
       },
     },
+  {
+    id: 'a1-present-tense-regular-listening-1',
+    type: 'listening-comprehension',
+    instruction: 'Listen to the conversation and answer the questions.',
+    difficulty: 'guided',
+    content: {
+      type: 'listening-comprehension',
+      situation: 'Two colleagues meet on Monday morning at the office.',
+      audioText:
+        'Goedemorgen, Sophie! Hoe gaat het met jou? Het gaat goed, dank je. Ik werk vandaag aan een nieuw project. Oh, interessant! Werk jij ook aan het project? Nee, ik werk aan de presentatie voor vrijdag. Wij werken allebei hard deze week! Ja, maar vrijdagmiddag drinken wij koffie. Dat is een goed idee!',
+      maxPlays: 2,
+      questions: [
+        {
+          question: 'What is Sophie working on today?',
+          options: [
+            'A presentation for Friday',
+            'A new project',
+            'A weekly report',
+            'A meeting agenda',
+          ],
+          correctIndex: 1,
+          explanation:
+            '"Ik werk vandaag aan een nieuw project" — Sophie says she is working on a new project today.',
+        },
+        {
+          question: 'What is the other person working on?',
+          options: [
+            'A new project',
+            'A report',
+            'A presentation for Friday',
+            'A meeting for Monday',
+          ],
+          correctIndex: 2,
+          explanation:
+            '"Ik werk aan de presentatie voor vrijdag" — the second person is working on the presentation for Friday.',
+        },
+        {
+          question: 'Which verb form is correct for "wij"?',
+          options: ['werk', 'werkt', 'werken', 'werkten'],
+          correctIndex: 2,
+          explanation:
+            '"Wij werken" — with wij/jullie/zij the full infinitive form is used: werken.',
+        },
+      ],
+    },
+  },
   ],
 };

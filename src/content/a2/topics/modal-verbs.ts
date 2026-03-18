@@ -609,5 +609,46 @@ export const modalVerbs: Topic = {
         ],
       },
     },
+  {
+    id: 'a2-modal-verbs-listening-1',
+    type: 'listening-comprehension',
+    instruction: 'Listen to the conversation and answer the questions about modal verbs.',
+    difficulty: 'guided',
+    content: {
+      type: 'listening-comprehension',
+      situation: 'A student phones a language school to ask about a Dutch course.',
+      audioText:
+        'Goedemiddag, taalschool Utrecht. Goedemiddag. Ik wil een cursus Nederlands volgen. Dat kan zeker. Wanneer wilt u beginnen? Ik wil in september beginnen. Moet ik een toets doen voor de inschrijving? Nee, u hoeft geen toets te doen, maar u mag vrijwillig een niveautest invullen. Mag ik ook informatie krijgen over de kosten? Ja, u kunt onze website bekijken of u kunt een brochure ophalen. Ik zal de website bekijken. Dank u wel!',
+      maxPlays: 2,
+      questions: [
+        {
+          question: 'When does the caller want to start the course?',
+          options: ['In August', 'In September', 'In October', 'Immediately'],
+          correctIndex: 1,
+          explanation:
+            '"Ik wil in september beginnen" — the caller wants to start in September. "Wil" expresses a wish/desire.',
+        },
+        {
+          question: 'Is a test required for enrolment?',
+          options: [
+            'Yes, it is required.',
+            'Yes, but only for advanced students.',
+            'No, but a voluntary level test is available.',
+            'No tests are offered.',
+          ],
+          correctIndex: 2,
+          explanation:
+            '"U hoeft geen toets te doen, maar u mag vrijwillig een niveautest invullen." No test is required, but a voluntary level test may be filled in.',
+        },
+        {
+          question: 'Which modal verb expresses ability/possibility in "u kunt onze website bekijken"?',
+          options: ['willen', 'moeten', 'mogen', 'kunnen'],
+          correctIndex: 3,
+          explanation:
+            '"Kunt" is the second/third person form of "kunnen" (can / to be able to). It expresses that something is possible.',
+        },
+      ],
+    },
+  },
   ],
 };

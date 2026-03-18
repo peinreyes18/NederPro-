@@ -414,5 +414,51 @@ export const reportedSpeech: Topic = {
         sampleResponse: 'Hoi Thomas,\n\nIk wil je even bijpraten over de vergadering van gisteren. De manager zei dat het nieuwe project eind volgende maand zou beginnen. Ze vroeg of iedereen al kennis had gemaakt met de nieuwe software. Mijn collega Lisa vertelde dat ze al een training had gevolgd en dat het systeem heel gebruiksvriendelijk was. De manager vroeg ook wanneer de eerste resultaten verwacht konden worden. Ten slotte vroeg ze ons om vóór vrijdag een korte planning in te sturen.\n\nMet vriendelijke groeten,\nAnna',
       },
     },
+  {
+    id: 'b1-reported-speech-listening-1',
+    type: 'listening-comprehension',
+    instruction: 'Listen to the conversation and identify the reported speech structures.',
+    difficulty: 'open',
+    content: {
+      type: 'listening-comprehension',
+      situation: 'Two friends, Nadia and Kevin, talk about a job interview Nadia had yesterday.',
+      audioText:
+        'Hé Kevin, weet je al hoe het interview gisteren ging? Ja! Het ging heel goed. De interviewer zei dat ik een indrukwekkend cv had. Ze vroeg of ik al ervaring had met projectmanagement. Ik zei dat ik twee jaar bij een marketing bureau had gewerkt. Ze vroeg ook wanneer ik beschikbaar zou zijn. Ik antwoordde dat ik over twee weken kon beginnen. Ze vertelde dat ze me volgende week zouden bellen. Ik hoop dat ze bellen!',
+      maxPlays: 2,
+      questions: [
+        {
+          question: 'What did the interviewer say about Nadia\'s CV?',
+          options: [
+            'She said it was too short.',
+            'She said it was impressive.',
+            'She asked why it was so long.',
+            'She said she had not read it.',
+          ],
+          correctIndex: 1,
+          explanation:
+            '"De interviewer zei dat ik een indrukwekkend cv had" — reported speech with "dat" clause. Direct speech would be: "Je hebt een indrukwekkend cv."',
+        },
+        {
+          question: 'Which word introduces the reported yes/no question?',
+          options: ['dat', 'of', 'wanneer', 'hoe'],
+          correctIndex: 1,
+          explanation:
+            '"Ze vroeg of ik al ervaring had" — reported yes/no questions use "of" (whether). Direct speech: "Heb je al ervaring met projectmanagement?"',
+        },
+        {
+          question: 'When did Nadia say she could start?',
+          options: [
+            'Immediately',
+            'In one week',
+            'In two weeks',
+            'Next month',
+          ],
+          correctIndex: 2,
+          explanation:
+            '"Ik antwoordde dat ik over twee weken kon beginnen" — over twee weken = in two weeks. Notice the tense backshift: "kan" → "kon".',
+        },
+      ],
+    },
+  },
   ],
 };

@@ -436,5 +436,51 @@ export const hebbenZijn: Topic = {
         ],
       },
     },
+  {
+    id: 'a1-hebben-zijn-listening-1',
+    type: 'listening-comprehension',
+    instruction: 'Listen to the short dialogue and answer the questions.',
+    difficulty: 'guided',
+    content: {
+      type: 'listening-comprehension',
+      situation: 'A family is having breakfast at home on a Saturday morning.',
+      audioText:
+        'Mama, ik heb honger! Ik ook, ik heb heel veel honger. Zijn jullie al wakker? Ja, wij zijn al wakker. Papa is ook wakker. Hij is in de keuken. Hebben jullie trek in pannenkoeken? Ja! Wij zijn blij! Ik ben dertig jaar oud en ik heb nog steeds trek in pannenkoeken.',
+      maxPlays: 2,
+      questions: [
+        {
+          question: 'Where is papa?',
+          options: [
+            'In the living room',
+            'Still in bed',
+            'In the kitchen',
+            'Outside',
+          ],
+          correctIndex: 2,
+          explanation:
+            '"Hij is in de keuken" — papa is in the kitchen.',
+        },
+        {
+          question: 'Which sentence uses "hebben" correctly?',
+          options: [
+            'Ik ben honger.',
+            'Wij zijn trek.',
+            'Ik heb honger.',
+            'Hij zijn wakker.',
+          ],
+          correctIndex: 2,
+          explanation:
+            '"Honger hebben" (to be hungry) uses "hebben", not "zijn". In Dutch you "have hunger", not "are hungry".',
+        },
+        {
+          question: 'How old is the speaker who loves pancakes?',
+          options: ['13', '20', '30', '33'],
+          correctIndex: 2,
+          explanation:
+            '"Ik ben dertig jaar oud" — the speaker is thirty years old.',
+        },
+      ],
+    },
+  },
   ],
 };

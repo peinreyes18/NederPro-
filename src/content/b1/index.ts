@@ -11,6 +11,10 @@ import { conjunctionsConnectors } from './topics/conjunctions-connectors';
 import { participlesAdjectives } from './topics/participles-adjectives';
 import { omTeConstructions } from './topics/om-te-constructions';
 import { expressingContrast } from './topics/expressing-contrast';
+import { negation } from './topics/negation';
+import { nounGender } from './topics/noun-gender';
+import { expressingWishes } from './topics/expressing-wishes';
+import { numbersQuantities } from './topics/numbers-quantities';
 
 export const b1Topics: Topic[] = [
   pluralFormation,
@@ -25,4 +29,8 @@ export const b1Topics: Topic[] = [
   participlesAdjectives,
   omTeConstructions,
   expressingContrast,
+  negation,
+  nounGender,
+  expressingWishes,
+  numbersQuantities,
 ];

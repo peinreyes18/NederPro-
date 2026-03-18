@@ -1,4 +1,6 @@
 import { ExamPracticeTest } from '../types';
+import { knmPracticeExam1 } from './knm/practice-exam-1';
+import { knmPracticeExam2 } from './knm/practice-exam-2';
 import { knmPracticeExam3 } from './knm/practice-exam-3';
 import { knmPracticeExam4 } from './knm/practice-exam-4';
 import { knmPracticeExam5 } from './knm/practice-exam-5';
@@ -31,6 +33,8 @@ import { staatsexamenNt2IIListening2 } from './staatsexamen-nt2-ii/listening-exa
 import { staatsexamenNt2IIReading4 } from './staatsexamen-nt2-ii/reading-exam-4';
 
 export const allExams: ExamPracticeTest[] = [
+  knmPracticeExam1,
+  knmPracticeExam2,
   knmPracticeExam3,
   knmPracticeExam4,
   knmPracticeExam5,

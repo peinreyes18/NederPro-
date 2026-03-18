@@ -7,6 +7,9 @@ import { nominalization } from './topics/nominalization';
 import { subjectiveIdioms } from './topics/subjunctive-idioms';
 import { advancedRelativeClauses } from './topics/advanced-relative-clauses';
 import { registerStyle } from './topics/register-style';
+import { indirectSpeechAdvanced } from './topics/indirect-speech-advanced';
+import { inversionEmphasis } from './topics/inversion-emphasis';
+import { advancedConditionals } from './topics/advanced-conditionals';
 
 export const b2Topics: Topic[] = [
   complexWordOrder,
@@ -17,4 +20,7 @@ export const b2Topics: Topic[] = [
   subjectiveIdioms,
   advancedRelativeClauses,
   registerStyle,
+  indirectSpeechAdvanced,
+  inversionEmphasis,
+  advancedConditionals,
 ];

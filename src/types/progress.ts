@@ -44,4 +44,6 @@ export interface UserStats {
   lastStudyDate: string;
   totalExercisesCompleted: number;
   totalCorrectAnswers: number;
+  /** ISO date string (YYYY-MM-DD) of the last completed Daily Practice session */
+  dailyPracticeDate?: string;
 }

@@ -5,6 +5,7 @@ import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import { levels } from '@/content/levels';
 import HeroCta from '@/components/home/HeroCta';
+import DailyPracticeBanner from '@/components/home/DailyPracticeBanner';
 
 export const metadata: Metadata = {
   title: 'NederPro — Structured Dutch Grammar Learning',
@@ -157,6 +158,11 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Daily Practice Banner — client component, shown only for logged-in users */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-8">
+        <DailyPracticeBanner />
+      </div>
 
       {/* Level Overview */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20">

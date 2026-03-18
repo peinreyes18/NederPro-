@@ -21,6 +21,9 @@ export default function HeroCta() {
         <Link href="/levels">
           <Button size="lg">Go to my lessons →</Button>
         </Link>
+        <Link href="/daily-practice">
+          <Button size="lg" variant="outline">🔥 Daily Practice</Button>
+        </Link>
         <Link href="/progress">
           <Button size="lg" variant="outline">View progress</Button>
         </Link>

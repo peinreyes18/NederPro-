@@ -232,11 +232,21 @@ export function useProgress() {
     [progress]
   );
 
+  /** Mark today's Daily Practice session as done */
+  const markDailyPracticeDone = useCallback(() => {
+    const today = new Date().toISOString().split('T')[0];
+    setProgress((prev) => ({
+      ...prev,
+      stats: { ...prev.stats, dailyPracticeDate: today },
+    }));
+  }, []);
+
   return {
     progress,
     isLoaded,
     markLessonRead,
     recordExerciseResult,
     getTopicProgress,
+    markDailyPracticeDone,
   };
 }

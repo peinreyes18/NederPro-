@@ -10,6 +10,10 @@ import { registerStyle } from './topics/register-style';
 import { indirectSpeechAdvanced } from './topics/indirect-speech-advanced';
 import { inversionEmphasis } from './topics/inversion-emphasis';
 import { advancedConditionals } from './topics/advanced-conditionals';
+import { collocationsFixedExpressions } from './topics/collocations-fixed-expressions';
+import { cohesionTextStructure } from './topics/cohesion-text-structure';
+import { advancedNegationScope } from './topics/advanced-negation-scope';
+import { argumentPersuasion } from './topics/argument-persuasion';
 
 export const b2Topics: Topic[] = [
   complexWordOrder,
@@ -23,4 +27,8 @@ export const b2Topics: Topic[] = [
   indirectSpeechAdvanced,
   inversionEmphasis,
   advancedConditionals,
+  collocationsFixedExpressions,
+  cohesionTextStructure,
+  advancedNegationScope,
+  argumentPersuasion,
 ];

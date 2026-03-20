@@ -15,6 +15,10 @@ import { negation } from './topics/negation';
 import { nounGender } from './topics/noun-gender';
 import { expressingWishes } from './topics/expressing-wishes';
 import { numbersQuantities } from './topics/numbers-quantities';
+import { prepositionsTime } from './topics/prepositions-time';
+import { diminutives } from './topics/diminutives';
+import { modalParticles } from './topics/modal-particles';
+import { comparison } from './topics/comparison';
 
 export const b1Topics: Topic[] = [
   pluralFormation,
@@ -33,4 +37,8 @@ export const b1Topics: Topic[] = [
   nounGender,
   expressingWishes,
   numbersQuantities,
+  prepositionsTime,
+  diminutives,
+  modalParticles,
+  comparison,
 ];

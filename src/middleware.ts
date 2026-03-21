@@ -64,6 +64,10 @@ const PUBLIC_PREFIXES = [
   // Info pages
   '/pricing',
   '/about',
+  // Blog
+  '/blog',
+  // Daily practice landing (actual practice requires subscription via isSubscriberOnly)
+  '/daily-practice',
 ];
 
 function isPublic(pathname: string): boolean {

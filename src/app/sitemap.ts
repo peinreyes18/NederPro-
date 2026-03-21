@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next';
 import { allExams } from '@/content/exams';
 import { levels } from '@/content/levels';
 import { vocabularyCategories } from '@/content/vocabulary';
+import { blogPosts } from '@/content/blog/posts';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.com';
 
@@ -209,6 +210,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
+  // ── Blog pages ───────────────────────────────────────────────────────────
+  const blogPages: MetadataRoute.Sitemap = [
+    {
+      url: `${BASE_URL}/blog`,
+      lastModified: now,
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    ...blogPosts.map((post) => ({
+      url: `${BASE_URL}/blog/${post.slug}`,
+      lastModified: new Date(post.publishedAt),
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    })),
+  ];
+
   return [
     ...staticPages,
     ...levelPages,
@@ -217,5 +234,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...referencePages,
     ...culturePages,
     ...historyPages,
+    ...blogPages,
   ];
 }

@@ -2,15 +2,32 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 import { useAuth } from '@/contexts/AuthContext';
+
+function useStreak() {
+  const [streak, setStreak] = useState(0);
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('nederpro_progress');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        setStreak(parsed?.stats?.currentStreak ?? 0);
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
+  return streak;
+}
 
 const navItems = [
   { href: '/levels', label: 'Levels' },
   { href: '/vocabulary', label: 'Vocabulary' },
   { href: '/exams', label: 'Exams' },
+  { href: '/daily-practice', label: 'Daily Practice' },
   { href: '/reference', label: 'Reference' },
   { href: '/culture', label: 'Culture' },
   { href: '/history', label: 'History' },
@@ -21,6 +38,7 @@ export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const { user, signOut, isLoading } = useAuth();
+  const streak = useStreak();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   async function handleSignOut() {
@@ -60,6 +78,15 @@ export default function Header() {
             {!isLoading && (
               user ? (
                 <div className="flex items-center gap-1 ml-1">
+                  {streak > 0 && (
+                    <Link
+                      href="/daily-practice"
+                      className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-sm font-semibold text-orange-500 hover:bg-surface-hover transition-all duration-200"
+                      title={`${streak}-day streak`}
+                    >
+                      🔥 {streak}
+                    </Link>
+                  )}
                   <Link
                     href="/account"
                     className={cn(

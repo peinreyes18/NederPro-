@@ -53,21 +53,12 @@ export const metadata: Metadata = {
     title: 'NederPro — Structured Dutch Grammar Learning',
     description:
       'Structured, grammar-focused Dutch learning for adults. CEFR-aligned, exam-ready. KNM, Inburgeringsexamen, and Staatsexamen NT2 practice.',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'NederPro — Learn Dutch Systematically',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'NederPro — Structured Dutch Grammar Learning',
     description:
       'CEFR-aligned Dutch grammar learning for adults. Practice exams, vocabulary, and AI writing feedback.',
-    images: ['/og-image.png'],
   },
   robots: {
     index: true,

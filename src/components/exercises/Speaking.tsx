@@ -104,6 +104,7 @@ export default function Speaking({ content, instruction, onSubmit, disabled }: S
   const currentItem = items[index];
 
   const handleNext = (finalCorrectCount: number) => {
+    recognitionRef.current?.abort();
     const nextIndex = indexRef.current + 1;
     if (nextIndex >= items.length) {
       const passing = finalCorrectCount >= Math.ceil(items.length * 0.6);
@@ -141,7 +142,11 @@ export default function Speaking({ content, instruction, onSubmit, disabled }: S
     recognition.onerror = () => {
       setListening(false);
       attemptsRef.current += 1;
-      setAttempts(attemptsRef.current);
+      const newAttempts = attemptsRef.current;
+      setAttempts(newAttempts);
+      if (newAttempts >= MAX_ATTEMPTS) {
+        setItemStatus('out-of-attempts');
+      }
     };
 
     recognition.onresult = (event: SpeechRecognitionResultEvent) => {

@@ -1,5 +1,6 @@
 'use client';
 
+import { notFound } from 'next/navigation';
 import { useState } from 'react';
 
 const devices = [
@@ -10,6 +11,8 @@ const devices = [
 ];
 
 export default function PreviewPage() {
+  if (process.env.NODE_ENV === 'production') notFound();
+
   const [selectedDevice, setSelectedDevice] = useState(devices[0]);
   const [currentUrl, setCurrentUrl] = useState('/');
   const [scale, setScale] = useState(0.7);

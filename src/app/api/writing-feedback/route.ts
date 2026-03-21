@@ -1,5 +1,12 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { NextRequest, NextResponse } from 'next/server';
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
+
+// In-memory rate limit store: userId -> { count, windowStart }
+const rateLimitStore = new Map<string, { count: number; windowStart: number }>();
+const RATE_LIMIT_MAX = 10;       // max calls per window
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
 
 const client = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -69,6 +76,33 @@ Be honest but constructive. Write all feedback in English. Any Dutch examples sh
 
 export async function POST(request: NextRequest) {
   try {
+    // Auth check + rate limiting
+    const cookieStore = await cookies();
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
+    );
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const userId = session.user.id;
+    const now = Date.now();
+    const entry = rateLimitStore.get(userId);
+    if (entry && now - entry.windowStart < RATE_LIMIT_WINDOW_MS) {
+      if (entry.count >= RATE_LIMIT_MAX) {
+        return NextResponse.json(
+          { error: 'Rate limit reached. Please try again in an hour.' },
+          { status: 429 }
+        );
+      }
+      entry.count++;
+    } else {
+      rateLimitStore.set(userId, { count: 1, windowStart: now });
+    }
+
     const body: WritingFeedbackRequest = await request.json();
 
     if (!body.userResponse?.trim()) {

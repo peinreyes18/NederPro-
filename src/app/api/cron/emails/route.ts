@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { sendDay3Email, sendTrialExpiryEmail } from '@/lib/email';
+import { sendDay3Email, sendTrialExpiryEmail, sendSignupNudgeEmail } from '@/lib/email';
 
 /**
  * Vercel Cron Job — runs every day at 09:00 UTC
@@ -41,9 +41,46 @@ export async function GET(request: NextRequest) {
   }
 
   const now = new Date();
-  const results = { day3: 0, expiry: 0, errors: 0 };
+  const results = { nudge: 0, day3: 0, expiry: 0, errors: 0 };
 
-  // ── 1. Day 3 check-in ──────────────────────────────────────────────────────
+  // ── 1. Signup nudge — signed up 23–25h ago, no subscription yet ───────────
+  const nudgeStart = new Date(now.getTime() - 25 * 60 * 60 * 1000).toISOString();
+  const nudgeEnd   = new Date(now.getTime() - 23 * 60 * 60 * 1000).toISOString();
+
+  // Get all auth users who signed up in the window
+  const { data: { users: recentUsers } } = await supabaseAdmin.auth.admin.listUsers({
+    perPage: 1000,
+  });
+
+  const nudgeUsers = (recentUsers ?? []).filter(
+    (u) => u.created_at >= nudgeStart && u.created_at <= nudgeEnd && u.email
+  );
+
+  if (nudgeUsers.length > 0) {
+    // Find which ones have a subscription
+    const userIds = nudgeUsers.map((u) => u.id);
+    const { data: existingSubs } = await supabaseAdmin
+      .from('subscriptions')
+      .select('user_id')
+      .in('user_id', userIds);
+
+    const subscribedIds = new Set((existingSubs ?? []).map((s) => s.user_id));
+
+    for (const user of nudgeUsers) {
+      if (subscribedIds.has(user.id)) continue; // already has subscription
+      const meta = user.user_metadata ?? {};
+      const firstName = meta.full_name?.split(' ')[0] || meta.name?.split(' ')[0] || undefined;
+      try {
+        await sendSignupNudgeEmail({ to: user.email!, firstName });
+        results.nudge++;
+      } catch (e) {
+        console.error('Signup nudge email error:', e);
+        results.errors++;
+      }
+    }
+  }
+
+  // ── 2. Day 3 check-in ──────────────────────────────────────────────────────
   // Find subscriptions created between 72–96 hours ago (trial started 3 days ago)
   const day3Start = new Date(now.getTime() - 96 * 60 * 60 * 1000).toISOString();
   const day3End   = new Date(now.getTime() - 72 * 60 * 60 * 1000).toISOString();
@@ -72,7 +109,7 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  // ── 2. Trial expiry reminder (48h warning) ─────────────────────────────────
+  // ── 3. Trial expiry reminder (48h warning) ─────────────────────────────────
   // Find subscriptions whose trial_end is 44–52 hours from now (gives an 8h window)
   const expiryStart = new Date(now.getTime() + 44 * 60 * 60 * 1000).toISOString();
   const expiryEnd   = new Date(now.getTime() + 52 * 60 * 60 * 1000).toISOString();
@@ -107,6 +144,6 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  console.log(`Cron email results: day3=${results.day3}, expiry=${results.expiry}, errors=${results.errors}`);
+  console.log(`Cron email results: nudge=${results.nudge}, day3=${results.day3}, expiry=${results.expiry}, errors=${results.errors}`);
   return NextResponse.json({ ok: true, ...results });
 }

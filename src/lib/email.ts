@@ -279,6 +279,63 @@ export async function sendTrialExpiryEmail({
   });
 }
 
+// ─── Email: Signup nudge (signed up but hasn't started trial) ────────────────
+
+export async function sendSignupNudgeEmail({
+  to,
+  firstName,
+}: {
+  to: string;
+  firstName?: string;
+}) {
+  const name = firstName || 'there';
+
+  const html = wrap(`
+    <h1 style="margin:0 0 8px;font-size:22px;font-weight:800;color:#111827;">You're one step away, ${name} 🇳🇱</h1>
+    <p style="margin:0 0 20px;font-size:15px;color:#6b7280;line-height:1.6;">
+      You created a NederPro account yesterday — but you haven't started your free trial yet. Your 7-day trial is completely free. No charge until after the trial, and you can cancel any time.
+    </p>
+
+    <div style="background:#eff6ff;border-radius:12px;padding:16px 20px;margin-bottom:24px;">
+      <p style="margin:0 0 10px;font-size:14px;font-weight:700;color:#1e40af;">What's waiting for you:</p>
+      <ul style="margin:0;padding-left:20px;">
+        ${[
+          '54 grammar lessons across A0–B2',
+          'Interactive exercises after every topic',
+          'Mock exam sets for Inburgeringsexamen & NT2',
+          'AI writing feedback on open answers',
+          'Vocabulary practice with spaced repetition',
+        ].map(item => `<li style="font-size:13px;color:#1e40af;margin-bottom:6px;line-height:1.5;">${item}</li>`).join('')}
+      </ul>
+    </div>
+
+    <p style="margin:0 0 20px;font-size:14px;color:#374151;line-height:1.6;">
+      Dutch is one of the easiest languages for English speakers. With 30 minutes a day, you can reach A2 in 6–9 months. The hardest part is just starting.
+    </p>
+
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:16px;">
+      <tr>
+        <td>
+          <a href="${BASE_URL}/subscribe" style="display:inline-block;background:#2563eb;color:#ffffff;font-size:15px;font-weight:700;text-decoration:none;padding:14px 28px;border-radius:10px;">
+            Start my free trial →
+          </a>
+        </td>
+      </tr>
+    </table>
+
+    <p style="margin:0;font-size:13px;color:#9ca3af;line-height:1.6;">
+      Questions? Just reply to this email — we read every message.
+    </p>
+  `);
+
+  return resend.emails.send({
+    from: FROM,
+    to,
+    subject: 'Your NederPro trial is waiting — start free today',
+    html,
+  });
+}
+
 // ─── Email: Churn winback ─────────────────────────────────────────────────────
 
 export async function sendWinbackEmail({

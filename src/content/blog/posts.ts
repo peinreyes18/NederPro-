@@ -255,6 +255,229 @@ export const blogPosts: BlogPost[] = [
 <p>For the speaking component, practise with native speakers via language exchange (Tandem, HelloTalk) or Dutch conversation groups — this is the one component that needs live practice.</p>
     `.trim(),
   },
+  {
+    slug: 'how-long-to-learn-dutch',
+    title: 'How Long Does It Take to Learn Dutch? A Realistic Timeline',
+    description: 'Find out exactly how long it takes to reach A2, B1, and B2 in Dutch — based on CEFR research, study hours, and what actually makes learners progress faster.',
+    publishedAt: '2026-02-20',
+    readingTime: 7,
+    tags: ['Dutch learning', 'language learning', 'CEFR', 'Dutch timeline'],
+    content: `
+<h2>The short answer: Dutch takes 600–750 hours to reach B2</h2>
+<p>According to the Foreign Service Institute (FSI), Dutch is a Category I language — meaning it takes an English speaker approximately <strong>600–750 class hours</strong> to reach professional working proficiency (roughly B2 level). That makes it one of the fastest major European languages to learn.</p>
+<p>In practice, however, FSI estimates are for intensive, supervised instruction. Self-study takes longer. Here's a more realistic breakdown for adult learners studying independently.</p>
+
+<h2>Time to reach each CEFR level</h2>
+<h3>A1 — Breakthrough (approx. 80–120 hours)</h3>
+<p>At A1 you can introduce yourself, handle very simple exchanges, and read basic notices and signs. This takes most adult self-studiers <strong>2–4 months</strong> at 1 hour per day.</p>
+<p>What you'll have mastered: present tense, de/het articles, basic word order, numbers, personal pronouns, common greetings and expressions.</p>
+
+<h3>A2 — Waystage (approx. 200–300 hours total)</h3>
+<p>A2 is the level required for the Dutch Inburgeringsexamen. You can handle familiar everyday situations — shopping, travelling, simple work conversations. Self-studiers typically reach A2 in <strong>6–12 months</strong>.</p>
+<p>What you'll add: perfect tense, modal verbs, separable verbs, subordinate clauses, comparative adjectives.</p>
+
+<h3>B1 — Threshold (approx. 400–500 hours total)</h3>
+<p>B1 is required for the Staatsexamen NT2 Programma I and for many MBO-level qualifications. You can follow the main points of clear standard Dutch on familiar subjects. <strong>12–18 months</strong> is a typical timeline for dedicated self-studiers.</p>
+<p>What you'll add: passive voice, relative clauses, conditional sentences, infinitive constructions, formal register.</p>
+
+<h3>B2 — Vantage (approx. 600–750 hours total)</h3>
+<p>B2 is required for university admission and the Staatsexamen NT2 Programma II. You can understand complex texts and interact fluently with native speakers. From A0, most self-studiers reach B2 in <strong>24–36 months</strong>.</p>
+
+<h2>What makes you progress faster</h2>
+<p>These factors can cut your timeline by 30–50%:</p>
+<ul>
+  <li><strong>Consistency over intensity.</strong> 30 minutes every day beats 4-hour weekend sessions. Your brain consolidates language during sleep — daily exposure is more effective than irregular cramming.</li>
+  <li><strong>Active production, not just passive consumption.</strong> Reading and listening build recognition. Writing and speaking build production. Exam success and real communication require both.</li>
+  <li><strong>Structured grammar from the start.</strong> Apps that delay grammar in favour of gamification leave learners unable to form original sentences. Learning grammar explicitly accelerates every other skill.</li>
+  <li><strong>Spaced repetition for vocabulary.</strong> Using a spaced repetition system (SRS) means you review vocabulary at exactly the moment you're about to forget it — making each review count far more.</li>
+  <li><strong>Using Dutch daily outside lessons.</strong> Change your phone language, watch Dutch TV with Dutch subtitles, read a Dutch news site. Immersion outside class doubles your input hours with no extra study time.</li>
+</ul>
+
+<h2>A realistic weekly study plan</h2>
+<p>If you're targeting A2 in 9 months (the Inburgeringsexamen timeline):</p>
+<ul>
+  <li><strong>Monday–Friday:</strong> 30 minutes — one grammar topic + 10 vocabulary flashcards</li>
+  <li><strong>Saturday:</strong> 60 minutes — review weak topics + one exercise set</li>
+  <li><strong>Sunday:</strong> 30 minutes — listen to Dutch audio, read a short Dutch text</li>
+</ul>
+<p>That's roughly 3.5 hours per week, or ~150 hours in 9 months — achievable for A2.</p>
+
+<h2>The biggest time-waster: switching methods</h2>
+<p>The single biggest reason Dutch learners take longer than necessary is constantly switching between apps, courses, and methods. Every switch costs you time as you restart from the beginning of a new system's curriculum. Pick a structured path and follow it from A0 to your target level.</p>
+<p>NederPro is built around a single linear path: <a href="/levels/a0">A0</a> → <a href="/levels/a1">A1</a> → <a href="/levels/a2">A2</a> → <a href="/levels/b1">B1</a> → <a href="/levels/b2">B2</a>. Each level builds on the last. Every grammar topic has exercises, and the exam practice section prepares you specifically for the Inburgeringsexamen or Staatsexamen NT2.</p>
+    `.trim(),
+  },
+  {
+    slug: 'dutch-vocabulary-beginners',
+    title: 'Dutch Vocabulary for Beginners: The 500 Words You Need First',
+    description: 'The most important Dutch vocabulary for A0–A1 learners — organised by category with pronunciation tips, and a study strategy that makes words stick.',
+    publishedAt: '2026-03-01',
+    readingTime: 8,
+    tags: ['Dutch vocabulary', 'Dutch words', 'beginners', 'A1 Dutch'],
+    content: `
+<h2>Why vocabulary matters more at A0, and grammar matters more at A1</h2>
+<p>When you start learning Dutch from scratch, your first goal is simple: understand and be understood. That requires words. In the first few weeks, building a core vocabulary of 200–300 high-frequency words will move you further than studying grammar rules you have no words to apply.</p>
+<p>At A1, the balance shifts. You have enough words to form sentences — but without grammar, those sentences don't make sense. From A1 onward, grammar and vocabulary grow together.</p>
+
+<h2>Category 1: Greetings and everyday phrases</h2>
+<p>These are the words you'll use from day one. Learn them as complete phrases, not individual words.</p>
+<ul>
+  <li><strong>Hallo / Hoi</strong> — Hello / Hi (informal)</li>
+  <li><strong>Goedemorgen / Goedemiddag / Goedenavond</strong> — Good morning / afternoon / evening</li>
+  <li><strong>Dag / Doei</strong> — Goodbye (formal) / Bye (informal)</li>
+  <li><strong>Tot ziens / Tot straks</strong> — See you / See you later</li>
+  <li><strong>Alsjeblieft / Alstublieft</strong> — Please (informal/formal)</li>
+  <li><strong>Dankjewel / Dank u wel</strong> — Thank you (informal/formal)</li>
+  <li><strong>Graag gedaan</strong> — You're welcome</li>
+  <li><strong>Sorry / Pardon</strong> — Sorry / Excuse me</li>
+  <li><strong>Hoe gaat het?</strong> — How are you?</li>
+  <li><strong>Goed, dankjewel</strong> — Good, thank you</li>
+</ul>
+
+<h2>Category 2: Numbers 1–20</h2>
+<p>Numbers come up constantly. Memorise 1–20 as quickly as possible.</p>
+<p>een, twee, drie, vier, vijf, zes, zeven, acht, negen, tien, elf, twaalf, dertien, veertien, vijftien, zestien, zeventien, achttien, negentien, twintig</p>
+<p><strong>Pronunciation note:</strong> The Dutch <em>ij</em> in <em>vijf</em> and <em>vijftien</em> sounds like English "eye". The <em>ei</em> in <em>tein</em> sounds similar.</p>
+
+<h2>Category 3: Question words</h2>
+<p>Master these early — they unlock every type of conversation.</p>
+<ul>
+  <li><strong>Wie</strong> — Who</li>
+  <li><strong>Wat</strong> — What</li>
+  <li><strong>Waar</strong> — Where</li>
+  <li><strong>Wanneer</strong> — When</li>
+  <li><strong>Hoe</strong> — How</li>
+  <li><strong>Waarom</strong> — Why</li>
+  <li><strong>Welk / Welke</strong> — Which</li>
+  <li><strong>Hoeveel</strong> — How many / How much</li>
+</ul>
+
+<h2>Category 4: High-frequency verbs</h2>
+<p>These 20 verbs cover the vast majority of everyday sentences at A0–A1.</p>
+<ul>
+  <li><strong>zijn</strong> — to be</li>
+  <li><strong>hebben</strong> — to have</li>
+  <li><strong>gaan</strong> — to go</li>
+  <li><strong>komen</strong> — to come</li>
+  <li><strong>doen</strong> — to do</li>
+  <li><strong>maken</strong> — to make</li>
+  <li><strong>zeggen</strong> — to say</li>
+  <li><strong>weten</strong> — to know (a fact)</li>
+  <li><strong>kennen</strong> — to know (a person/place)</li>
+  <li><strong>willen</strong> — to want</li>
+  <li><strong>kunnen</strong> — can / to be able to</li>
+  <li><strong>moeten</strong> — must / to have to</li>
+  <li><strong>mogen</strong> — may / to be allowed to</li>
+  <li><strong>werken</strong> — to work</li>
+  <li><strong>wonen</strong> — to live (reside)</li>
+  <li><strong>spreken</strong> — to speak</li>
+  <li><strong>eten</strong> — to eat</li>
+  <li><strong>drinken</strong> — to drink</li>
+  <li><strong>zien</strong> — to see</li>
+  <li><strong>heten</strong> — to be called (Ik heet...)</li>
+</ul>
+
+<h2>Category 5: People and relationships</h2>
+<ul>
+  <li><strong>man / vrouw</strong> — man / woman</li>
+  <li><strong>vader / moeder</strong> — father / mother</li>
+  <li><strong>zoon / dochter</strong> — son / daughter</li>
+  <li><strong>broer / zus</strong> — brother / sister</li>
+  <li><strong>vriend / vriendin</strong> — male friend / female friend (or boyfriend/girlfriend)</li>
+  <li><strong>collega</strong> — colleague</li>
+  <li><strong>buurman / buurvrouw</strong> — male/female neighbour</li>
+</ul>
+
+<h2>Category 6: Places and directions</h2>
+<ul>
+  <li><strong>huis</strong> (het) — house</li>
+  <li><strong>straat</strong> (de) — street</li>
+  <li><strong>stad</strong> (de) — city</li>
+  <li><strong>winkel</strong> (de) — shop</li>
+  <li><strong>supermarkt</strong> (de) — supermarket</li>
+  <li><strong>station</strong> (het) — train station</li>
+  <li><strong>links / rechts</strong> — left / right</li>
+  <li><strong>rechtdoor</strong> — straight ahead</li>
+  <li><strong>dichtbij / ver weg</strong> — nearby / far away</li>
+</ul>
+
+<h2>How to make vocabulary stick</h2>
+<p><strong>1. Learn words in sentences, not in isolation.</strong> <em>Ik woon in Amsterdam</em> is more memorable than <em>wonen = to live</em> in a list.</p>
+<p><strong>2. Use spaced repetition.</strong> Review new words after 1 day, 3 days, 7 days, 14 days. This schedule matches the natural forgetting curve and converts short-term to long-term memory efficiently.</p>
+<p><strong>3. Always learn nouns with their article.</strong> Say <em>de straat</em>, not just <em>straat</em>. Say <em>het huis</em>, not just <em>huis</em>. The article is part of the word.</p>
+<p><strong>4. Prioritise high-frequency words.</strong> The 500 most common Dutch words account for roughly 75% of everyday spoken Dutch. Focus there before expanding to specialist vocabulary.</p>
+<p>NederPro's <a href="/vocabulary">vocabulary section</a> organises Dutch words by category (daily life, work, travel, emotions) with built-in spaced repetition and audio pronunciation.</p>
+    `.trim(),
+  },
+  {
+    slug: 'dutch-pronunciation-guide',
+    title: 'Dutch Pronunciation Guide: Every Sound Explained for English Speakers',
+    description: 'Master Dutch pronunciation from scratch — the famous Dutch G, vowel sounds, diphthongs, and the consonants that trip up English speakers. With examples and tips.',
+    publishedAt: '2026-03-15',
+    readingTime: 8,
+    tags: ['Dutch pronunciation', 'Dutch sounds', 'speak Dutch', 'Dutch phonetics'],
+    content: `
+<h2>Why Dutch pronunciation is worth studying properly</h2>
+<p>Dutch sounds strange to English ears at first. The guttural G, the long vowels, the diphthongs — none of them exist in English. But Dutch pronunciation is more consistent than English: once you learn the patterns, you can read almost any Dutch word aloud correctly. There are far fewer exceptions than in English spelling.</p>
+<p>Getting pronunciation right early matters for two reasons: it makes you easier to understand, and it makes listening comprehension much easier because you recognise words you already know.</p>
+
+<h2>The Dutch G — the most notorious sound</h2>
+<p>The Dutch <em>g</em> is a voiced velar fricative — the same sound as the <em>ch</em> in Scottish "loch" or Spanish "j", but voiced (with your vocal cords active). English has no equivalent.</p>
+<p><strong>How to produce it:</strong> Place the back of your tongue near your soft palate (velum) and let air pass through while vibrating your vocal cords. It should feel like a gentle gargling sound in the back of your throat.</p>
+<p><strong>Examples:</strong> <em>goed</em> (good), <em>gaan</em> (to go), <em>groot</em> (big), <em>groen</em> (green)</p>
+<p><strong>Note:</strong> In the Netherlands, the G is softer than in Belgium. Southern Dutch G is very close to the Scottish loch sound.</p>
+
+<h2>Dutch vowels: long vs. short</h2>
+<p>Dutch has a clear distinction between short and long vowels. The spelling signals this:</p>
+<ul>
+  <li>A vowel is <strong>long</strong> when it appears in an open syllable (a syllable ending in the vowel itself): <em>bo-ter</em> (butter) — long O</li>
+  <li>A vowel is <strong>short</strong> when it appears in a closed syllable (followed by a consonant in the same syllable): <em>pot</em> (pot) — short O</li>
+  <li>A double vowel (<em>aa, ee, oo, uu</em>) is always long: <em>maan</em> (moon), <em>been</em> (leg), <em>boot</em> (boat)</li>
+</ul>
+
+<h3>The main vowels</h3>
+<ul>
+  <li><strong>a</strong> (short) — like the <em>a</em> in "cat": <em>bad</em> (bath), <em>man</em> (man)</li>
+  <li><strong>aa / a</strong> (long) — like the <em>a</em> in "father" but more closed: <em>maan</em> (moon), <em>vader</em> (father)</li>
+  <li><strong>e</strong> (short) — like the <em>e</em> in "bed": <em>bed</em> (bed), <em>pen</em> (pen)</li>
+  <li><strong>ee / e</strong> (long) — like the <em>ay</em> in "day" but without the glide: <em>been</em> (leg), <em>meter</em> (metre)</li>
+  <li><strong>i</strong> (short) — like the <em>i</em> in "bit": <em>dit</em> (this)</li>
+  <li><strong>ie</strong> (long) — like the <em>ee</em> in "see": <em>niet</em> (not), <em>vier</em> (four)</li>
+  <li><strong>o</strong> (short) — like the <em>o</em> in "hot": <em>pot</em> (pot), <em>kom</em> (bowl)</li>
+  <li><strong>oo / o</strong> (long) — like the <em>o</em> in "go" but without the glide: <em>boot</em> (boat), <em>zo</em> (so)</li>
+  <li><strong>u</strong> (short) — rounded, between English <em>uh</em> and French <em>u</em>: <em>bus</em> (bus)</li>
+  <li><strong>uu / u</strong> (long) — like French <em>u</em>: round your lips tightly and say "ee": <em>uur</em> (hour), <em>duur</em> (expensive)</li>
+</ul>
+
+<h2>Dutch diphthongs</h2>
+<p>Diphthongs are vowel combinations that glide from one sound to another.</p>
+<ul>
+  <li><strong>ij / ei</strong> — like English "eye": <em>zijn</em> (to be), <em>mijn</em> (my), <em>wijn</em> (wine)</li>
+  <li><strong>ou / au</strong> — like English "ow" in "now": <em>oud</em> (old), <em>blauw</em> (blue)</li>
+  <li><strong>ui</strong> — no English equivalent. Round your lips (like <em>uu</em>) and say "eye". This is the hardest Dutch diphthong: <em>huis</em> (house), <em>buiten</em> (outside)</li>
+  <li><strong>oe</strong> — like English "oo" in "pool": <em>boek</em> (book), <em>doen</em> (to do)</li>
+  <li><strong>eu</strong> — like French <em>eu</em>: round lips in an "o" shape and say "e": <em>neus</em> (nose), <em>leuk</em> (nice/fun), <em>deur</em> (door)</li>
+</ul>
+
+<h2>Key consonants that differ from English</h2>
+<ul>
+  <li><strong>v</strong> — softer than English, almost like an <em>f</em>: <em>vader</em> (father), <em>vier</em> (four)</li>
+  <li><strong>w</strong> — between English <em>v</em> and <em>w</em>: press your top teeth lightly on your lower lip: <em>water</em>, <em>wonen</em></li>
+  <li><strong>r</strong> — can be trilled (tongue-tip) in the south or guttural (throat) in standard Dutch: <em>rood</em> (red)</li>
+  <li><strong>ch</strong> — the same sound as the Dutch G: <em>acht</em> (eight), <em>licht</em> (light)</li>
+  <li><strong>j</strong> — always a <em>y</em> sound as in English "yes": <em>jaar</em> (year), <em>jij</em> (you)</li>
+  <li><strong>ng</strong> — like English <em>ng</em> in "ring": <em>lang</em> (long), <em>zingen</em> (to sing)</li>
+</ul>
+
+<h2>Stress patterns</h2>
+<p>Dutch word stress generally falls on the root of the word, not on prefixes. Prefixes like <em>be-, ge-, ver-, ont-, her-</em> are usually unstressed: <em>be<strong>gin</strong></em>, <em>ge<strong>mak</strong></em>, <em>ver<strong>dacht</strong></em>.</p>
+<p>In compound words, stress usually falls on the first element: <em><strong>zon</strong>dag</em> (Sunday), <em><strong>huis</strong>werk</em> (homework).</p>
+
+<h2>The fastest way to improve your pronunciation</h2>
+<p>The most effective practice is <strong>shadowing</strong>: listen to a Dutch sentence, pause the audio, and repeat it immediately, trying to match the sounds exactly. Do this with short phrases at first, then extend to longer sentences.</p>
+<p>NederPro's <a href="/levels/a0">A0 pronunciation module</a> covers every sound with audio examples and exercises. Each vocabulary word in the app can be played aloud so you always hear the correct pronunciation alongside the written form.</p>
+    `.trim(),
+  },
 ];
 
 export function getBlogPost(slug: string): BlogPost | undefined {

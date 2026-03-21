@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
+import { trackBeginCheckout } from '@/lib/analytics';
 
 type Plan = 'biweekly' | 'monthly';
 
@@ -30,6 +31,7 @@ export default function SubscribePage() {
   async function handleStartTrial() {
     setLoading(true);
     setError(null);
+    trackBeginCheckout(selected);
 
     try {
       const res = await fetch('/api/stripe/create-checkout', {

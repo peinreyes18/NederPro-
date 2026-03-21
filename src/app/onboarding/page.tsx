@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 import Button from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
+import { trackOnboardingComplete } from '@/lib/analytics';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -278,6 +279,7 @@ export default function OnboardingPage() {
     }
 
     setSaving(false);
+    if (goal && level) trackOnboardingComplete(goal, level);
     // Send unsubscribed users to the subscribe page first, then to their level
     if (!isSubscribed) {
       router.push(`/subscribe`);

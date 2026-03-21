@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
+import { trackSignUp } from '@/lib/analytics';
 
 function SignUpForm() {
   const { signUp } = useAuth();
@@ -43,6 +44,7 @@ function SignUpForm() {
     if (error) {
       setError(error);
     } else {
+      trackSignUp();
       setSuccess(true);
     }
   }

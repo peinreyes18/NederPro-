@@ -478,6 +478,323 @@ export const blogPosts: BlogPost[] = [
 <p>NederPro's <a href="/levels/a0">A0 pronunciation module</a> covers every sound with audio examples and exercises. Each vocabulary word in the app can be played aloud so you always hear the correct pronunciation alongside the written form.</p>
     `.trim(),
   },
+  {
+    slug: 'de-vs-het-dutch-articles',
+    title: 'De vs Het: The Complete Guide to Dutch Articles (With Patterns)',
+    description: 'Master the Dutch de/het distinction once and for all. Learn the rules, patterns, and memory tricks that actually work — so you stop guessing every time.',
+    publishedAt: '2026-03-18',
+    readingTime: 8,
+    tags: ['Dutch grammar', 'de het', 'Dutch articles', 'Dutch for beginners'],
+    content: `
+<h2>Why de and het are so hard — and why they don't have to be</h2>
+<p>The Dutch article system trips up almost every English speaker learning Dutch. English has one definite article: <em>the</em>. Dutch has two: <em>de</em> and <em>het</em>. There is no reliable grammatical rule that tells you which one a given noun takes — you have to learn them together.</p>
+<p>The good news: <em>het</em> words make up only about 20% of Dutch nouns. When in doubt, <em>de</em> is right four times out of five. And there are patterns that significantly reduce how much you need to memorise.</p>
+
+<h2>The basic rule</h2>
+<p>Dutch nouns take one of two definite articles:</p>
+<ul>
+  <li><strong>de</strong> — used with common gender nouns (historically masculine and feminine)</li>
+  <li><strong>het</strong> — used with neuter gender nouns</li>
+</ul>
+<p>The indefinite article is always <strong>een</strong> (like English "a/an") — it never changes based on gender. So <em>een huis</em> and <em>een auto</em> both use <em>een</em>. The de/het distinction only applies to definite nouns.</p>
+
+<h2>Patterns that are always het</h2>
+<p>These rules have no exceptions. Learn them first — they'll immediately classify a large chunk of vocabulary.</p>
+
+<h3>1. All diminutives (-je endings)</h3>
+<p>Every word ending in <em>-je</em>, <em>-tje</em>, <em>-etje</em>, <em>-pje</em>, or <em>-kje</em> is always <em>het</em>:</p>
+<ul>
+  <li><em>het boekje</em> (little book)</li>
+  <li><em>het meisje</em> (girl — literally "little maid")</li>
+  <li><em>het hondje</em> (little dog)</li>
+  <li><em>het kopje</em> (cup)</li>
+</ul>
+<p>This is one of the most useful rules in Dutch. The diminutive is extremely common in everyday speech.</p>
+
+<h3>2. All verbs used as nouns (infinitive nominalisations)</h3>
+<p>When a verb is used as a noun (like "swimming" or "eating" in English), it always takes <em>het</em>:</p>
+<ul>
+  <li><em>het eten</em> (the eating / the food)</li>
+  <li><em>het rijden</em> (the driving)</li>
+  <li><em>het lopen</em> (the walking)</li>
+</ul>
+
+<h3>3. Most two-syllable words with these prefixes</h3>
+<p>Words beginning with <em>be-, ge-, ver-, ont-</em> are usually <em>het</em> when they are neuter nominalisations:</p>
+<ul>
+  <li><em>het begin</em> (the beginning)</li>
+  <li><em>het gevoel</em> (the feeling)</li>
+  <li><em>het verbod</em> (the prohibition)</li>
+  <li><em>het ontbijt</em> (the breakfast)</li>
+</ul>
+
+<h3>4. Languages and names of languages</h3>
+<ul>
+  <li><em>het Nederlands</em> (Dutch)</li>
+  <li><em>het Engels</em> (English)</li>
+  <li><em>het Frans</em> (French)</li>
+</ul>
+
+<h3>5. Metals and chemical elements</h3>
+<ul>
+  <li><em>het goud</em> (gold), <em>het zilver</em> (silver), <em>het ijzer</em> (iron)</li>
+</ul>
+
+<h3>6. Names of sports and games</h3>
+<ul>
+  <li><em>het voetbal</em> (football), <em>het tennis</em> (tennis), <em>het schaken</em> (chess)</li>
+</ul>
+
+<h2>Patterns that are always de</h2>
+
+<h3>1. All plurals</h3>
+<p>This is absolute. Every Dutch noun in its plural form takes <em>de</em>, regardless of what article the singular takes:</p>
+<ul>
+  <li><em>het huis</em> → <em>de huizen</em> (the houses)</li>
+  <li><em>het kind</em> → <em>de kinderen</em> (the children)</li>
+  <li><em>de auto</em> → <em>de auto's</em> (the cars)</li>
+</ul>
+
+<h3>2. People and their professions</h3>
+<p>Words referring to people, their roles, and professions are almost always <em>de</em>:</p>
+<ul>
+  <li><em>de man</em> (the man), <em>de vrouw</em> (the woman)</li>
+  <li><em>de leraar</em> (the teacher), <em>de dokter</em> (the doctor)</li>
+  <li><em>de student</em> (the student), <em>de minister</em> (the minister)</li>
+</ul>
+<p>Exception: <em>het kind</em> (the child) and <em>het meisje</em> (the girl) are <em>het</em>.</p>
+
+<h3>3. Most word endings</h3>
+<p>Words ending in these suffixes are almost always <em>de</em>:</p>
+<ul>
+  <li><strong>-ing:</strong> <em>de vergadering</em> (the meeting), <em>de opleiding</em> (the training)</li>
+  <li><strong>-heid:</strong> <em>de vrijheid</em> (freedom), <em>de moeilijkheid</em> (the difficulty)</li>
+  <li><strong>-schap:</strong> <em>de vriendschap</em> (friendship), <em>de wetenschap</em> (science)</li>
+  <li><strong>-ie:</strong> <em>de politie</em> (the police), <em>de functie</em> (the function)</li>
+  <li><strong>-ij:</strong> <em>de bakkerij</em> (the bakery), <em>de moeilijkheid</em></li>
+  <li><strong>-nis:</strong> <em>de kennis</em> (the knowledge), <em>de gevangenis</em> (the prison)</li>
+  <li><strong>-st:</strong> <em>de kunst</em> (the art), <em>de winst</em> (the profit)</li>
+</ul>
+
+<h2>The practical strategy</h2>
+<p>Rather than trying to memorise a complete list of de/het words, use this approach:</p>
+<ol>
+  <li><strong>Always learn new nouns with their article.</strong> Not just <em>huis</em> but <em>het huis</em>. This is the single most important habit.</li>
+  <li><strong>Apply the suffix rules immediately.</strong> When you see a new <em>-ing</em> or <em>-heid</em> word, you already know it's <em>de</em>.</li>
+  <li><strong>Default to <em>de</em> when unsure.</strong> You'll be right 80% of the time.</li>
+  <li><strong>Focus on the exceptions.</strong> The <em>het</em> words are the minority — learn them specifically.</li>
+</ol>
+
+<h2>The most common het words to memorise</h2>
+<p>These high-frequency words don't follow predictable patterns and are worth learning explicitly:</p>
+<ul>
+  <li><em>het huis</em> — house</li>
+  <li><em>het jaar</em> — year</li>
+  <li><em>het land</em> — country</li>
+  <li><em>het kind</em> — child</li>
+  <li><em>het werk</em> — work</li>
+  <li><em>het water</em> — water</li>
+  <li><em>het geld</em> — money</li>
+  <li><em>het leven</em> — life</li>
+  <li><em>het oog</em> — eye</li>
+  <li><em>het been</em> — leg / bone</li>
+  <li><em>het hoofd</em> — head</li>
+  <li><em>het hart</em> — heart</li>
+  <li><em>het woord</em> — word</li>
+  <li><em>het boek</em> — book</li>
+  <li><em>het probleem</em> — problem</li>
+</ul>
+<p>NederPro's <a href="/reference/de-het-list">de/het reference list</a> includes the 500 most common Dutch nouns with their articles, and the <a href="/vocabulary">vocabulary practice</a> section drills them with spaced repetition so the correct article becomes automatic.</p>
+    `.trim(),
+  },
+  {
+    slug: 'dutch-false-friends',
+    title: 'Dutch False Friends: 35 Words That Fool English Speakers',
+    description: 'Dutch looks like English — until it doesn\'t. These false cognates have tripped up English speakers for decades. Learn them now so you don\'t make embarrassing mistakes.',
+    publishedAt: '2026-03-19',
+    readingTime: 7,
+    tags: ['Dutch vocabulary', 'Dutch words', 'false friends', 'Dutch mistakes'],
+    content: `
+<h2>Why Dutch false friends are so dangerous</h2>
+<p>Dutch and English share thousands of cognates — words that look and mean the same: <em>arm</em> (arm), <em>bank</em> (bank), <em>hand</em> (hand), <em>winter</em> (winter). This overlap makes Dutch one of the easiest languages for English speakers to start learning.</p>
+<p>But it also creates a trap. Some Dutch words look exactly like English words — but mean something completely different. These are called <strong>false friends</strong> (valse vrienden). Misusing them can cause confusion, embarrassment, or genuine misunderstanding.</p>
+<p>Here are the most common ones, grouped by how misleading they are.</p>
+
+<h2>Everyday false friends</h2>
+
+<h3>actueel — not "actual"</h3>
+<p><strong>What it means:</strong> current, topical, up-to-date<br />
+<strong>Dutch:</strong> <em>Dit is een actueel probleem.</em> (This is a current/topical problem.)<br />
+<strong>For "actual":</strong> use <em>werkelijk</em> or <em>echt</em></p>
+
+<h3>eventually — not "eventually"</h3>
+<p><strong>eventueel</strong> means "possibly" or "if necessary", not "eventually"<br />
+<strong>Dutch:</strong> <em>Eventueel kan ik helpen.</em> (I could possibly help.)<br />
+<strong>For "eventually":</strong> use <em>uiteindelijk</em> or <em>uindelijk</em></p>
+
+<h3>sympathiek — not "sympathetic"</h3>
+<p><strong>What it means:</strong> likeable, pleasant, nice<br />
+<strong>Dutch:</strong> <em>Hij is een sympathieke man.</em> (He's a nice/likeable man.)<br />
+<strong>For "sympathetic":</strong> use <em>meevoelend</em> or <em>begripvol</em></p>
+
+<h3>brutaal — not "brutal"</h3>
+<p><strong>What it means:</strong> cheeky, impudent, rude (in a bold way)<br />
+<strong>Dutch:</strong> <em>Wat een brutaal kind!</em> (What a cheeky child!)<br />
+<strong>For "brutal":</strong> use <em>wreed</em> or <em>meedogenloos</em></p>
+
+<h3>slim — not "slim"</h3>
+<p><strong>What it means:</strong> clever, smart, intelligent<br />
+<strong>Dutch:</strong> <em>Ze is heel slim.</em> (She's very smart.)<br />
+<strong>For "slim" (thin):</strong> use <em>slank</em></p>
+
+<h3>map — not "map"</h3>
+<p><strong>What it means:</strong> folder, file (the kind you keep papers in)<br />
+<strong>Dutch:</strong> <em>Doe het in de map.</em> (Put it in the folder.)<br />
+<strong>For "map":</strong> use <em>kaart</em> or <em>plattegrond</em></p>
+
+<h2>Professional and formal false friends</h2>
+
+<h3>bureau — broader than "bureau"</h3>
+<p><strong>What it means:</strong> desk, office, or agency<br />
+<strong>Dutch:</strong> <em>Mijn bureau is rommelig.</em> (My desk is messy.) or <em>een reisbureau</em> (a travel agency)</p>
+
+<h3>college — not "college"</h3>
+<p><strong>What it means:</strong> a university lecture<br />
+<strong>Dutch:</strong> <em>Ik ga naar een college.</em> (I'm going to a lecture.)<br />
+<strong>For "college":</strong> use <em>hogeschool</em> or <em>universiteit</em></p>
+
+<h3>kandidaat — narrower than "candidate"</h3>
+<p>In Dutch this specifically means a job or election candidate — not someone who is merely being considered informally.</p>
+
+<h3>presenteren — not always "to present"</h3>
+<p><strong>What it also means:</strong> to host (a TV show), to introduce<br />
+<em>Hij presenteert het nieuws.</em> (He hosts the news.) — not just presenting information</p>
+
+<h2>Social situations</h2>
+
+<h3>normaal — stronger than "normal"</h3>
+<p>In Dutch, telling someone <em>doe normaal</em> (act normal) is a sharp criticism — essentially "stop being ridiculous." It's more confrontational than it sounds in English.</p>
+
+<h3>geluk — two meanings</h3>
+<p><strong>What it means:</strong> happiness OR luck<br />
+<em>Veel geluk!</em> = Good luck!<br />
+<em>Ik voel veel geluk.</em> = I feel a lot of happiness.</p>
+
+<h3>stout — not "stout"</h3>
+<p><strong>What it means:</strong> naughty (for children)<br />
+<strong>Dutch:</strong> <em>Wees niet stout.</em> (Don't be naughty.)<br />
+<strong>For the beer style:</strong> Dutch also uses <em>stout</em>, but it only otherwise means naughty.</p>
+
+<h3>lief — not "life"</h3>
+<p><strong>What it means:</strong> sweet, kind, dear<br />
+<strong>Dutch:</strong> <em>Wat lief van je!</em> (How sweet/kind of you!)<br />
+<strong>For "life":</strong> use <em>leven</em></p>
+
+<h2>False friends that can cause real embarrassment</h2>
+
+<h3>bad — not "bad"</h3>
+<p><strong>What it means:</strong> bath<br />
+<em>Ik neem een bad.</em> = I'm taking a bath.<br />
+<strong>For "bad":</strong> use <em>slecht</em></p>
+
+<h3>raar — not "rare"</h3>
+<p><strong>What it means:</strong> strange, weird<br />
+<em>Dat is raar.</em> = That's strange/weird.<br />
+<strong>For "rare" (uncommon):</strong> use <em>zeldzaam</em></p>
+
+<h3>worden — not "words"</h3>
+<p><strong>What it means:</strong> to become<br />
+<em>Ik word moe.</em> = I'm becoming tired.<br />
+<strong>For "words":</strong> use <em>woorden</em></p>
+
+<h3>winkel — not "wrinkle"</h3>
+<p><strong>What it means:</strong> shop, store<br />
+<em>De winkel is gesloten.</em> = The shop is closed.</p>
+
+<h2>The key lesson</h2>
+<p>When a Dutch word looks like an English word, don't assume they mean the same thing — especially in a professional or social context. The safest approach is to always verify in a dictionary when you're unsure.</p>
+<p>NederPro's <a href="/vocabulary">vocabulary section</a> includes common false friends flagged with usage notes, and the grammar lessons highlight the most frequently confused words at each CEFR level.</p>
+    `.trim(),
+  },
+  {
+    slug: 'moving-to-netherlands-dutch-guide',
+    title: 'Moving to the Netherlands: The Dutch You Need Before You Arrive',
+    description: 'A practical guide to the Dutch language skills that actually matter when you first move to the Netherlands — from registering at the gemeente to navigating everyday life.',
+    publishedAt: '2026-03-20',
+    readingTime: 9,
+    tags: ['moving to Netherlands', 'expat Dutch', 'learn Dutch', 'Netherlands expat'],
+    content: `
+<h2>You don't need to be fluent. You need to be functional.</h2>
+<p>Most people moving to the Netherlands worry about speaking perfect Dutch before they arrive. That's the wrong goal. The Netherlands has one of the highest English proficiency rates in the world — in Amsterdam, The Hague, and Rotterdam, you can get by in English almost everywhere.</p>
+<p>But "getting by" and "integrating" are different things. Dutch people switch to English the moment they sense you're struggling — which means if your Dutch is shaky, you'll never get the practice you need to improve. And without Dutch, you're excluded from a large part of daily life: local communities, government services, the housing market, and Dutch-language workplaces.</p>
+<p>Here's what Dutch you actually need, in order of urgency.</p>
+
+<h2>Before you arrive: survival Dutch (A0)</h2>
+<p>These basics will help you in your first week:</p>
+<ul>
+  <li><strong>Greetings:</strong> <em>Hallo, goedemorgen, goedemiddag, goedenavond, dag, tot ziens</em></li>
+  <li><strong>Politeness:</strong> <em>Alstublieft</em> (please / here you go), <em>dank u wel</em> (thank you), <em>graag gedaan</em> (you're welcome), <em>sorry, pardon</em></li>
+  <li><strong>Asking for help:</strong> <em>Spreekt u Engels?</em> (Do you speak English?), <em>Kunt u mij helpen?</em> (Can you help me?), <em>Ik begrijp het niet.</em> (I don't understand.)</li>
+  <li><strong>Numbers:</strong> 1–100 for prices, addresses, and phone numbers</li>
+  <li><strong>Basic directions:</strong> <em>links</em> (left), <em>rechts</em> (right), <em>rechtdoor</em> (straight ahead), <em>hier</em> (here), <em>daar</em> (there)</li>
+</ul>
+
+<h2>Month one: administrative Dutch</h2>
+<p>Your first month involves a lot of paperwork. Most Dutch government forms are available in English, but knowing the Dutch terms helps enormously.</p>
+
+<h3>The gemeente (municipality)</h3>
+<p>You must register at your local gemeente within 5 days of moving in. Key vocabulary:</p>
+<ul>
+  <li><em>inschrijven</em> — to register</li>
+  <li><em>burgerservicenummer (BSN)</em> — citizen service number (like a national ID number, essential for everything)</li>
+  <li><em>DigiD</em> — digital identity for government websites</li>
+  <li><em>paspoort / identiteitsbewijs</em> — passport / ID card</li>
+  <li><em>huurcontract</em> — rental contract</li>
+</ul>
+
+<h3>Health insurance (zorgverzekering)</h3>
+<p>You must arrange Dutch health insurance within 4 months of registering. Key terms:</p>
+<ul>
+  <li><em>zorgverzekering</em> — health insurance</li>
+  <li><em>eigen risico</em> — deductible (the amount you pay before insurance covers costs)</li>
+  <li><em>huisarts</em> — general practitioner / family doctor</li>
+  <li><em>apotheek</em> — pharmacy</li>
+  <li><em>spoedeisende hulp</em> — emergency room</li>
+</ul>
+
+<h3>Banking</h3>
+<ul>
+  <li><em>betaalrekening</em> — current account / checking account</li>
+  <li><em>spaarrekening</em> — savings account</li>
+  <li><em>pinnen</em> — to pay by card (PIN payment)</li>
+  <li><em>iDEAL</em> — the Dutch online payment system (used for almost all Dutch websites)</li>
+</ul>
+
+<h2>Month two onward: workplace Dutch</h2>
+<p>Even if your workplace operates in English, Dutch colleagues will switch to Dutch in meetings, at lunch, and in casual conversation. Understanding these situations — even passively — matters for your career.</p>
+<p>Key phrases for Dutch workplaces:</p>
+<ul>
+  <li><em>vergadering</em> — meeting</li>
+  <li><em>agenda</em> — agenda / schedule (not "agenda" in the political sense)</li>
+  <li><em>deadline</em> — same as English</li>
+  <li><em>collega's</em> — colleagues</li>
+  <li><em>verlof</em> — leave (annual leave)</li>
+  <li><em>ziek melden</em> — to call in sick</li>
+  <li><em>loonstrook</em> — pay slip</li>
+</ul>
+
+<h2>The Inburgeringsexamen: do you need it?</h2>
+<p>If you're a non-EU citizen, you likely need to pass the <strong>Inburgeringsexamen</strong> (civic integration exam) to obtain a permanent residence permit. This tests Dutch at A2 level across reading, writing, listening, and speaking — plus knowledge of Dutch society (KNM).</p>
+<p>The deadline to pass is typically within 3 years of receiving your residence permit, though this depends on your exact visa category. Check the DUO website (Dienst Uitvoering Onderwijs) for your specific requirements.</p>
+<p>EU citizens, highly-skilled migrants, and some other categories may be exempt — but learning Dutch is still strongly recommended for integration and career progression.</p>
+
+<h2>A realistic Dutch learning plan for new arrivals</h2>
+<p><strong>Months 1–3:</strong> A0–A1. Focus on survival vocabulary and basic grammar. Aim for 30 minutes per day. You should be able to greet people, buy things, and handle basic interactions.</p>
+<p><strong>Months 4–9:</strong> A2. This is where Dutch gets genuinely useful. You can follow simple conversations, write basic emails, and navigate official situations without English.</p>
+<p><strong>Months 10–18:</strong> B1. You can participate in meetings, understand Dutch media, and have real conversations with Dutch colleagues. This is where most expats start to feel genuinely integrated.</p>
+<p>NederPro's structured A0–B2 curriculum is designed exactly for this journey — starting from zero and building up systematically to the level you need for work, exams, or daily life. The <a href="/inburgeringsexamen">Inburgeringsexamen preparation section</a> covers all five exam components with practice sets and feedback.</p>
+    `.trim(),
+  },
 ];
 
 export function getBlogPost(slug: string): BlogPost | undefined {

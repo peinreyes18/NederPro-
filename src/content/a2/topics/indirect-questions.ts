@@ -330,5 +330,61 @@ export const indirectQuestions: Topic = {
         ],
       },
     },
+    {
+      id: 'a2-indirect-questions-wo-2',
+      type: 'word-order',
+      instruction: 'Build the correct indirect question.',
+      difficulty: 'open',
+      content: {
+        type: 'word-order',
+        items: [
+          {
+            shuffledWords: ['weet', 'of', 'jij', 'trein', 'de', 'op', 'tijd', 'is'],
+            correctOrder: ['Weet', 'jij', 'of', 'de', 'trein', 'op', 'tijd', 'is?'],
+            translation: 'Do you know whether the train is on time?',
+          },
+          {
+            shuffledWords: ['niet', 'ik', 'af', 'vraag', 'me', 'kost', 'wat', 'het'],
+            correctOrder: ['Ik', 'vraag', 'me', 'af', 'wat', 'het', 'kost.'],
+            translation: 'I wonder what it costs.',
+          },
+          {
+            shuffledWords: ['kun', 'vertellen', 'jij', 'me', 'werkt', 'wie', 'hier'],
+            correctOrder: ['Kun', 'jij', 'me', 'vertellen', 'wie', 'hier', 'werkt?'],
+            translation: 'Can you tell me who works here?',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a2-indirect-questions-fill-3',
+      type: 'fill-in-the-blank',
+      instruction: 'Complete the indirect question with the correct word order. Fill in the verb at the end.',
+      difficulty: 'open',
+      content: {
+        type: 'fill-in-the-blank',
+        sentences: [
+          {
+            before: 'Ik weet niet hoe laat de trein',
+            after: '.',
+            correctAnswer: 'vertrekt',
+            hint: 'verb goes to end of the clause',
+          },
+          {
+            before: 'Kun je me vertellen wie de vergadering',
+            after: '?',
+            correctAnswer: 'leidt',
+            hint: 'verb goes to end: wie de vergadering leidt',
+          },
+          {
+            before: 'Hij vraagt zich af of het project op tijd',
+            after: '.',
+            correctAnswer: 'klaar is',
+            acceptableAnswers: ['af is', 'gereed is'],
+            hint: 'yes/no embedded question → of; verb cluster at end',
+          },
+        ],
+      },
+    },
   ],
 };

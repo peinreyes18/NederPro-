@@ -318,5 +318,61 @@ export const expressingContrast: Topic = {
         ],
       },
     },
+    {
+      id: 'b1-expressing-contrast-wo-2',
+      type: 'word-order',
+      instruction: 'Put the words in the correct order. Pay attention to inversion after fronted subordinate clauses.',
+      difficulty: 'open',
+      content: {
+        type: 'word-order',
+        items: [
+          {
+            shuffledWords: ['hoewel', 'moe', 'hij', 'was', 'werkte', 'door', 'hij'],
+            correctOrder: ['Hoewel', 'hij', 'moe', 'was,', 'werkte', 'hij', 'door.'],
+            translation: 'Although he was tired, he kept working.',
+          },
+          {
+            shuffledWords: ['niet', 'alleen', 'ze', 'is', 'maar', 'ook', 'slim', 'creatief'],
+            correctOrder: ['Ze', 'is', 'niet', 'alleen', 'slim,', 'maar', 'ook', 'creatief.'],
+            translation: 'She is not only smart, but also creative.',
+          },
+          {
+            shuffledWords: ['ik', 'terwijl', 'kook', 'televisie', 'kijkt', 'hij'],
+            correctOrder: ['Terwijl', 'ik', 'kook,', 'kijkt', 'hij', 'televisie.'],
+            translation: 'While I cook, he watches television.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'b1-expressing-contrast-fill-3',
+      type: 'fill-in-the-blank',
+      instruction: 'Fill in the correct contrast or addition connector.',
+      difficulty: 'open',
+      content: {
+        type: 'fill-in-the-blank',
+        sentences: [
+          {
+            before: 'De vergadering was lang;',
+            after: 'waren de besluiten duidelijk.',
+            correctAnswer: 'toch',
+            acceptableAnswers: ['echter'],
+            hint: 'yet/still = toch; however (formal) = echter',
+          },
+          {
+            before: '',
+            after: 'de kosten als de baten zijn gestegen.',
+            correctAnswer: 'Zowel',
+            hint: 'both...and = zowel...als',
+          },
+          {
+            before: 'Ze spreekt niet alleen Engels,',
+            after: 'ook Duits en Frans.',
+            correctAnswer: 'maar ook',
+            hint: 'niet alleen...maar ook = not only...but also',
+          },
+        ],
+      },
+    },
   ],
 };

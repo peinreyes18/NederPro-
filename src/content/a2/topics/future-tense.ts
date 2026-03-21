@@ -359,5 +359,35 @@ export const futureTense: Topic = {
         ],
       },
     },
+    {
+      id: 'a2-future-tense-fill-3',
+      type: 'fill-in-the-blank',
+      instruction: 'Fill in the correct form: gaan, zullen, or present tense. Choose the most natural option.',
+      difficulty: 'open',
+      content: {
+        type: 'fill-in-the-blank',
+        sentences: [
+          {
+            before: 'Ik denk dat het morgen',
+            after: 'regenen. (prediction with zullen)',
+            correctAnswer: 'zal',
+            hint: 'prediction → zullen; het + zullen → zal',
+          },
+          {
+            before: 'We',
+            after: 'volgende maand verhuizen. (firm plan — wij)',
+            correctAnswer: 'gaan',
+            hint: 'wij/we + gaan → gaan; firm personal plan',
+          },
+          {
+            before: 'Jij',
+            after: 'dat zeker begrijpen. (reassuring prediction — jij)',
+            correctAnswer: 'zult',
+            acceptableAnswers: ['zal'],
+            hint: 'jij + zullen → zult (also: zal)',
+          },
+        ],
+      },
+    },
   ],
 };

@@ -321,5 +321,60 @@ export const omTeConstructions: Topic = {
         ],
       },
     },
+    {
+      id: 'b1-om-te-wo-2',
+      type: 'word-order',
+      instruction: 'Put the words in the correct order. Place te in the right position.',
+      difficulty: 'open',
+      content: {
+        type: 'word-order',
+        items: [
+          {
+            shuffledWords: ['gaat', 'hij', 'om', 'fit', 'sportschool', 'te', 'de', 'blijven', 'naar'],
+            correctOrder: ['Hij', 'gaat', 'naar', 'de', 'sportschool', 'om', 'fit', 'te', 'blijven.'],
+            translation: 'He goes to the gym in order to stay fit.',
+          },
+          {
+            shuffledWords: ['moeilijk', 'het', 'is', 'om', 'huis', 'vinden', 'een', 'te'],
+            correctOrder: ['Het', 'is', 'moeilijk', 'om', 'een', 'huis', 'te', 'vinden.'],
+            translation: 'It is difficult to find a house.',
+          },
+          {
+            shuffledWords: ['ze', 'mee', 'vergat', 'sleutels', 'nemen', 'te', 'haar'],
+            correctOrder: ['Ze', 'vergat', 'haar', 'sleutels', 'mee', 'te', 'nemen.'],
+            translation: 'She forgot to take her keys.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'b1-om-te-fill-3',
+      type: 'fill-in-the-blank',
+      instruction: 'Complete with the correct om...te form of the verb in brackets.',
+      difficulty: 'open',
+      content: {
+        type: 'fill-in-the-blank',
+        sentences: [
+          {
+            before: 'Ik ben blij om hier',
+            after: '. (zijn)',
+            correctAnswer: 'te zijn',
+            hint: 'om + te + infinitive: te zijn',
+          },
+          {
+            before: 'Het is noodzakelijk om op tijd',
+            after: '. (aanwezig zijn — to be present)',
+            correctAnswer: 'aanwezig te zijn',
+            hint: 'aanwezig zijn is a combination: aanwezig te zijn',
+          },
+          {
+            before: 'Ze probeert elke dag om gezond',
+            after: '. (eten)',
+            correctAnswer: 'te eten',
+            hint: 'te + infinitive at end',
+          },
+        ],
+      },
+    },
   ],
 };

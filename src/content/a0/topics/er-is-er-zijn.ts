@@ -341,5 +341,31 @@ export const erIsErZijn: Topic = {
         ],
       },
     },
+    {
+      id: 'a0-er-is-er-zijn-wo-2',
+      type: 'word-order',
+      instruction: 'Form correct sentences or questions with er is / er zijn.',
+      difficulty: 'open',
+      content: {
+        type: 'word-order',
+        items: [
+          {
+            shuffledWords: ['er', 'geen', 'zijn', 'bussen', 'zondag', 'op'],
+            correctOrder: ['Er', 'zijn', 'geen', 'bussen', 'op', 'zondag.'],
+            translation: 'There are no buses on Sunday.',
+          },
+          {
+            shuffledWords: ['er', 'apotheek', 'is', 'een', 'hier'],
+            correctOrder: ['Is', 'er', 'hier', 'een', 'apotheek?'],
+            translation: 'Is there a pharmacy here?',
+          },
+          {
+            shuffledWords: ['vijf', 'zijn', 'er', 'vergaderkamers', 'gebouw', 'het', 'in'],
+            correctOrder: ['Er', 'zijn', 'vijf', 'vergaderkamers', 'in', 'het', 'gebouw.'],
+            translation: 'There are five meeting rooms in the building.',
+          },
+        ],
+      },
+    },
   ],
 };

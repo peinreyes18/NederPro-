@@ -215,5 +215,140 @@ export const diminutives: Topic = {
         ],
       },
     },
+    {
+      id: 'a1-diminutives-mc-3',
+      type: 'multiple-choice',
+      instruction: 'Choose the correct diminutive form.',
+      difficulty: 'guided',
+      content: {
+        type: 'multiple-choice',
+        questions: [
+          {
+            question: 'What is the diminutive of "tafel" (table)?',
+            options: ['tafeltje', 'tafeletje', 'tafelje', 'tafeltjes'],
+            correctIndex: 0,
+            explanation: 'tafel ends in unstressed -el → add -tje: tafeltje.',
+          },
+          {
+            question: 'What is the diminutive of "raam" (window)?',
+            options: ['raampje', 'raamje', 'rametje', 'raamsje'],
+            correctIndex: 0,
+            explanation: 'raam ends in -m after a long vowel → add -pje: raampje.',
+          },
+          {
+            question: 'What article does "het kopje" take?',
+            options: ['de', 'het', 'een', 'Both het and een'],
+            correctIndex: 1,
+            explanation: 'All diminutives are het-words: het kopje.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a1-diminutives-fill-3',
+      type: 'fill-in-the-blank',
+      instruction: 'Form the diminutive of the noun in brackets.',
+      difficulty: 'open',
+      content: {
+        type: 'fill-in-the-blank',
+        sentences: [
+          {
+            before: 'Zet het',
+            after: 'op de tafel. (glas)',
+            correctAnswer: 'glaasje',
+            hint: 'glas → glaasje (+je, long vowel in diminutive)',
+          },
+          {
+            before: 'Er is een',
+            after: 'in de keuken. (tafel)',
+            correctAnswer: 'tafeltje',
+            hint: 'tafel → tafeltje (-el ending → -tje)',
+          },
+          {
+            before: 'Mag ik een',
+            after: 'water? (glas)',
+            correctAnswer: 'glaasje',
+            hint: 'glas → glaasje',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a1-diminutives-wo-1',
+      type: 'word-order',
+      instruction: 'Put the words in the correct order.',
+      difficulty: 'guided',
+      content: {
+        type: 'word-order',
+        items: [
+          {
+            shuffledWords: ['kopje', 'wil', 'een', 'koffie', 'je'],
+            correctOrder: ['Wil', 'je', 'een', 'kopje', 'koffie?'],
+            translation: 'Do you want a cup of coffee?',
+          },
+          {
+            shuffledWords: ['het', 'speelt', 'tuin', 'meisje', 'in', 'de'],
+            correctOrder: ['Het', 'meisje', 'speelt', 'in', 'de', 'tuin.'],
+            translation: 'The girl plays in the garden.',
+          },
+          {
+            shuffledWords: ['even', 'kun', 'berichtje', 'een', 'je', 'sturen'],
+            correctOrder: ['Kun', 'je', 'even', 'een', 'berichtje', 'sturen?'],
+            translation: 'Can you send a quick message?',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a1-diminutives-ec-1',
+      type: 'error-correction',
+      instruction: 'Find and correct the error.',
+      difficulty: 'open',
+      content: {
+        type: 'error-correction',
+        items: [
+          {
+            incorrectSentence: 'Wil je de kopje koffie?',
+            correctedSentence: 'Wil je het kopje koffie?',
+            errorExplanation: 'All diminutives are het-words: het kopje, not de kopje.',
+          },
+          {
+            incorrectSentence: 'Er zit een vogelje op het dak.',
+            correctedSentence: 'Er zit een vogeltje op het dak.',
+            errorExplanation: 'vogel ends in -el → the diminutive is vogeltje (not vogelje).',
+          },
+          {
+            incorrectSentence: 'Doe maar een biertje alsjeblieft. De biertje is koud.',
+            correctedSentence: 'Doe maar een biertje alsjeblieft. Het biertje is koud.',
+            errorExplanation: 'biertje is a diminutive → always het: het biertje.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a1-diminutives-trans-1',
+      type: 'translation',
+      instruction: 'Translate into Dutch using diminutives.',
+      difficulty: 'open',
+      content: {
+        type: 'translation',
+        items: [
+          {
+            english: 'Do you want a (little) cup of coffee?',
+            correctDutch: 'Wil je een kopje koffie?',
+          },
+          {
+            english: 'We live in a small house.',
+            correctDutch: 'We wonen in een klein huisje.',
+            acceptableAnswers: ['Wij wonen in een klein huisje.'],
+          },
+          {
+            english: 'Just a moment, please.',
+            correctDutch: 'Even een momentje, alsjeblieft.',
+            acceptableAnswers: ['Een momentje alsjeblieft.'],
+          },
+        ],
+      },
+    },
   ],
 };

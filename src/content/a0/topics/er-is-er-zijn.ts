@@ -232,5 +232,114 @@ export const erIsErZijn: Topic = {
         ],
       },
     },
+    {
+      id: 'a0-er-is-er-zijn-fill-2',
+      type: 'fill-in-the-blank',
+      instruction: 'Fill in er is, er zijn, er is geen, or er zijn geen.',
+      difficulty: 'guided',
+      content: {
+        type: 'fill-in-the-blank',
+        sentences: [
+          {
+            before: '',
+            after: 'een huisarts in deze buurt.',
+            correctAnswer: 'Er is',
+            hint: 'een huisarts = singular',
+          },
+          {
+            before: '',
+            after: 'geen winkels op deze straat.',
+            correctAnswer: 'Er zijn',
+            hint: 'winkels = plural → er zijn geen',
+          },
+          {
+            before: '',
+            after: 'geen lift in dit gebouw.',
+            correctAnswer: 'Er is',
+            hint: 'lift = singular → er is geen',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a0-er-is-er-zijn-mc-3',
+      type: 'multiple-choice',
+      instruction: 'Choose the correct form.',
+      difficulty: 'open',
+      content: {
+        type: 'multiple-choice',
+        questions: [
+          {
+            question: '___ een trein naar Rotterdam om 9 uur?',
+            options: ['Is er', 'Zijn er', 'Er is'],
+            correctIndex: 0,
+            explanation: 'een trein = singular question form → Is er een trein...?',
+          },
+          {
+            question: '___ genoeg stoelen voor iedereen?',
+            options: ['Is er', 'Zijn er', 'Er zijn'],
+            correctIndex: 1,
+            explanation: 'stoelen = plural question form → Zijn er genoeg stoelen?',
+          },
+          {
+            question: '___ geen apotheek hier in de buurt.',
+            options: ['Er is', 'Er zijn', 'Zijn er'],
+            correctIndex: 0,
+            explanation: 'apotheek = singular → Er is geen apotheek.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a0-er-is-er-zijn-ec-1',
+      type: 'error-correction',
+      instruction: 'Find and correct the error in each sentence.',
+      difficulty: 'open',
+      content: {
+        type: 'error-correction',
+        items: [
+          {
+            incorrectSentence: 'Er zijn een probleem met de verwarming.',
+            correctedSentence: 'Er is een probleem met de verwarming.',
+            errorExplanation: 'een probleem is singular → use er is, not er zijn.',
+          },
+          {
+            incorrectSentence: 'Is er stoelen vrij in de wachtkamer?',
+            correctedSentence: 'Zijn er stoelen vrij in de wachtkamer?',
+            errorExplanation: 'stoelen is plural → Zijn er stoelen...?',
+          },
+          {
+            incorrectSentence: 'Er zijn geen water in de fles.',
+            correctedSentence: 'Er is geen water in de fles.',
+            errorExplanation: 'water is uncountable/singular → Er is geen water.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a0-er-is-er-zijn-trans-1',
+      type: 'translation',
+      instruction: 'Translate into Dutch.',
+      difficulty: 'open',
+      content: {
+        type: 'translation',
+        items: [
+          {
+            english: 'There is a hospital in the city.',
+            correctDutch: 'Er is een ziekenhuis in de stad.',
+            acceptableAnswers: ['Er is een ziekenhuis in de stad'],
+          },
+          {
+            english: 'There are no buses on Sunday.',
+            correctDutch: 'Er zijn geen bussen op zondag.',
+          },
+          {
+            english: 'Is there a doctor available today?',
+            correctDutch: 'Is er vandaag een dokter beschikbaar?',
+            acceptableAnswers: ['Is er een dokter beschikbaar vandaag?'],
+          },
+        ],
+      },
+    },
   ],
 };

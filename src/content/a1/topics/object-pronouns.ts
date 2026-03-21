@@ -278,5 +278,114 @@ export const objectPronouns: Topic = {
         ],
       },
     },
+    {
+      id: 'a1-object-pronouns-mc-3',
+      type: 'multiple-choice',
+      instruction: 'Choose the correct object pronoun.',
+      difficulty: 'guided',
+      content: {
+        type: 'multiple-choice',
+        questions: [
+          {
+            question: 'Ik stuur ___ een e-mail. (you — informal, unstressed)',
+            options: ['jou', 'je', 'jij', 'Both A and B'],
+            correctIndex: 3,
+            explanation: 'Both jou (stressed) and je (unstressed) are correct as object for informal "you".',
+          },
+          {
+            question: 'De dokter belt ___. (me — stressed)',
+            options: ['me', 'mij', 'ik', 'Both A and B'],
+            correctIndex: 3,
+            explanation: 'Both me (unstressed) and mij (stressed) are correct object forms of "I".',
+          },
+          {
+            question: 'Kun je ___ helpen? (them — informal spoken)',
+            options: ['hen', 'hun', 'ze', 'All are correct'],
+            correctIndex: 2,
+            explanation: 'In informal spoken Dutch, ze is the most natural form for "them" as object.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a1-object-pronouns-fill-3',
+      type: 'fill-in-the-blank',
+      instruction: 'Replace the underlined noun with the correct object pronoun.',
+      difficulty: 'open',
+      content: {
+        type: 'fill-in-the-blank',
+        sentences: [
+          {
+            before: 'Ik zie',
+            after: 'elke dag op het werk. (mijn baas — male)',
+            correctAnswer: 'hem',
+            hint: 'male person → hem',
+          },
+          {
+            before: 'Kun je',
+            after: 'bellen? (de klant — female)',
+            correctAnswer: 'haar',
+            hint: 'female person → haar',
+          },
+          {
+            before: 'De manager stuurt',
+            after: 'een e-mail. (ons team — het-word, group)',
+            correctAnswer: 'ons',
+            hint: 'us/our group → ons',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a1-object-pronouns-ec-1',
+      type: 'error-correction',
+      instruction: 'Find and correct the object pronoun error.',
+      difficulty: 'open',
+      content: {
+        type: 'error-correction',
+        items: [
+          {
+            incorrectSentence: 'Ik bel zij vanavond.',
+            correctedSentence: 'Ik bel haar vanavond.',
+            errorExplanation: 'zij is the subject form (she); as object you need haar (her).',
+          },
+          {
+            incorrectSentence: 'De baas helpt wij niet.',
+            correctedSentence: 'De baas helpt ons niet.',
+            errorExplanation: 'wij is the subject form (we); as object you need ons (us).',
+          },
+          {
+            incorrectSentence: 'Ken jij hij?',
+            correctedSentence: 'Ken jij hem?',
+            errorExplanation: 'hij is the subject form (he); as object you need hem (him).',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a1-object-pronouns-trans-1',
+      type: 'translation',
+      instruction: 'Translate into Dutch.',
+      difficulty: 'open',
+      content: {
+        type: 'translation',
+        items: [
+          {
+            english: 'I will call him tomorrow.',
+            correctDutch: 'Ik bel hem morgen.',
+            acceptableAnswers: ['Ik ga hem morgen bellen.'],
+          },
+          {
+            english: 'Can I help you? (formal)',
+            correctDutch: 'Kan ik u helpen?',
+          },
+          {
+            english: 'She doesn\'t know us.',
+            correctDutch: 'Ze kent ons niet.',
+            acceptableAnswers: ['Zij kent ons niet.'],
+          },
+        ],
+      },
+    },
   ],
 };

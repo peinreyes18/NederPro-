@@ -248,5 +248,112 @@ export const pluralNouns: Topic = {
         ],
       },
     },
+    {
+      id: 'a1-plural-nouns-mc-3',
+      type: 'multiple-choice',
+      instruction: 'Choose the correct plural form.',
+      difficulty: 'guided',
+      content: {
+        type: 'multiple-choice',
+        questions: [
+          {
+            question: 'What is the plural of "dag" (day)?',
+            options: ['dags', 'dagen', 'daagen', 'daggen'],
+            correctIndex: 1,
+            explanation: 'dag has a short vowel + single consonant: lengthen the vowel in spelling — dagen.',
+          },
+          {
+            question: 'What is the plural of "maan" (moon)?',
+            options: ['maans', 'maanen', 'manen', 'maanden'],
+            correctIndex: 2,
+            explanation: 'maan has a long vowel (aa): in the plural drop one a — manen.',
+          },
+          {
+            question: 'What is the plural of "kat" (cat)?',
+            options: ['kats', 'katen', 'katten', 'katsen'],
+            correctIndex: 2,
+            explanation: 'kat has a short vowel: double the consonant before -en — katten.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a1-plural-nouns-fill-3',
+      type: 'fill-in-the-blank',
+      instruction: 'Write the plural form. Watch spelling changes carefully.',
+      difficulty: 'open',
+      content: {
+        type: 'fill-in-the-blank',
+        sentences: [
+          {
+            before: 'Hoeveel',
+            after: 'heb jij vrij? (dag)',
+            correctAnswer: 'dagen',
+            hint: 'dag → dagen (lengthen vowel)',
+          },
+          {
+            before: 'De',
+            after: 'zitten op het dak. (kat)',
+            correctAnswer: 'katten',
+            hint: 'kat → katten (double consonant)',
+          },
+          {
+            before: 'Er zijn veel',
+            after: 'in de stad. (huis)',
+            correctAnswer: 'huizen',
+            hint: 'huis → huizen (s→z)',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a1-plural-nouns-ec-1',
+      type: 'error-correction',
+      instruction: 'Find and correct the error in the plural form.',
+      difficulty: 'open',
+      content: {
+        type: 'error-correction',
+        items: [
+          {
+            incorrectSentence: 'De collegas werken allemaal hard.',
+            correctedSentence: "De collega's werken allemaal hard.",
+            errorExplanation: "collega ends in a vowel → collega's (with apostrophe before s).",
+          },
+          {
+            incorrectSentence: 'Er zijn veel manen in het jaar.',
+            correctedSentence: 'Er zijn veel maanden in het jaar.',
+            errorExplanation: 'maand (month) → maanden. manen is the plural of maan (moon), not maand (month).',
+          },
+          {
+            incorrectSentence: 'Ik heb twee briefen geschreven.',
+            correctedSentence: 'Ik heb twee brieven geschreven.',
+            errorExplanation: 'brief → brieven (f changes to v before -en).',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a1-plural-nouns-trans-1',
+      type: 'translation',
+      instruction: 'Translate into Dutch. Use the correct plural form.',
+      difficulty: 'open',
+      content: {
+        type: 'translation',
+        items: [
+          {
+            english: 'The letters are on the desk.',
+            correctDutch: 'De brieven liggen op het bureau.',
+          },
+          {
+            english: 'There are many houses in this street.',
+            correctDutch: 'Er zijn veel huizen in deze straat.',
+          },
+          {
+            english: 'My colleagues start early.',
+            correctDutch: "Mijn collega's beginnen vroeg.",
+          },
+        ],
+      },
+    },
   ],
 };

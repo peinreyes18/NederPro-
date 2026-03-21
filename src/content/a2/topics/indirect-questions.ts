@@ -238,5 +238,97 @@ export const indirectQuestions: Topic = {
         ],
       },
     },
+    {
+      id: 'a2-indirect-questions-mc-2',
+      type: 'multiple-choice',
+      instruction: 'Choose the correct indirect question.',
+      difficulty: 'guided',
+      content: {
+        type: 'multiple-choice',
+        questions: [
+          {
+            question: 'Direct: "Hoe heet jij?" → Indirect: "Kun jij me vertellen ___?"',
+            options: [
+              'hoe heet jij',
+              'hoe jij heet',
+              'hoe jij hebt',
+            ],
+            correctIndex: 1,
+            explanation: 'In the indirect question the verb moves to the end: hoe jij heet.',
+          },
+          {
+            question: 'Direct: "Heeft hij een afspraak?" → Indirect: "Ik weet niet ___."',
+            options: [
+              'of hij een afspraak heeft',
+              'als hij een afspraak heeft',
+              'of hij heeft een afspraak',
+            ],
+            correctIndex: 0,
+            explanation: 'Yes/no question → of; verb at the end: of hij een afspraak heeft.',
+          },
+          {
+            question: 'Which sentence uses the correct word order?',
+            options: [
+              'Ik vraag me af wanneer begint de trein.',
+              'Ik vraag me af wanneer de trein begint.',
+              'Ik vraag me af de trein wanneer begint.',
+            ],
+            correctIndex: 1,
+            explanation: 'The verb always moves to the end of the indirect question clause.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a2-indirect-questions-ec-1',
+      type: 'error-correction',
+      instruction: 'Find and correct the word order error.',
+      difficulty: 'open',
+      content: {
+        type: 'error-correction',
+        items: [
+          {
+            incorrectSentence: 'Ik weet niet waar woont hij.',
+            correctedSentence: 'Ik weet niet waar hij woont.',
+            errorExplanation: 'In indirect questions, the verb moves to the end of the clause.',
+          },
+          {
+            incorrectSentence: 'Kun je me vertellen als de winkel open is?',
+            correctedSentence: 'Kun je me vertellen of de winkel open is?',
+            errorExplanation: 'Use of (not als) for embedded yes/no questions meaning "whether/if".',
+          },
+          {
+            incorrectSentence: 'Ik weet niet wat kost de trein.',
+            correctedSentence: 'Ik weet niet wat de trein kost.',
+            errorExplanation: 'Verb goes to the end: wat de trein kost.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a2-indirect-questions-trans-1',
+      type: 'translation',
+      instruction: 'Translate into Dutch as indirect questions.',
+      difficulty: 'open',
+      content: {
+        type: 'translation',
+        items: [
+          {
+            english: 'I don\'t know where the post office is.',
+            correctDutch: 'Ik weet niet waar het postkantoor is.',
+          },
+          {
+            english: 'Do you know whether she is coming tomorrow?',
+            correctDutch: 'Weet jij of zij morgen komt?',
+            acceptableAnswers: ['Weet je of ze morgen komt?'],
+          },
+          {
+            english: 'Could you tell me when the meeting starts?',
+            correctDutch: 'Kunt u mij vertellen wanneer de vergadering begint?',
+            acceptableAnswers: ['Kun je me vertellen wanneer de vergadering begint?'],
+          },
+        ],
+      },
+    },
   ],
 };

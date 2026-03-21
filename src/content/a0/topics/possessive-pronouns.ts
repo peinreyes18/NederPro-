@@ -272,5 +272,113 @@ export const possessivePronouns: Topic = {
         ],
       },
     },
+    {
+      id: 'a0-possessive-pronouns-mc-3',
+      type: 'multiple-choice',
+      instruction: 'Choose the correct possessive pronoun.',
+      difficulty: 'guided',
+      content: {
+        type: 'multiple-choice',
+        questions: [
+          {
+            question: '___ collega werkt hard. (my)',
+            options: ['Mijn', 'Jouw', 'Zijn', 'Hun'],
+            correctIndex: 0,
+            explanation: 'my = mijn.',
+          },
+          {
+            question: 'Kunnen wij ___ auto lenen? (your — informal plural)',
+            options: ['jouw', 'uw', 'jullie', 'hun'],
+            correctIndex: 2,
+            explanation: 'informal plural "your" = jullie.',
+          },
+          {
+            question: '___ rapport is klaar. (their)',
+            options: ['Zijn', 'Haar', 'Hun', 'Uw'],
+            correctIndex: 2,
+            explanation: 'their = hun.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a0-possessive-pronouns-fill-3',
+      type: 'fill-in-the-blank',
+      instruction: 'Fill in ons or onze.',
+      difficulty: 'guided',
+      content: {
+        type: 'fill-in-the-blank',
+        sentences: [
+          {
+            before: 'Dit is',
+            after: 'nieuwe collega. (our — de-word)',
+            correctAnswer: 'onze',
+            hint: 'collega is a de-word → onze',
+          },
+          {
+            before: '',
+            after: 'werk is bijna klaar. (our — het-word)',
+            correctAnswer: 'Ons',
+            acceptableAnswers: ['ons'],
+            hint: 'werk is a het-word → ons',
+          },
+          {
+            before: 'Wanneer begint',
+            after: 'vergadering? (our — de-word)',
+            correctAnswer: 'onze',
+            hint: 'vergadering is a de-word → onze',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a0-possessive-pronouns-ec-1',
+      type: 'error-correction',
+      instruction: 'Find and correct the error.',
+      difficulty: 'open',
+      content: {
+        type: 'error-correction',
+        items: [
+          {
+            incorrectSentence: 'Onze huis is aan de Keizersgracht.',
+            correctedSentence: 'Ons huis is aan de Keizersgracht.',
+            errorExplanation: 'huis is a het-word → ons huis, not onze huis.',
+          },
+          {
+            incorrectSentence: 'Zijn naam is Fatima.',
+            correctedSentence: 'Haar naam is Fatima.',
+            errorExplanation: 'Fatima is a woman → use haar (her), not zijn (his).',
+          },
+          {
+            incorrectSentence: 'Ik bel hun morgen.',
+            correctedSentence: 'Ik bel ze morgen.',
+            errorExplanation: 'hun is a possessive (their); as an object pronoun for "them" use ze or hen.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a0-possessive-pronouns-trans-1',
+      type: 'translation',
+      instruction: 'Translate into Dutch.',
+      difficulty: 'open',
+      content: {
+        type: 'translation',
+        items: [
+          {
+            english: 'His address is in Rotterdam.',
+            correctDutch: 'Zijn adres is in Rotterdam.',
+          },
+          {
+            english: 'Our children go to school here.',
+            correctDutch: 'Onze kinderen gaan hier naar school.',
+          },
+          {
+            english: 'What is your telephone number? (formal)',
+            correctDutch: 'Wat is uw telefoonnummer?',
+          },
+        ],
+      },
+    },
   ],
 };

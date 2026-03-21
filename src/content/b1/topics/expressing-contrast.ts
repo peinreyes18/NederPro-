@@ -238,5 +238,85 @@ export const expressingContrast: Topic = {
         ],
       },
     },
+    {
+      id: 'b1-expressing-contrast-mc-2',
+      type: 'multiple-choice',
+      instruction: 'Choose the best connector for each sentence.',
+      difficulty: 'guided',
+      content: {
+        type: 'multiple-choice',
+        questions: [
+          {
+            question: '___ hij moe was, werkte hij de hele nacht door.',
+            options: ['Terwijl', 'Hoewel', 'Echter', 'Toch'],
+            correctIndex: 1,
+            explanation: 'Hoewel = although/even though. It introduces a concessive subordinate clause.',
+          },
+          {
+            question: 'Het project was duur; ___ waren de resultaten uitstekend.',
+            options: ['hoewel', 'zowel', 'echter', 'terwijl'],
+            correctIndex: 2,
+            explanation: 'echter = however (formal). Used as a discourse connector between two main clauses.',
+          },
+          {
+            question: 'Hij werkt hard ___ zij nauwelijks iets doet.',
+            options: ['toch', 'echter', 'terwijl', 'zowel'],
+            correctIndex: 2,
+            explanation: 'terwijl = while/whereas. Used to contrast simultaneous or opposing situations.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'b1-expressing-contrast-ec-1',
+      type: 'error-correction',
+      instruction: 'Find and correct the grammar or word-order error.',
+      difficulty: 'open',
+      content: {
+        type: 'error-correction',
+        items: [
+          {
+            incorrectSentence: 'Hoewel het regent, ik fiets naar het werk.',
+            correctedSentence: 'Hoewel het regent, fiets ik naar het werk.',
+            errorExplanation: 'When a hoewel-clause comes first, the main clause inverts: verb before subject.',
+          },
+          {
+            incorrectSentence: 'Terwijl ik kook, hij kijkt televisie.',
+            correctedSentence: 'Terwijl ik kook, kijkt hij televisie.',
+            errorExplanation: 'Inversion in the main clause after a fronted subordinate clause: kijkt hij.',
+          },
+          {
+            incorrectSentence: 'Zowel hij of zijn collega spreekt Nederlands.',
+            correctedSentence: 'Zowel hij als zijn collega spreekt Nederlands.',
+            errorExplanation: 'The correlative pair is zowel...als (not zowel...of).',
+          },
+        ],
+      },
+    },
+    {
+      id: 'b1-expressing-contrast-trans-1',
+      type: 'translation',
+      instruction: 'Translate into Dutch using the contrast or addition structure in brackets.',
+      difficulty: 'open',
+      content: {
+        type: 'translation',
+        items: [
+          {
+            english: 'Although it is expensive, the quality is excellent. (hoewel)',
+            correctDutch: 'Hoewel het duur is, is de kwaliteit uitstekend.',
+          },
+          {
+            english: 'Both the manager and the team are satisfied. (zowel...als)',
+            correctDutch: 'Zowel de manager als het team is tevreden.',
+            acceptableAnswers: ['Zowel de manager als het team zijn tevreden.'],
+          },
+          {
+            english: 'She is not only smart, but also very hard-working. (niet alleen...maar ook)',
+            correctDutch: 'Ze is niet alleen slim, maar ook heel hardwerkend.',
+            acceptableAnswers: ['Zij is niet alleen slim, maar ook heel hardwerkend.'],
+          },
+        ],
+      },
+    },
   ],
 };

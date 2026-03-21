@@ -282,5 +282,82 @@ export const futureTense: Topic = {
         ],
       },
     },
+    {
+      id: 'a2-future-tense-wo-2',
+      type: 'word-order',
+      instruction: 'Put the words in the correct order. The infinitive goes to the end.',
+      difficulty: 'open',
+      content: {
+        type: 'word-order',
+        items: [
+          {
+            shuffledWords: ['jullie', 'volgende', 'gaan', 'week', 'beginnen'],
+            correctOrder: ['Jullie', 'gaan', 'volgende', 'week', 'beginnen.'],
+            translation: 'You (plural) are going to start next week.',
+          },
+          {
+            shuffledWords: ['zal', 'het', 'morgen', 'koud', 'zijn'],
+            correctOrder: ['Het', 'zal', 'morgen', 'koud', 'zijn.'],
+            translation: 'It will be cold tomorrow.',
+          },
+          {
+            shuffledWords: ['ik', 'maandag', 'zal', 'bellen', 'je'],
+            correctOrder: ['Ik', 'zal', 'je', 'maandag', 'bellen.'],
+            translation: 'I will call you on Monday.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a2-future-tense-ec-1',
+      type: 'error-correction',
+      instruction: 'Find and correct the error in each sentence.',
+      difficulty: 'open',
+      content: {
+        type: 'error-correction',
+        items: [
+          {
+            incorrectSentence: 'Wij zult morgen vergaderen.',
+            correctedSentence: 'Wij zullen morgen vergaderen.',
+            errorExplanation: 'wij/we takes zullen, not zult. zult is only for jij/u.',
+          },
+          {
+            incorrectSentence: 'Ik ga morgen regen.',
+            correctedSentence: 'Het zal morgen regenen.',
+            errorExplanation: 'Weather predictions use zullen. Also: "regen" is a noun; the verb is "regenen".',
+          },
+          {
+            incorrectSentence: 'Ze gaan het rapport opsturen morgen te.',
+            correctedSentence: 'Ze gaan het rapport morgen opsturen.',
+            errorExplanation: 'With gaan + infinitive, just place the infinitive at the end without "te".',
+          },
+        ],
+      },
+    },
+    {
+      id: 'a2-future-tense-trans-1',
+      type: 'translation',
+      instruction: 'Translate into Dutch. Choose the most natural future construction.',
+      difficulty: 'open',
+      content: {
+        type: 'translation',
+        items: [
+          {
+            english: 'I am going to the doctor tomorrow.',
+            correctDutch: 'Ik ga morgen naar de dokter.',
+            acceptableAnswers: ['Morgen ga ik naar de dokter.'],
+          },
+          {
+            english: 'It will rain this afternoon.',
+            correctDutch: 'Het zal vanmiddag regenen.',
+          },
+          {
+            english: 'We are going to present the results next week.',
+            correctDutch: 'We gaan volgende week de resultaten presenteren.',
+            acceptableAnswers: ['Wij gaan volgende week de resultaten presenteren.'],
+          },
+        ],
+      },
+    },
   ],
 };

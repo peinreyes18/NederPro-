@@ -241,5 +241,85 @@ export const omTeConstructions: Topic = {
         ],
       },
     },
+    {
+      id: 'b1-om-te-mc-2',
+      type: 'multiple-choice',
+      instruction: 'Choose the correct om...te form.',
+      difficulty: 'guided',
+      content: {
+        type: 'multiple-choice',
+        questions: [
+          {
+            question: 'Ze gaat naar de sportschool ___ fit te blijven.',
+            options: ['om', 'voor', 'dat', 'zodat'],
+            correctIndex: 0,
+            explanation: 'Purpose clauses use om...te: om fit te blijven.',
+          },
+          {
+            question: 'Het is belangrijk om op tijd ___ zijn.',
+            options: ['te', 'om te', 'voor te', 'dat'],
+            correctIndex: 0,
+            explanation: 'om is already given; just te + infinitive: om op tijd te zijn.',
+          },
+          {
+            question: 'Hij vergat zijn sleutels mee ___ nemen.',
+            options: ['om te', 'te', 'voor te', 'Both A and B'],
+            correctIndex: 3,
+            explanation: 'After vergeten, om is optional: "mee te nemen" and "om mee te nemen" are both correct.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'b1-om-te-ec-1',
+      type: 'error-correction',
+      instruction: 'Find and correct the om...te error.',
+      difficulty: 'open',
+      content: {
+        type: 'error-correction',
+        items: [
+          {
+            incorrectSentence: 'Ik leer Nederlands om werken in Nederland.',
+            correctedSentence: 'Ik leer Nederlands om te werken in Nederland.',
+            errorExplanation: 'om...te requires te before the infinitive: om te werken.',
+          },
+          {
+            incorrectSentence: 'Het is moeilijk te leren Nederlands.',
+            correctedSentence: 'Het is moeilijk om Nederlands te leren.',
+            errorExplanation: 'After adjectives, om is required; the infinitive phrase goes to the end.',
+          },
+          {
+            incorrectSentence: 'Ze probeert vroeg opstaan te.',
+            correctedSentence: 'Ze probeert vroeg op te staan.',
+            errorExplanation: 'Separable verb: te goes between the prefix (op) and the verb stem (staan).',
+          },
+        ],
+      },
+    },
+    {
+      id: 'b1-om-te-trans-1',
+      type: 'translation',
+      instruction: 'Translate into Dutch using om...te.',
+      difficulty: 'open',
+      content: {
+        type: 'translation',
+        items: [
+          {
+            english: 'I am learning Dutch in order to work in the Netherlands.',
+            correctDutch: 'Ik leer Nederlands om te werken in Nederland.',
+            acceptableAnswers: ['Ik leer Nederlands om in Nederland te werken.'],
+          },
+          {
+            english: 'It is important to be on time.',
+            correctDutch: 'Het is belangrijk om op tijd te zijn.',
+          },
+          {
+            english: 'She tries to get up early every day.',
+            correctDutch: 'Ze probeert elke dag vroeg op te staan.',
+            acceptableAnswers: ['Ze probeert elke dag om vroeg op te staan.'],
+          },
+        ],
+      },
+    },
   ],
 };

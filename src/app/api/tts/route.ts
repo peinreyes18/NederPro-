@@ -9,7 +9,7 @@ import { NextRequest, NextResponse } from 'next/server';
 // Neural voices ("nl-NL-Wavenet-*") are charged after 1M chars/month free
 
 const GOOGLE_TTS_KEY = process.env.GOOGLE_CLOUD_TTS_API_KEY;
-const CACHE: Map<string, Uint8Array> = new Map();
+const CACHE: Map<string, ArrayBuffer> = new Map();
 
 export async function GET(request: NextRequest) {
   if (!GOOGLE_TTS_KEY) {
@@ -60,12 +60,12 @@ export async function GET(request: NextRequest) {
     }
 
     const { audioContent } = await res.json();
-    const audioBytes = Uint8Array.from(atob(audioContent), (c) => c.charCodeAt(0));
+    const audioBuffer = Uint8Array.from(atob(audioContent), (c) => c.charCodeAt(0)).buffer as ArrayBuffer;
 
     // Cache in-memory (resets on server restart)
-    if (CACHE.size < 1000) CACHE.set(cacheKey, audioBytes);
+    if (CACHE.size < 1000) CACHE.set(cacheKey, audioBuffer);
 
-    return new NextResponse(new Blob([audioBytes], { type: 'audio/mpeg' }), {
+    return new NextResponse(new Blob([audioBuffer], { type: 'audio/mpeg' }), {
       headers: {
         'Content-Type': 'audio/mpeg',
         'Cache-Control': 'public, max-age=86400',

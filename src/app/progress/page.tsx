@@ -243,7 +243,7 @@ export default function ProgressPage() {
             <p className="text-xs text-muted leading-relaxed">Ask questions, share progress, and learn alongside other Dutch students.</p>
           </div>
           <a
-            href="https://discord.gg/nederpro"
+            href="https://discord.gg/9KSdcDDw"
             target="_blank"
             rel="noopener noreferrer"
             className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#5865F2] text-white text-sm font-medium hover:bg-[#4752c4] transition-colors"

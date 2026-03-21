@@ -17,7 +17,7 @@ export default function Footer() {
               Structured Dutch grammar learning for adults. CEFR A0–B2.
             </p>
             <a
-              href="https://discord.gg/nederpro"
+              href="https://discord.gg/9KSdcDDw"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-xs font-medium text-muted hover:text-accent transition-colors"

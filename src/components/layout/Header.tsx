@@ -31,6 +31,7 @@ const navItems = [
   { href: '/reference', label: 'Reference' },
   { href: '/culture', label: 'Culture' },
   { href: '/history', label: 'History' },
+  { href: '/blog', label: 'Blog' },
   { href: '/progress', label: 'Progress' },
 ];
 

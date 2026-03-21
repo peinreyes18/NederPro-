@@ -7,6 +7,8 @@ import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import PronunciationButton from '@/components/ui/PronunciationButton';
+import SubscriptionGate from '@/components/ui/SubscriptionGate';
+import { useAuth } from '@/contexts/AuthContext';
 import { useVocabProgress, MasteredWord } from '@/hooks/useVocabProgress';
 import { vocabularyCategories, VocabularyWord } from '@/content/vocabulary';
 import { shuffleArray, normalizeAnswer } from '@/lib/utils';
@@ -423,6 +425,7 @@ function QuizSizeSelector({
 
 export default function VocabularyQuizPage() {
   const { getMasteredWords, recordWordResult, isLoaded } = useVocabProgress();
+  const { isSubscribed, isLoading: authLoading } = useAuth();
   const masteredWords = getMasteredWords;
 
   const [quizSize, setQuizSize] = useState(20);
@@ -539,6 +542,15 @@ export default function VocabularyQuizPage() {
     },
     [masteredWords, effectiveSize, started]
   );
+
+  if (!authLoading && !isSubscribed) {
+    return (
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
+        <Breadcrumb items={[{ label: 'Vocabulary', href: '/vocabulary' }, { label: 'Quiz' }]} />
+        <SubscriptionGate feature="vocabulary quiz" />
+      </div>
+    );
+  }
 
   // Loading state
   if (!isLoaded) {

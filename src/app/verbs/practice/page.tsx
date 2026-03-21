@@ -5,6 +5,8 @@ import Link from 'next/link';
 import Button from '@/components/ui/Button';
 import Badge from '@/components/ui/Badge';
 import ProgressBar from '@/components/ui/ProgressBar';
+import SubscriptionGate from '@/components/ui/SubscriptionGate';
+import { useAuth } from '@/contexts/AuthContext';
 import {
   buildQueue,
   isCorrect,
@@ -451,6 +453,7 @@ function ResultsScreen({ results, onRetryMissed, onNewSession }: ResultsScreenPr
 type Screen = 'setup' | 'drill' | 'results';
 
 export default function VerbPracticePage() {
+  const { isSubscribed, isLoading: authLoading } = useAuth();
   const [screen, setScreen] = useState<Screen>('setup');
   const [questions, setQuestions] = useState<DrillQuestion[]>([]);
   const [results, setResults] = useState<QuestionResult[]>([]);
@@ -494,6 +497,14 @@ export default function VerbPracticePage() {
     setQuestions([]);
     setResults([]);
   }, []);
+
+  if (!authLoading && !isSubscribed) {
+    return (
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
+        <SubscriptionGate feature="verb practice" />
+      </div>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-background">

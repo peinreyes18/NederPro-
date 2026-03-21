@@ -8,6 +8,8 @@ import ExamTimer from '@/components/exams/ExamTimer';
 import ExamQuestionCard from '@/components/exams/ExamQuestionCard';
 import ExamResults from '@/components/exams/ExamResults';
 import Button from '@/components/ui/Button';
+import SubscriptionGate from '@/components/ui/SubscriptionGate';
+import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { ExamQuestion } from '@/content/types';
 import ListeningPlayer from '@/components/exams/ListeningPlayer';
@@ -51,6 +53,7 @@ export default function ExamPage() {
   const [examFinished, setExamFinished] = useState(false);
   const [timerRunning, setTimerRunning] = useState(true);
   const [navOpen, setNavOpen] = useState(false);
+  const { isSubscribed, isLoading: authLoading } = useAuth();
 
   // A question counts as "answered" if it has a selected option (MC/TF)
   // or a non-empty writing response with a self-assessment
@@ -128,6 +131,15 @@ export default function ExamPage() {
 
   function handleBackToExams() {
     router.push('/exams');
+  }
+
+  // ── Subscription gate ──
+  if (!authLoading && !isSubscribed) {
+    return (
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
+        <SubscriptionGate feature="exam practice" />
+      </div>
+    );
   }
 
   // ── Not Found ──

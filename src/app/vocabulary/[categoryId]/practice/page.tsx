@@ -8,6 +8,8 @@ import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import PronunciationButton from '@/components/ui/PronunciationButton';
+import SubscriptionGate from '@/components/ui/SubscriptionGate';
+import { useAuth } from '@/contexts/AuthContext';
 import { getVocabularyCategory, VocabularyWord } from '@/content/vocabulary';
 import { useVocabProgress } from '@/hooks/useVocabProgress';
 import { shuffleArray, normalizeAnswer } from '@/lib/utils';
@@ -503,6 +505,7 @@ export default function VocabularyPracticePage({
   }
 
   const { recordWordResult, enqueueForSRS } = useVocabProgress();
+  const { isSubscribed, isLoading: authLoading } = useAuth();
 
   const [practiceMode, setPracticeMode] = useState<PracticeMode>('multiple-choice');
   const [questions, setQuestions] = useState<Question[]>(() =>
@@ -636,6 +639,14 @@ export default function VocabularyPracticePage({
           onRestart={handleRestart}
           onReviewMissed={handleReviewMissed}
         />
+      </div>
+    );
+  }
+
+  if (!authLoading && !isSubscribed) {
+    return (
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
+        <SubscriptionGate feature="vocabulary practice" />
       </div>
     );
   }

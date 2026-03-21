@@ -7,6 +7,8 @@ import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import PronunciationButton from '@/components/ui/PronunciationButton';
+import SubscriptionGate from '@/components/ui/SubscriptionGate';
+import { useAuth } from '@/contexts/AuthContext';
 import { useVocabProgress, DueWord } from '@/hooks/useVocabProgress';
 import { vocabularyCategories, VocabularyWord } from '@/content/vocabulary';
 import { shuffleArray, normalizeAnswer } from '@/lib/utils';
@@ -340,6 +342,7 @@ function ReviewResults({
 
 export default function VocabularyReviewPage() {
   const { getDueWords, getDueTodayCount, recordSRSResult, enqueueForSRS, isLoaded } = useVocabProgress();
+  const { isSubscribed, isLoading: authLoading } = useAuth();
 
   const [mode, setMode] = useState<ReviewMode>('flashcard');
   const [cards, setCards] = useState<ReviewCard[] | null>(null);
@@ -393,6 +396,15 @@ export default function VocabularyReviewPage() {
     { label: 'Vocabulary', href: '/vocabulary' },
     { label: 'Daily Review', href: '/vocabulary/review' },
   ];
+
+  if (!authLoading && !isSubscribed) {
+    return (
+      <div className="max-w-lg mx-auto px-4 py-8">
+        <Breadcrumb items={breadcrumbs} />
+        <SubscriptionGate feature="vocabulary review" />
+      </div>
+    );
+  }
 
   // ---- Setup screen ----
   if (!cards) {

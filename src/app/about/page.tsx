@@ -42,7 +42,7 @@ const values = [
 ];
 
 const stats = [
-  { value: '44', label: 'grammar topics' },
+  { value: '69', label: 'grammar topics' },
   { value: 'A0–B2', label: 'CEFR levels covered' },
   { value: '920+', label: 'vocabulary words' },
   { value: '30', label: 'exam practice sets' },
@@ -119,7 +119,7 @@ export default function AboutPage() {
         <h2 className="text-xl font-bold text-primary mb-4">What&apos;s on NederPro</h2>
         <div className="grid sm:grid-cols-2 gap-3 text-sm">
           {[
-            ['Grammar lessons', '44 topics across A0–B2, fully written'],
+            ['Grammar lessons', '69 topics across A0–B2, fully written'],
             ['Interactive exercises', 'Multiple choice, gap-fill, reordering, writing'],
             ['Vocabulary', '920+ words in 18 thematic categories'],
             ['Exam practice', '30 mock exam sets (Inburgeringsexamen & NT2)'],

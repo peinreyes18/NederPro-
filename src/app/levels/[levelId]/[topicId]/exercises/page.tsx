@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import ExerciseContainer from '@/components/exercises/ExerciseContainer';
+import SubscriptionGate from '@/components/ui/SubscriptionGate';
 import { getTopic, getLevel, getTopicsForLevel, getAdjacentTopics } from '@/lib/content-loader';
 import { levels } from '@/content/levels';
 
@@ -62,13 +63,15 @@ export default async function ExercisesPage({
         )}
       </div>
 
-      <ExerciseContainer
-        exercises={topic.exercises}
-        levelId={levelId}
-        topicId={topicId}
-        backUrl={`/levels/${levelId}/${topicId}`}
-        nextTopic={next ? { id: next.id, title: next.title, levelId } : undefined}
-      />
+      <SubscriptionGate feature="exercises">
+        <ExerciseContainer
+          exercises={topic.exercises}
+          levelId={levelId}
+          topicId={topicId}
+          backUrl={`/levels/${levelId}/${topicId}`}
+          nextTopic={next ? { id: next.id, title: next.title, levelId } : undefined}
+        />
+      </SubscriptionGate>
     </div>
   );
 }

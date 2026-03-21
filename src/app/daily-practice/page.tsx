@@ -6,9 +6,11 @@ import dynamic from 'next/dynamic';
 import { useDailyPractice, DailyItem, GrammarDailyItem, VocabDailyItem } from '@/hooks/useDailyPractice';
 import { useProgress } from '@/hooks/useProgress';
 import { useVocabProgress } from '@/hooks/useVocabProgress';
+import { useAuth } from '@/contexts/AuthContext';
 import ProgressBar from '@/components/ui/ProgressBar';
 import Button from '@/components/ui/Button';
 import Badge from '@/components/ui/Badge';
+import SubscriptionGate from '@/components/ui/SubscriptionGate';
 
 // Dynamically load exercise components
 const MultipleChoice = dynamic(() => import('@/components/exercises/MultipleChoice'));
@@ -351,6 +353,7 @@ export default function DailyPracticePage() {
   const { items, grammarCount, vocabCount, doneToday, streak, isLoaded } = useDailyPractice();
   const { markDailyPracticeDone, recordExerciseResult } = useProgress();
   const { recordSRSResult, enqueueForSRS } = useVocabProgress();
+  const { isSubscribed, isLoading: authLoading } = useAuth();
 
   const [screen, setScreen] = useState<Screen>('setup');
   const [finalCorrect, setFinalCorrect] = useState(0);
@@ -382,6 +385,14 @@ export default function DailyPracticePage() {
   };
 
   if (!isLoaded) return <LoadingSkeleton />;
+
+  if (!authLoading && !isSubscribed) {
+    return (
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
+        <SubscriptionGate feature="daily practice" />
+      </div>
+    );
+  }
 
   if (screen === 'setup' || (doneToday && screen !== 'session' && screen !== 'results')) {
     return (

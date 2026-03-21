@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.com';
 
 const included = [
-  { icon: '📚', text: 'All grammar lessons A0 – B2 (44 topics, always free to read)' },
+  { icon: '📚', text: 'All grammar lessons A0 – B2 (69 topics, always free to read)' },
   { icon: '✏️', text: 'Interactive exercises for every lesson' },
   { icon: '🗂️', text: 'Vocabulary drills — 920+ words across 18 categories' },
   { icon: '📋', text: 'Exam practice — 30 full mock exam sets' },
@@ -22,7 +22,7 @@ const included = [
 ];
 
 const freeItems = [
-  'All 44 grammar lessons (read only)',
+  'All 69 grammar lessons (read only)',
   'Vocabulary lists & reference tables',
   'Exam overview & study guides',
   'Culture & history content',
@@ -52,7 +52,7 @@ const faqs = [
   },
   {
     q: 'Are all lessons really free?',
-    a: 'Yes — all 44 grammar lessons are free to read. The paywall applies to interactive exercises, vocabulary practice, and exam sets. We want you to experience the content quality before deciding to subscribe.',
+    a: 'Yes — all 69 grammar lessons are free to read. The paywall applies to interactive exercises, vocabulary practice, and exam sets. We want you to experience the content quality before deciding to subscribe.',
   },
   {
     q: 'Which plan should I choose?',

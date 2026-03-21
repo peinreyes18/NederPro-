@@ -102,7 +102,7 @@ export async function sendWelcomeEmail({
 
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
       ${[
-        ['📚', '54 grammar topics', 'A0 through B2, clearly explained'],
+        ['📚', '69 grammar topics', 'A0 through B2, clearly explained'],
         ['✏️', 'Interactive exercises', 'Fill-in, multiple choice, word order'],
         ['📋', 'Exam practice', '30 mock exam sets with full feedback'],
         ['🤖', 'AI writing feedback', 'Instant assessment on open answers'],
@@ -243,7 +243,7 @@ export async function sendTrialExpiryEmail({
       <p style="margin:0 0 12px;font-size:14px;font-weight:700;color:#1e40af;">What you keep with a subscription:</p>
       <ul style="margin:0;padding-left:20px;">
         ${[
-          'All 54 grammar lessons — A0 through B2',
+          'All 69 grammar lessons — A0 through B2',
           '30 mock exam sets (Inburgeringsexamen & NT2)',
           'All interactive exercises and vocabulary drills',
           'AI writing feedback on every open answer',
@@ -300,7 +300,7 @@ export async function sendSignupNudgeEmail({
       <p style="margin:0 0 10px;font-size:14px;font-weight:700;color:#1e40af;">What's waiting for you:</p>
       <ul style="margin:0;padding-left:20px;">
         ${[
-          '54 grammar lessons across A0–B2',
+          '69 grammar lessons across A0–B2',
           'Interactive exercises after every topic',
           'Mock exam sets for Inburgeringsexamen & NT2',
           'AI writing feedback on open answers',
@@ -356,7 +356,7 @@ export async function sendWinbackEmail({
     <div style="background:#fefce8;border-radius:12px;padding:16px 20px;margin-bottom:24px;border-left:4px solid #ca8a04;">
       <p style="margin:0 0 6px;font-size:14px;font-weight:700;color:#92400e;">Still working on your Dutch?</p>
       <p style="margin:0;font-size:13px;color:#92400e;line-height:1.6;">
-        All 54 grammar lessons remain free to read. Come back any time to restart your subscription — your progress will still be there.
+        All 69 grammar lessons remain free to read. Come back any time to restart your subscription — your progress will still be there.
       </p>
     </div>
 

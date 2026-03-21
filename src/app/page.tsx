@@ -144,7 +144,7 @@ export default function HomePage() {
             {/* Trust strip */}
             <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3">
               {[
-                { icon: '📚', text: '44 grammar topics across A0–B2' },
+                { icon: '📚', text: '69 grammar topics across A0–B2' },
                 { icon: '🎯', text: 'Aligned with Inburgeringsexamen & NT2' },
                 { icon: '🤖', text: 'AI-powered writing feedback' },
                 { icon: '⚡', text: 'No credit card to start' },
@@ -281,6 +281,67 @@ export default function HomePage() {
                   {feature.description}
                 </p>
               </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Social proof */}
+      <section className="border-t border-border bg-background">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+          <div className="grid gap-6 sm:grid-cols-3 text-center">
+            {[
+              { stat: '69', label: 'Grammar topics', sub: 'A0 through B2, all free to read' },
+              { stat: '7', label: 'Days free trial', sub: 'No credit card at signup' },
+              { stat: '€3.49', label: 'Per month', sub: 'Less than a coffee, once a month' },
+            ].map((item) => (
+              <div key={item.stat} className="py-6">
+                <p className="text-4xl font-extrabold text-accent mb-1">{item.stat}</p>
+                <p className="font-semibold text-primary">{item.label}</p>
+                <p className="text-sm text-muted mt-1">{item.sub}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="border-t border-border bg-surface">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+          <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-8 text-center">
+            Common questions
+          </h2>
+          <div className="space-y-5">
+            {[
+              {
+                q: 'Do I need a credit card to start?',
+                a: 'No. You create an account with just your email, then start your 7-day free trial. You only enter payment details when you\'re ready to subscribe — and you can cancel before the trial ends with no charge.',
+              },
+              {
+                q: 'Can I read the lessons before subscribing?',
+                a: 'Yes — all 69 grammar lessons are free to read, forever. The subscription unlocks interactive exercises, vocabulary practice with spaced repetition, mock exam sets, and AI writing feedback.',
+              },
+              {
+                q: 'Is this good for the Inburgeringsexamen?',
+                a: 'Yes. The curriculum covers A0 through A2 in depth — everything the Inburgeringsexamen tests. The exam section includes dedicated practice sets for all four components (reading, writing, listening, speaking) plus KNM.',
+              },
+              {
+                q: 'What level should I start at?',
+                a: 'Start at A0 if you\'re a complete beginner. If you\'ve studied Dutch before, the onboarding quiz helps you find the right entry point. It takes 2 minutes and sets up your learning path automatically.',
+              },
+              {
+                q: 'How is this different from Duolingo?',
+                a: 'NederPro teaches grammar explicitly — the rules, the patterns, and why Dutch works the way it does. Duolingo avoids explicit grammar in favour of gamification, which leaves you unable to form sentences you haven\'t seen before. NederPro is for adults who want real proficiency.',
+              },
+              {
+                q: 'Can I cancel easily?',
+                a: 'Yes — one click from your account page. No confirmation screens, no retention flows. If you cancel mid-period you keep access until the end of the billing cycle.',
+              },
+            ].map((item) => (
+              <div key={item.q} className="border border-border rounded-xl p-5 bg-background">
+                <p className="font-semibold text-primary mb-2">{item.q}</p>
+                <p className="text-sm text-muted leading-relaxed">{item.a}</p>
+              </div>
             ))}
           </div>
         </div>

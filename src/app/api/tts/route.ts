@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
   const cacheKey = text.toLowerCase().trim();
   if (CACHE.has(cacheKey)) {
     const cached = CACHE.get(cacheKey)!;
-    return new NextResponse(cached, {
+    return new NextResponse(new Blob([cached], { type: 'audio/mpeg' }), {
       headers: {
         'Content-Type': 'audio/mpeg',
         'Cache-Control': 'public, max-age=86400',
@@ -65,7 +65,7 @@ export async function GET(request: NextRequest) {
     // Cache in-memory (resets on server restart)
     if (CACHE.size < 1000) CACHE.set(cacheKey, audioBytes);
 
-    return new NextResponse(audioBytes, {
+    return new NextResponse(new Blob([audioBytes], { type: 'audio/mpeg' }), {
       headers: {
         'Content-Type': 'audio/mpeg',
         'Cache-Control': 'public, max-age=86400',

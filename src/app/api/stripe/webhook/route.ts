@@ -62,21 +62,12 @@ export async function POST(request: NextRequest) {
         ? new Date(sub.trial_end * 1000).toISOString()
         : null;
 
-      const priceId = sub.items.data[0]?.price.id;
-      const plan =
-        priceId === process.env.STRIPE_PRICE_ID_BIWEEKLY
-          ? 'biweekly'
-          : priceId === process.env.STRIPE_PRICE_ID_MONTHLY
-            ? 'monthly'
-            : null;
-
       await supabaseAdmin.from('subscriptions').upsert(
         {
           user_id: userId,
           stripe_customer_id: customerId,
           stripe_subscription_id: sub.id,
           status: sub.status,
-          plan,
           trial_end: trialEnd,
           current_period_end: sub.items.data[0]?.current_period_end
             ? new Date(sub.items.data[0].current_period_end * 1000).toISOString()
@@ -107,7 +98,7 @@ export async function POST(request: NextRequest) {
           from: 'hello@nederpro.com',
           to: 'lainefajardo18@gmail.com',
           subject: 'New NederPro subscriber',
-          html: `<p>New subscriber: <strong>${profile.email}</strong> — Plan: <strong>${plan ?? 'unknown'}</strong></p>`,
+          html: `<p>New subscriber: <strong>${profile.email}</strong></p>`,
         }).catch(console.error);
       }
 
@@ -120,21 +111,12 @@ export async function POST(request: NextRequest) {
       const userId = (customer as Stripe.Customer).metadata?.supabase_user_id;
       if (!userId) break;
 
-      const priceId = sub.items.data[0]?.price.id;
-      const plan =
-        priceId === process.env.STRIPE_PRICE_ID_BIWEEKLY
-          ? 'biweekly'
-          : priceId === process.env.STRIPE_PRICE_ID_MONTHLY
-            ? 'monthly'
-            : null;
-
       await supabaseAdmin.from('subscriptions').upsert(
         {
           user_id: userId,
           stripe_customer_id: sub.customer as string,
           stripe_subscription_id: sub.id,
           status: sub.status,
-          plan,
           trial_end: sub.trial_end
             ? new Date(sub.trial_end * 1000).toISOString()
             : null,

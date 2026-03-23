@@ -50,14 +50,6 @@ export async function POST(request: NextRequest) {
     // Retrieve the subscription for full details
     const sub = await stripe.subscriptions.retrieve(subscriptionId);
 
-    const priceId = sub.items.data[0]?.price?.id ?? null;
-    const plan =
-      priceId === process.env.STRIPE_PRICE_ID_BIWEEKLY
-        ? 'biweekly'
-        : priceId === process.env.STRIPE_PRICE_ID_MONTHLY
-          ? 'monthly'
-          : null;
-
     const trialEnd = sub.trial_end
       ? new Date(sub.trial_end * 1000).toISOString()
       : null;
@@ -74,7 +66,6 @@ export async function POST(request: NextRequest) {
         stripe_customer_id: customerId,
         stripe_subscription_id: sub.id,
         status: sub.status,
-        plan,
         trial_end: trialEnd,
         current_period_end: periodEnd,
         updated_at: new Date().toISOString(),
@@ -87,7 +78,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: dbError.message }, { status: 500 });
     }
 
-    return NextResponse.json({ status: sub.status, plan, userId });
+    return NextResponse.json({ status: sub.status, userId });
 
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);

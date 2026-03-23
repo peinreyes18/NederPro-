@@ -99,6 +99,16 @@ export async function POST(request: NextRequest) {
           level: profile.level,
           trialEndDate,
         }).catch(console.error); // don't fail the webhook if email fails
+
+        // ── Notify owner ──────────────────────────────────────────────────────
+        const { Resend } = await import('resend');
+        const resend = new Resend(process.env.RESEND_API_KEY);
+        await resend.emails.send({
+          from: 'hello@nederpro.com',
+          to: 'lainefajardo18@gmail.com',
+          subject: 'New NederPro subscriber',
+          html: `<p>New subscriber: <strong>${profile.email}</strong> — Plan: <strong>${plan ?? 'unknown'}</strong></p>`,
+        }).catch(console.error);
       }
 
       break;

@@ -38,9 +38,9 @@ function LoginForm() {
     setError(null);
     setLoading(true);
     const { error, user } = await signIn(email, password);
-    setLoading(false);
 
     if (error) {
+      setLoading(false);
       if (error.toLowerCase().includes('email not confirmed')) {
         setError(
           'Please check your email and click the confirmation link first before signing in.'
@@ -57,8 +57,28 @@ function LoginForm() {
       return;
     }
 
-    const next = searchParams.get('next') || '/progress';
-    router.push(next);
+    // If there's a specific page they were trying to reach, go there
+    const next = searchParams.get('next');
+    if (next) {
+      router.push(next);
+      return;
+    }
+
+    // Check subscription status and redirect accordingly
+    try {
+      const { createClient } = await import('@/lib/supabase');
+      const supabase = createClient();
+      const { data: sub } = await supabase
+        .from('subscriptions')
+        .select('status')
+        .eq('user_id', user!.id)
+        .single();
+
+      const hasSubscription = sub?.status === 'active' || sub?.status === 'trialing';
+      router.push(hasSubscription ? '/levels' : '/subscribe');
+    } catch {
+      router.push('/levels');
+    }
   }
 
   return (

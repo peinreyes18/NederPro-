@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 import { trackBeginCheckout } from '@/lib/analytics';
+import { useAuth } from '@/contexts/AuthContext';
 
 type Plan = 'biweekly' | 'monthly';
 
@@ -24,9 +25,20 @@ const included = [
 
 export default function SubscribePage() {
   const router = useRouter();
+  const { isSubscribed, isLoading: authLoading } = useAuth();
   const [selected, setSelected] = useState<Plan>('monthly');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Redirect already-subscribed users straight to the app
+  useEffect(() => {
+    if (!authLoading && isSubscribed) {
+      router.replace('/levels');
+    }
+  }, [authLoading, isSubscribed, router]);
+
+  // Show nothing while checking auth to avoid flash of subscribe page
+  if (authLoading || isSubscribed) return null;
 
   async function handleStartTrial() {
     setLoading(true);

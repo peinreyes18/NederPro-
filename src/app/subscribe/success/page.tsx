@@ -24,12 +24,16 @@ function SuccessContent() {
             body: JSON.stringify({ sessionId }),
           });
 
+          const data = await res.json();
+          console.log('[verify-session response]', res.status, data);
+
           if (res.ok) {
             setReady(true);
             setTimeout(() => router.push('/levels'), 1500);
             return;
           }
-        } catch {
+        } catch (e) {
+          console.error('[verify-session fetch error]', e);
           // Fall through to polling
         }
       }

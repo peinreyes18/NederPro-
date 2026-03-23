@@ -2,9 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
-import Stripe from 'stripe';
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+import { stripe } from '@/lib/stripe';
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -38,23 +36,27 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Retrieve the checkout session from Stripe with subscription expanded
-    const checkoutSession = await stripe.checkout.sessions.retrieve(sessionId, {
-      expand: ['subscription'],
-    });
+    // Step 1: retrieve checkout session to get subscription ID + customer ID
+    const checkoutSession = await stripe.checkout.sessions.retrieve(sessionId);
 
-    if (checkoutSession.mode !== 'subscription') {
-      return NextResponse.json({ error: 'Not a subscription session' }, { status: 400 });
-    }
-
-    if (!checkoutSession.subscription) {
+    if (checkoutSession.mode !== 'subscription' || !checkoutSession.subscription) {
       return NextResponse.json({ error: 'No subscription on session' }, { status: 400 });
     }
 
-    // subscription is expanded so it's a full object
-    const sub = checkoutSession.subscription as Stripe.Subscription;
-    const priceId = sub.items.data[0]?.price?.id ?? null;
+    const subscriptionId =
+      typeof checkoutSession.subscription === 'string'
+        ? checkoutSession.subscription
+        : checkoutSession.subscription.id;
 
+    const customerId =
+      typeof checkoutSession.customer === 'string'
+        ? checkoutSession.customer
+        : checkoutSession.customer?.id ?? null;
+
+    // Step 2: retrieve the subscription separately for full details
+    const sub = await stripe.subscriptions.retrieve(subscriptionId);
+
+    const priceId = sub.items.data[0]?.price?.id ?? null;
     const plan =
       priceId === process.env.STRIPE_PRICE_ID_BIWEEKLY
         ? 'biweekly'
@@ -66,16 +68,12 @@ export async function POST(request: NextRequest) {
       ? new Date(sub.trial_end * 1000).toISOString()
       : null;
 
-    const periodEnd = sub.items.data[0]?.current_period_end
-      ? new Date((sub.items.data[0].current_period_end as number) * 1000).toISOString()
+    // current_period_end is on the subscription object in all API versions
+    const periodEnd = (sub as unknown as { current_period_end?: number }).current_period_end
+      ? new Date(((sub as unknown as { current_period_end: number }).current_period_end) * 1000).toISOString()
       : null;
 
-    const customerId =
-      typeof checkoutSession.customer === 'string'
-        ? checkoutSession.customer
-        : (checkoutSession.customer as Stripe.Customer)?.id ?? null;
-
-    // Write to Supabase using service role key (bypasses RLS)
+    // Step 3: write to Supabase
     const { error: dbError } = await supabaseAdmin.from('subscriptions').upsert(
       {
         user_id: session.user.id,
@@ -91,14 +89,14 @@ export async function POST(request: NextRequest) {
     );
 
     if (dbError) {
-      console.error('[verify-session] Supabase error:', dbError);
-      return NextResponse.json({ error: 'Database error', detail: dbError.message }, { status: 500 });
+      console.error('[verify-session] DB error:', dbError.message);
+      return NextResponse.json({ error: dbError.message }, { status: 500 });
     }
 
     return NextResponse.json({ status: sub.status, plan });
 
   } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : 'Unknown error';
+    const message = err instanceof Error ? err.message : String(err);
     console.error('[verify-session] Error:', message);
     return NextResponse.json({ error: message }, { status: 500 });
   }

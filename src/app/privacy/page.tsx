@@ -20,9 +20,10 @@ export default function PrivacyPolicyPage() {
         <section>
           <h2 className="text-lg font-bold text-primary mb-3">1. Who we are</h2>
           <p>
-            NederPro (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;) is an online Dutch language learning platform.
-            For the purposes of the General Data Protection Regulation (GDPR), we are the data controller
-            of your personal information.
+            NederPro (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;) is an online Dutch language learning platform
+            operated by <strong className="text-primary">Laine Consulting</strong>, registered in the Netherlands
+            (KvK number: 42005798). For the purposes of the General Data Protection Regulation (GDPR),
+            we are the data controller of your personal information.
           </p>
           <p className="mt-2">
             If you have any questions about this policy or how we handle your data, you can contact us at:{' '}
@@ -108,6 +109,7 @@ export default function PrivacyPolicyPage() {
                   ['Anthropic', 'AI writing feedback (Claude API)', 'USA (Standard Contractual Clauses)'],
                   ['Stripe', 'Payment processing', 'USA / EU (SCC)'],
                   ['Vercel', 'Hosting & CDN', 'USA / EU (SCC)'],
+                  ['Resend', 'Transactional email delivery', 'USA (SCC)'],
                 ].map(([provider, purpose, location], i) => (
                   <tr key={i} className="hover:bg-surface transition-colors">
                     <td className="px-4 py-2 font-medium text-primary">{provider}</td>

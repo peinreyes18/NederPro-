@@ -76,6 +76,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
     const msg = error?.message;
     const clean = !msg || msg === '{}' ? 'Something went wrong. Please try again.' : msg;
+    if (!error) {
+      fetch('/api/notify-signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      }).catch(() => {});
+    }
     return { error: error ? clean : null };
   }, []);
 

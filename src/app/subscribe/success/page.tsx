@@ -12,6 +12,7 @@ function SuccessContent() {
   const sessionId = searchParams.get('session_id');
   const [ready, setReady] = useState(false);
   const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
     async function activate() {
@@ -32,8 +33,11 @@ function SuccessContent() {
             setTimeout(() => router.push('/levels'), 1500);
             return;
           }
+          // Show the actual error on the page
+          setErrorMsg(`API error ${res.status}: ${data?.error ?? 'unknown'}`);
         } catch (e) {
           console.error('[verify-session fetch error]', e);
+          setErrorMsg(String(e));
           // Fall through to polling
         }
       }
@@ -84,10 +88,15 @@ function SuccessContent() {
           </svg>
         </div>
         <h1 className="text-2xl font-bold text-primary mb-2">Something went wrong</h1>
-        <p className="text-primary-light text-sm mb-6">
+        <p className="text-primary-light text-sm mb-3">
           Your payment was processed but we couldn&apos;t activate your account automatically.
           Please contact <a href="mailto:hello@nederpro.com" className="text-accent underline">hello@nederpro.com</a> and we&apos;ll fix it right away.
         </p>
+        {errorMsg && (
+          <p className="text-xs text-muted font-mono bg-surface border border-border rounded px-3 py-2 mb-3 break-all">
+            {errorMsg}
+          </p>
+        )}
       </>
     );
   }

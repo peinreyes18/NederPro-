@@ -132,6 +132,8 @@ export async function POST(request: NextRequest) {
 
     case 'customer.subscription.updated': {
       const sub = event.data.object as Stripe.Subscription;
+      const prevSub = event.data.previous_attributes as Record<string, unknown> | undefined;
+
       await supabaseAdmin
         .from('subscriptions')
         .update({
@@ -140,11 +142,32 @@ export async function POST(request: NextRequest) {
             ? new Date(sub.trial_end * 1000).toISOString()
             : null,
           current_period_end: sub.items.data[0]?.current_period_end
-            ? new Date(sub.items.data[0].current_period_end * 1000).toISOString()
+            ? new Date((sub.items.data[0].current_period_end as number) * 1000).toISOString()
             : null,
           updated_at: new Date().toISOString(),
         })
         .eq('stripe_subscription_id', sub.id);
+
+      // Notify owner when trial converts to active paid subscription
+      const wasTrialing = prevSub?.status === 'trialing';
+      const isNowActive = sub.status === 'active';
+      if (wasTrialing && isNowActive) {
+        const customer = await stripe.customers.retrieve(sub.customer as string);
+        const userId = (customer as Stripe.Customer).metadata?.supabase_user_id;
+        if (userId) {
+          const profile = await getUserProfile(userId);
+          if (profile) {
+            const { Resend } = await import('resend');
+            const resend = new Resend(process.env.RESEND_API_KEY);
+            await resend.emails.send({
+              from: 'hello@nederpro.com',
+              to: 'lainefajardo18@gmail.com',
+              subject: '💳 New paid subscriber — NederPro',
+              html: `<p><strong>${profile.email}</strong> just converted from trial to a paid subscription.</p>`,
+            }).catch(console.error);
+          }
+        }
+      }
       break;
     }
 
@@ -158,7 +181,7 @@ export async function POST(request: NextRequest) {
         })
         .eq('stripe_subscription_id', sub.id);
 
-      // ── Send winback email ──────────────────────────────────────────────────
+      // ── Send winback email to user + notify owner ───────────────────────────
       const customer = await stripe.customers.retrieve(sub.customer as string);
       const userId = (customer as Stripe.Customer).metadata?.supabase_user_id;
       if (userId) {
@@ -167,6 +190,15 @@ export async function POST(request: NextRequest) {
           await sendWinbackEmail({
             to: profile.email,
             firstName: profile.firstName,
+          }).catch(console.error);
+
+          const { Resend } = await import('resend');
+          const resend = new Resend(process.env.RESEND_API_KEY);
+          await resend.emails.send({
+            from: 'hello@nederpro.com',
+            to: 'lainefajardo18@gmail.com',
+            subject: '❌ Subscription cancelled — NederPro',
+            html: `<p><strong>${profile.email}</strong> has cancelled their subscription.</p>`,
           }).catch(console.error);
         }
       }

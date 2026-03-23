@@ -412,7 +412,7 @@ export const adjectivesBasics: Topic = {
         sentences: [
           { before: 'de', after: 'jongen (nat)', correctAnswer: 'natte', hint: 'short vowel: double the t' },
           { before: 'een', after: 'probleem (groot / het probleem)', correctAnswer: 'groot', hint: 'het-woord + een = no -e' },
-          { before: 'de', after: 'muziek (grijs / de kleur)', correctAnswer: 'grijze', hint: 's becomes z before -e' },
+          { before: 'de', after: 'kleur (grijs / de kleur)', correctAnswer: 'grijze', hint: 's becomes z before -e' },
           { before: 'het', after: 'huis (wit)', correctAnswer: 'witte', hint: 'het-woord + het = -e; short vowel: double t' },
         ],
       },

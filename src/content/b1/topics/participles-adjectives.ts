@@ -99,7 +99,7 @@ export const participlesAdjectives: Topic = {
           type: 'common-mistakes',
           mistakes: [
             { incorrect: 'een gebroken harte', correct: 'een gebroken hart', explanation: '"Hart" is a het-word in indefinite singular → no -e ending on the adjective.' },
-            { incorrect: 'een ervaren medewerker (as de-word)', correct: 'een ervaren medewerker', explanation: '"Ervaren" is already ends in -en (no change needed). "Medewerker" is a de-word, but "ervaren" does not visibly change.' },
+            { incorrect: 'een ervarend medewerker', correct: 'een ervaren medewerker', explanation: '"Ervaren" ends in -en, so no additional -e ending is added — this applies to all adjectives already ending in -en, regardless of de- or het-word.' },
           ],
         },
       ],
@@ -252,7 +252,7 @@ export const participlesAdjectives: Topic = {
             before: 'De',
             after: 'auto staat in de garage. (stelen)',
             correctAnswer: 'gestolen',
-            hint: 'Gestolen = past pp of stelen; de-word → add -e: gestolen + e = gestolene? No — gestolen already ends in -en',
+            hint: 'Gestolen = past participle of stelen (strong verb). Strong verb participles end in -en, which already serves as the adjective ending — no extra -e is added.',
           },
           {
             before: 'Dit is een',

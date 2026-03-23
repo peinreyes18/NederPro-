@@ -338,7 +338,7 @@ export const infinitiveConstructions: Topic = {
             acceptableAnswers: ['We hebben het kantoor laten schoonmaken.', 'Wij hebben het kantoor laten schoonmaken.'],
           },
           {
-            english: 'It is important to call in time.',
+            english: 'It is important to call on time.',
             correctDutch: 'Het is belangrijk om op tijd op te bellen.',
             acceptableAnswers: ['Het is belangrijk om op tijd op te bellen.'],
           },

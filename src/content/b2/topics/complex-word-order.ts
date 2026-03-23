@@ -126,7 +126,7 @@ export const complexWordOrder: Topic = {
           type: 'common-mistakes',
           mistakes: [
             { incorrect: 'Gisteren het rapport heb ik gelezen.', correct: 'Gisteren heb ik het rapport gelezen.', explanation: 'Only one constituent can occupy the topic position (position 1). Choose one: the adverb or the object.' },
-            { incorrect: 'Dat hij ziek is, ik wist het niet.', correct: 'Dat hij ziek is, wist ik het niet.', explanation: 'After a fronted subordinate clause, inversion is required: verb before subject.' },
+            { incorrect: 'Dat hij ziek is, ik wist het niet.', correct: 'Dat hij ziek is, wist ik niet.', explanation: 'After a fronted subordinate clause, inversion is required: verb before subject. The resumptive "het" is omitted because the fronted clause already fills that role.' },
           ],
         },
       ],
@@ -231,8 +231,8 @@ export const complexWordOrder: Topic = {
           },
           {
             incorrectSentence: 'Dat hij zou vertrekken, ik wist het niet.',
-            correctedSentence: 'Dat hij zou vertrekken, wist ik het niet.',
-            errorExplanation: 'After a fronted subordinate clause, the finite verb must come immediately (V2 inversion): wist ik, not ik wist.',
+            correctedSentence: 'Dat hij zou vertrekken, wist ik niet.',
+            errorExplanation: 'After a fronted subordinate clause, the finite verb must come immediately (V2 inversion): "wist ik", not "ik wist". The resumptive "het" is dropped because the fronted clause already fills that role.',
           },
         ],
       },
@@ -294,7 +294,7 @@ export const complexWordOrder: Topic = {
             translation: 'I know that he said this earlier.',
           },
           {
-            shuffledWords: ['de', 'waarover', 'gaat', 'vergadering', 'Dit', 'is'],
+            shuffledWords: ['de', 'waarover', 'gaat', 'vergadering', 'Dit', 'is', 'het'],
             correctOrder: ['Dit', 'is', 'de', 'vergadering', 'waarover', 'het', 'gaat'],
             translation: 'This is the meeting that it is about.',
           },

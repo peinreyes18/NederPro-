@@ -52,7 +52,7 @@ export const expressingWishes: Topic = {
           type: 'common-mistakes',
           mistakes: [
             { incorrect: 'Ik wil dat ik meer geld heb.', correct: 'Ik wou dat ik meer geld had.', explanation: 'Wishes about current reality use past-tense verbs: "wou dat … had" (past form of "wil dat … heeft"). This signals the wish is contrary to current reality.' },
-            { incorrect: 'Als ik rijk ben, zou ik reizen.', correct: 'Als ik rijk was/were, zou ik reizen.', explanation: 'Hypothetical "if" clauses use the past tense (was) to signal irreality: "Als ik rijk was, zou ik reizen."' },
+            { incorrect: 'Als ik rijk ben, zou ik reizen.', correct: 'Als ik rijk was, zou ik reizen.', explanation: 'Hypothetical "if" clauses use the past tense (was) to signal irreality: "Als ik rijk was, zou ik reizen."' },
             { incorrect: 'Ik zou gaan als ik kan.', correct: 'Ik zou gaan als ik kon.', explanation: 'In a hypothetical conditional, the "als" clause also uses the past tense (kon = could, past of kan).' },
           ],
         },
@@ -239,9 +239,9 @@ export const expressingWishes: Topic = {
           {
             before: 'Mocht u vragen hebben,',
             after: 'dan contact op.',
-            correctAnswer: 'neemt',
-            hint: '"Mocht u … hebben, neemt u dan … op" — formal polite wish',
-            acceptableAnswers: ['neemt', 'neem'],
+            correctAnswer: 'neem',
+            hint: '"Mocht u … hebben, neem dan contact op" — the conventional form uses the imperative "neem"',
+            acceptableAnswers: ['neem', 'neemt'],
           },
         ],
       },

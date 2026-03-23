@@ -188,10 +188,10 @@ export const discourseMarkers: Topic = {
         type: 'multiple-choice',
         questions: [
           {
-            question: 'De resultaten zijn goed. ___, zijn er nog verbeterpunten.',
-            options: ['Echter', 'Bovendien', 'Namelijk', 'Derhalve'],
+            question: 'De resultaten zijn goed. Er zijn ___ nog verbeterpunten.',
+            options: ['echter', 'bovendien', 'namelijk', 'derhalve'],
             correctIndex: 0,
-            explanation: '"Echter" signals contrast (however). Note: "Echter" must NOT be the first word of the sentence in standard Dutch — here it appears after the subject is implied. In a proper sentence it would be: "De resultaten zijn goed. Er zijn echter nog verbeterpunten."',
+            explanation: '"Echter" signals contrast (however) and is placed sentence-internally, after the subject. "Er zijn echter nog verbeterpunten" is correct. Never place "echter" as the very first word of a sentence.',
           },
           {
             question: 'We trainen het team dagelijks ___ de kwaliteit te verbeteren. (purpose)',

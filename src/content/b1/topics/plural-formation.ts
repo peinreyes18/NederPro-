@@ -507,8 +507,8 @@ export const pluralFormation: Topic = {
               'Vowel change: short → long',
               'Special -eren plural',
             ],
-            correctIndex: 2,
-            explanation: 'Dag has an irregular vowel change: dag (short a) → dagen (long a).',
+            correctIndex: 0,
+            explanation: 'Dag → dagen is a regular -en plural. The vowel sounds longer because adding -en opens the syllable (da-gen), which is standard Dutch spelling — not a true vowel change like stad → steden.',
           },
           {
             question: '"directie" → Which rule applies?',

@@ -422,8 +422,8 @@ export const conjunctionsConnectors: Topic = {
           },
           {
             english: 'She was tired; however, she finished the report.',
-            correctDutch: 'Ze was moe; echter, ze maakte het rapport af.',
-            acceptableAnswers: ['Ze was moe, maar ze maakte het rapport af.', 'Ze was moe. Toch maakte ze het rapport af.'],
+            correctDutch: 'Ze was moe. Toch maakte ze het rapport af.',
+            acceptableAnswers: ['Ze was moe, maar ze maakte het rapport af.', 'Ze was moe; echter maakte ze het rapport af.'],
           },
         ],
       },

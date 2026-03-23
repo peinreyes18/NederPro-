@@ -255,9 +255,9 @@ export const collocationsFixedExpressions: Topic = {
         type: 'error-correction',
         items: [
           {
-            incorrectSentence: 'De rechtbank heeft besloten de wet te breken in dit specifieke geval.',
-            correctedSentence: 'De rechtbank heeft besloten de wet te overtreden in dit specifieke geval.',
-            errorExplanation: '"Wetten" (laws) are "overtreden" (violated), not "gebroken" (broken) in Dutch.',
+            incorrectSentence: 'Het bedrijf heeft de wet gebroken in dit specifieke geval.',
+            correctedSentence: 'Het bedrijf heeft de wet overtreden in dit specifieke geval.',
+            errorExplanation: '"Wetten" (laws) are "overtreden" (violated), not "gebroken" (broken) in Dutch. Use "de wet overtreden" for breaking a law.',
           },
           {
             incorrectSentence: 'We moeten een beslissing maken over de toekomst van het bedrijf.',

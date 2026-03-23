@@ -5,7 +5,7 @@ export const reflexiveVerbs: Topic = {
   levelId: 'a2',
   order: 8,
   title: 'Reflexive Verbs',
-  subtitle: 'Wederkerend werkwoorden',
+  subtitle: 'Wederkerende werkwoorden',
   estimatedMinutes: 30,
   lessons: [
     {

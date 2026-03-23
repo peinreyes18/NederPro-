@@ -405,7 +405,7 @@ export const conditionalSentences: Topic = {
           'Write one unreal present conditional (als + simple past, zou + infinitive)',
           'Write one past unreal conditional (als + pluperfect, zou + hebben/zijn + pp)',
         ],
-        sampleResponse: 'Als ik genoeg vocabulaire ken, kan ik een sollicitatiegesprek in het Nederlands voeren. Als ik meer tijd had, zou ik elke dag twee uur Nederlands studeren. Als ik eerder was begonnen met leren, zou ik nu al vloeiend zijn geweest.',
+        sampleResponse: 'Als ik genoeg vocabulaire ken, kan ik een sollicitatiegesprek in het Nederlands voeren. Als ik meer tijd had, zou ik elke dag twee uur Nederlands studeren. Als ik eerder was begonnen met leren, zou ik nu al vloeiend zijn.',
       },
     },
   ],

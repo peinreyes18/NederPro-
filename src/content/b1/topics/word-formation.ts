@@ -124,7 +124,7 @@ export const wordFormation: Topic = {
             ['groot (adj)', 'vergroten', 'to enlarge'],
             ['kopen (verb)', 'verkopen', 'to sell'],
             ['huren (verb)', 'verhuren', 'to rent out'],
-            ['geten (verb)', 'vergeten', 'to forget'],
+            ['— (historical root)', 'vergeten', 'to forget (lexicalized, no modern base form)'],
             ['staan (verb)', 'verstaan', 'to understand (speech)'],
             ['bouwen (verb)', 'verbouwen', 'to renovate / to grow (crops)'],
           ],

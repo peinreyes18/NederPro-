@@ -49,7 +49,7 @@ export const advancedNegationScope: Topic = {
           type: 'common-mistakes',
           mistakes: [
             { incorrect: 'De overheid heeft niet besloten te bezuinigen. (intended: they decided against cuts)', correct: 'De overheid heeft besloten niet te bezuinigen.', explanation: 'To express a decision against something, "niet" must come AFTER "besloten" and before the infinitive.' },
-            { incorrect: 'Ik raad het niet aan iedereen aan.', correct: 'Ik raad het niet aan iedereen aan.', explanation: 'This sentence is actually correct — "niet aan iedereen" negates the scope of the recommendation. But make sure the separable prefix "aan" is at the end.' },
+            { incorrect: 'Ik raad dit aan iedereen aan.', correct: 'Ik raad dit niet aan iedereen aan.', explanation: '"Niet aan iedereen" narrows the scope of negation — it means "not to everyone" rather than a full negation. Make sure the separable prefix "aan" stays at the end.' },
           ],
         },
       ],
@@ -192,7 +192,7 @@ export const advancedNegationScope: Topic = {
               'Noch de president, noch de ministers, waren aanwezig.',
             ],
             correctIndex: 0,
-            explanation: '"Noch … noch" with two plural subjects takes plural agreement ("waren"). The comma is not used between the two "noch" elements.',
+            explanation: '"Noch … noch" with a plural nearest subject ("de ministers") takes plural agreement ("waren"). Note: "de president" is singular, but since the nearest subject "de ministers" is plural, "waren" is accepted. No comma between the two "noch" elements.',
           },
         ],
       },

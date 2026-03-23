@@ -334,8 +334,8 @@ export const registerStyle: Topic = {
             translation: 'Please be so kind as to fill in this form completely.',
           },
           {
-            shuffledWords: ['ontvangen', 'Wij', 'u', 'informeren', 'zodra', 'graarne', 'wij', 'bericht'],
-            correctOrder: ['Wij', 'informeren', 'u', 'graarne', 'zodra', 'wij', 'bericht', 'ontvangen'],
+            shuffledWords: ['ontvangen', 'Wij', 'u', 'informeren', 'zodra', 'gaarne', 'wij', 'bericht'],
+            correctOrder: ['Wij', 'informeren', 'u', 'gaarne', 'zodra', 'wij', 'bericht', 'ontvangen'],
             translation: 'We will gladly inform you as soon as we receive a message.',
           },
         ],
@@ -364,7 +364,7 @@ export const registerStyle: Topic = {
           {
             english: 'We look forward to receiving your response.',
             correctDutch: 'Wij zien uw reactie met belangstelling tegemoet.',
-            acceptableAnswers: ['Wij ontvangen uw reactie graarne.', 'Met vriendelijke groet en in afwachting van uw reactie.'],
+            acceptableAnswers: ['Wij ontvangen uw reactie gaarne.', 'Met vriendelijke groet en in afwachting van uw reactie.'],
             keyVocabulary: [{ dutch: 'met belangstelling tegemoetzien', english: 'to look forward to' }],
           },
         ],

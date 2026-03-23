@@ -96,7 +96,7 @@ export const perfectumIrregular: Topic = {
             ['zijn', 'zijn', 'Ik ben ziek geweest.'],
             ['gaan', 'zijn', 'Zij is naar huis gegaan.'],
             ['komen', 'zijn', 'Hij is laat gekomen.'],
-            ['rijden', 'zijn / hebben', 'Ik ben naar Utrecht gereden. / Ik heb auto gereden.'],
+            ['rijden', 'zijn / hebben', 'Ik ben naar Utrecht gereden. / Ik heb de hele dag gereden.'],
             ['beginnen', 'zijn', 'De vergadering is begonnen.'],
             ['lezen', 'hebben', 'Ik heb de krant gelezen.'],
             ['schrijven', 'hebben', 'Zij heeft een e-mail geschreven.'],

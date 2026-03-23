@@ -182,8 +182,8 @@ export const conjunctionsSubordinate: Topic = {
               english: 'If you have questions, you can call me.',
             },
             {
-              dutch: 'Ik stuur het rapport voordat de deadline is.',
-              english: 'I will send the report before the deadline.',
+              dutch: 'Ik stuur het rapport voordat de deadline verstrijkt.',
+              english: 'I will send the report before the deadline expires.',
             },
             {
               dutch: 'Terwijl we op het antwoord wachten, kunnen we aan iets anders werken.',
@@ -390,9 +390,9 @@ export const conjunctionsSubordinate: Topic = {
         type: 'word-order',
         items: [
           {
-            shuffledWords: ['voordat', 'is', 'stuur', 'het', 'rapport', 'ik', 'deadline', 'de'],
-            correctOrder: ['Ik', 'stuur', 'het', 'rapport', 'voordat', 'de', 'deadline', 'is'],
-            translation: 'I will send the report before the deadline.',
+            shuffledWords: ['voordat', 'verstrijkt', 'stuur', 'het', 'rapport', 'ik', 'deadline', 'de'],
+            correctOrder: ['Ik', 'stuur', 'het', 'rapport', 'voordat', 'de', 'deadline', 'verstrijkt'],
+            translation: 'I will send the report before the deadline expires.',
           },
         ],
       },

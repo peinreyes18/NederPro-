@@ -198,7 +198,7 @@ export const reportedSpeech: Topic = {
             question: 'Direct: Ze zegt: "Ik heb het boek gelezen." → Indirect: Ze zegt dat ze het boek ...',
             options: ['heeft gelezen', 'gelezen heeft', 'leest', 'heeft gelezen het'],
             correctIndex: 1,
-            explanation: 'In a subordinate clause with perfect tense, the auxiliary (heeft) goes to the very end: "gelezen heeft".',
+            explanation: 'In a subordinate clause, the verb cluster moves to the end. Both "gelezen heeft" and "heeft gelezen" are accepted in Dutch — "gelezen heeft" is the traditional written order, while "heeft gelezen" is also widely used. Both are correct.',
           },
           {
             question: 'Which sentence is CORRECT reported speech?',

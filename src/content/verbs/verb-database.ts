@@ -900,7 +900,7 @@ const verbs: VerbConjugation[] = [
     translation: 'to say',
     auxiliary: 'hebben',
     pastParticiple: 'gezegd',
-    isRegular: true,
+    isRegular: false,
     present: { ik: 'zeg', jij: 'zegt', u: 'zegt', hijZijHet: 'zegt', wij: 'zeggen', jullie: 'zeggen', zij: 'zeggen' },
     pastSimple: { ik: 'zei', jij: 'zei', u: 'zei', hijZijHet: 'zei', wij: 'zeiden', jullie: 'zeiden', zij: 'zeiden' },
     imperative: 'zeg!',
@@ -979,7 +979,7 @@ const verbs: VerbConjugation[] = [
     translation: 'to ask',
     auxiliary: 'hebben',
     pastParticiple: 'gevraagd',
-    isRegular: true,
+    isRegular: false,
     present: { ik: 'vraag', jij: 'vraagt', u: 'vraagt', hijZijHet: 'vraagt', wij: 'vragen', jullie: 'vragen', zij: 'vragen' },
     pastSimple: { ik: 'vroeg', jij: 'vroeg', u: 'vroeg', hijZijHet: 'vroeg', wij: 'vroegen', jullie: 'vroegen', zij: 'vroegen' },
     imperative: 'vraag!',
@@ -1121,21 +1121,6 @@ const verbs: VerbConjugation[] = [
 
   // ===== MOVEMENT & DIRECTION VERBS =====
   {
-    infinitive: 'lopen',
-    translation: 'to walk / to run',
-    auxiliary: 'zijn',
-    pastParticiple: 'gelopen',
-    isRegular: false,
-    present: { ik: 'loop', jij: 'loopt', u: 'loopt', hijZijHet: 'loopt', wij: 'lopen', jullie: 'lopen', zij: 'lopen' },
-    pastSimple: { ik: 'liep', jij: 'liep', u: 'liep', hijZijHet: 'liep', wij: 'liepen', jullie: 'liepen', zij: 'liepen' },
-    imperative: 'loop!',
-    examples: [
-      { dutch: 'Ik loop elke dag een uur.', english: 'I walk for an hour every day.' },
-      { dutch: 'Ze is naar de winkel gelopen.', english: 'She walked to the shop.' },
-    ],
-    notes: 'Uses zijn as auxiliary for movement from A to B.',
-  },
-  {
     infinitive: 'vliegen',
     translation: 'to fly',
     auxiliary: 'hebben/zijn',
@@ -1176,20 +1161,6 @@ const verbs: VerbConjugation[] = [
     examples: [
       { dutch: 'Stuur me het document.', english: 'Send me the document.' },
       { dutch: 'Ik heb een e-mail gestuurd.', english: 'I sent an email.' },
-    ],
-  },
-  {
-    infinitive: 'reizen',
-    translation: 'to travel',
-    auxiliary: 'hebben',
-    pastParticiple: 'gereisd',
-    isRegular: true,
-    present: { ik: 'reis', jij: 'reist', u: 'reist', hijZijHet: 'reist', wij: 'reizen', jullie: 'reizen', zij: 'reizen' },
-    pastSimple: { ik: 'reisde', jij: 'reisde', u: 'reisde', hijZijHet: 'reisde', wij: 'reisden', jullie: 'reisden', zij: 'reisden' },
-    imperative: 'reis!',
-    examples: [
-      { dutch: 'Hij reist veel voor zijn werk.', english: 'He travels a lot for work.' },
-      { dutch: 'We hebben door Europa gereisd.', english: 'We travelled through Europe.' },
     ],
   },
   {
@@ -2176,20 +2147,6 @@ const verbs: VerbConjugation[] = [
     present: { ik: 'parkeer', jij: 'parkeert', u: 'parkeert', hijZijHet: 'parkeert', wij: 'parkeren', jullie: 'parkeren', zij: 'parkeren' },
     pastSimple: { ik: 'parkeerde', jij: 'parkeerde', u: 'parkeerde', hijZijHet: 'parkeerde', wij: 'parkeerden', jullie: 'parkeerden', zij: 'parkeerden' },
     imperative: 'parkeer!',
-  },
-  {
-    infinitive: 'reizen',
-    translation: 'to travel',
-    auxiliary: 'hebben',
-    pastParticiple: 'gereisd',
-    isRegular: true,
-    examples: [
-      { dutch: 'Ze reist graag naar verre landen.', english: 'She likes to travel to faraway countries.' },
-      { dutch: 'Wij hebben veel gereisd.', english: 'We have travelled a lot.' },
-    ],
-    present: { ik: 'reis', jij: 'reist', u: 'reist', hijZijHet: 'reist', wij: 'reizen', jullie: 'reizen', zij: 'reizen' },
-    pastSimple: { ik: 'reisde', jij: 'reisde', u: 'reisde', hijZijHet: 'reisde', wij: 'reisden', jullie: 'reisden', zij: 'reisden' },
-    imperative: 'reis!',
   },
 
   // ===== SHOPPING & MONEY =====

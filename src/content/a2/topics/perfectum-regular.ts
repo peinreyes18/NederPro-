@@ -105,7 +105,7 @@ export const perfectumRegular: Topic = {
         {
           type: 'note',
           content:
-            'Verbs ending in -eren (like telefoneren, studeren, repareren) also do not get ge-: getelefoneerd becomes gebeld, but telefoneren -> getelefoneerd. Actually, -eren verbs DO get ge-: getelefoneerd, gestudeerd. Exception: verbs with unstressed prefixes like reserveren -> gereserveerd.',
+            'Verbs ending in -eren (like telefoneren, studeren, repareren) DO get ge-: telefoneren → getelefoneerd, studeren → gestudeerd, repareren → gerepareerd. The only exceptions are -eren verbs that also have an unstressed prefix (be-, ver-, ont-, etc.), which already block ge-: e.g., reserveren → gereserveerd (the ver- prefix blocks the extra ge-).',
           variant: 'tip',
         },
         {
@@ -233,9 +233,9 @@ export const perfectumRegular: Topic = {
             },
             {
               incorrect: 'Hij heeft het gewoont.',
-              correct: 'Hij heeft daar gewoond.',
+              correct: 'Hij heeft er gewoond.',
               explanation:
-                "The stem of 'wonen' is 'woon'. The last letter n is not a kofschip consonant, so the ending is -d: gewoond, not gewoont.",
+                "The stem of 'wonen' is 'woon'. The last letter n is not a kofschip consonant, so the ending is -d: gewoond, not gewoont. Also, 'wonen' is intransitive and does not take a direct object like 'het' — use 'er' instead.",
             },
           ],
         },
@@ -268,8 +268,7 @@ export const perfectumRegular: Topic = {
             before: 'Wij hebben de auto',
             after: '. (wassen)',
             correctAnswer: 'gewassen',
-            acceptableAnswers: ['gewast'],
-            hint: "Stem 'was' ends in s (kofschip) -> -t",
+            hint: "Wassen is an irregular (strong) verb: the past participle is 'gewassen', not 'gewast'.",
           },
         ],
       },

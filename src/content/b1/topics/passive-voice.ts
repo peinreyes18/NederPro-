@@ -39,7 +39,7 @@ export const passiveVoice: Topic = {
           rows: [
             ['De brief werd geschreven.', 'The letter was written.'],
             ['De producten werden verkocht.', 'The products were sold.'],
-            ['Het vergadering werd gehouden.', 'The meeting was held.'],
+            ['De vergadering werd gehouden.', 'The meeting was held.'],
             ['De rapporten werden ingediend.', 'The reports were submitted.'],
           ],
           caption: 'Use werd (singular) or werden (plural) for the simple past passive.',
@@ -56,7 +56,7 @@ export const passiveVoice: Topic = {
         {
           type: 'common-mistakes',
           mistakes: [
-            { incorrect: 'De brief is geschreven door mij. (passive present)', correct: 'De brief wordt geschreven door mij.', explanation: 'Use worden (not zijn) for the present passive. "Is geschreven" is the perfect tense of the passive.' },
+            { incorrect: 'De brief is geschreven door mij. (intending present passive)', correct: 'De brief wordt geschreven door mij.', explanation: 'To express a present passive (ongoing action), use worden: "De brief wordt geschreven." Note: "De brief is geschreven" is also correct Dutch — it is the perfect passive (completed action: "The letter has been written"). Use wordt for an ongoing process, and is geschreven for a completed one.' },
             { incorrect: 'De producten worden verkochten.', correct: 'De producten worden verkocht.', explanation: 'The past participle does not add extra endings in the passive.' },
             { incorrect: 'Hij werd gefired.', correct: 'Hij werd ontslagen.', explanation: 'Use Dutch verbs. "Onfired" does not exist; the correct Dutch past participle is "ontslagen".' },
           ],

@@ -373,8 +373,8 @@ export const relativeClauses: Topic = {
           },
           {
             english: 'That is the most interesting book that I have ever read.',
-            correctDutch: 'Dat is het interessantste boek wat ik ooit heb gelezen.',
-            acceptableAnswers: ['Dat is het interessantste boek wat ik ooit heb gelezen.'],
+            correctDutch: 'Dat is het interessantste boek dat ik ooit heb gelezen.',
+            acceptableAnswers: ['Dat is het interessantste boek dat ik ooit heb gelezen.', 'Dat is het interessantste boek wat ik ooit heb gelezen.'],
           },
         ],
       },

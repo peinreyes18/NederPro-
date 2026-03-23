@@ -1,89 +1,139 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 
-export default function SubscribeSuccessPage() {
+function SuccessContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const sessionId = searchParams.get('session_id');
   const [ready, setReady] = useState(false);
-  const [attempts, setAttempts] = useState(0);
+  const [error, setError] = useState(false);
 
-  // Poll Supabase every 2 seconds until the subscription record appears (max 20s)
   useEffect(() => {
-    const supabase = createClient();
-    let tries = 0;
+    async function activate() {
+      // Step 1: Try direct session verification (fastest, most reliable)
+      if (sessionId) {
+        try {
+          const res = await fetch('/api/stripe/verify-session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sessionId }),
+          });
 
-    async function check() {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
-
-      const { data: sub } = await supabase
-        .from('subscriptions')
-        .select('status')
-        .eq('user_id', session.user.id)
-        .single();
-
-      const hasAccess = sub?.status === 'active' || sub?.status === 'trialing';
-
-      if (hasAccess) {
-        setReady(true);
-        // Auto-redirect after a short moment
-        setTimeout(() => router.push('/levels'), 1500);
-      } else {
-        tries++;
-        setAttempts(tries);
-        if (tries < 10) {
-          setTimeout(check, 2000);
-        } else {
-          // After 20s just let them proceed — webhook may be delayed
-          setReady(true);
-          setTimeout(() => router.push('/levels'), 1500);
+          if (res.ok) {
+            setReady(true);
+            setTimeout(() => router.push('/levels'), 1500);
+            return;
+          }
+        } catch {
+          // Fall through to polling
         }
       }
+
+      // Step 2: Fall back to polling Supabase (webhook may have already fired)
+      const { createClient } = await import('@/lib/supabase');
+      const supabase = createClient();
+      let tries = 0;
+
+      async function poll() {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) return;
+
+        const { data: sub } = await supabase
+          .from('subscriptions')
+          .select('status')
+          .eq('user_id', session.user.id)
+          .single();
+
+        const hasAccess = sub?.status === 'active' || sub?.status === 'trialing';
+
+        if (hasAccess) {
+          setReady(true);
+          setTimeout(() => router.push('/levels'), 1500);
+        } else {
+          tries++;
+          if (tries < 8) {
+            setTimeout(poll, 2000);
+          } else {
+            // After ~16s give up and show error
+            setError(true);
+          }
+        }
+      }
+
+      poll();
     }
 
-    check();
-  }, [router]);
+    activate();
+  }, [sessionId, router]);
 
+  if (error) {
+    return (
+      <>
+        <div className="w-12 h-12 rounded-full bg-error-light flex items-center justify-center mb-5">
+          <svg className="w-6 h-6 text-error" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M12 2a10 10 0 100 20A10 10 0 0012 2z" />
+          </svg>
+        </div>
+        <h1 className="text-2xl font-bold text-primary mb-2">Something went wrong</h1>
+        <p className="text-primary-light text-sm mb-6">
+          Your payment was processed but we couldn&apos;t activate your account automatically.
+          Please contact <a href="mailto:hello@nederpro.com" className="text-accent underline">hello@nederpro.com</a> and we&apos;ll fix it right away.
+        </p>
+      </>
+    );
+  }
+
+  if (ready) {
+    return (
+      <>
+        <div className="w-12 h-12 rounded-full bg-accent-light flex items-center justify-center mb-5">
+          <svg className="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h1 className="text-2xl font-bold text-primary mb-2">You&apos;re all set!</h1>
+        <p className="text-primary-light text-sm mb-6">
+          Your 7-day free trial has started. Redirecting you now…
+        </p>
+        <Button className="w-full" onClick={() => router.push('/levels')}>
+          Start learning →
+        </Button>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <div className="w-12 h-12 rounded-full bg-accent-light flex items-center justify-center mb-5">
+        <svg className="w-6 h-6 text-accent animate-spin" fill="none" viewBox="0 0 24 24">
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+        </svg>
+      </div>
+      <h1 className="text-2xl font-bold text-primary mb-2">Activating your account…</h1>
+      <p className="text-primary-light text-sm">
+        Just a moment while we set everything up.
+      </p>
+    </>
+  );
+}
+
+export default function SubscribeSuccessPage() {
   return (
     <div className="max-w-lg mx-auto px-4 py-16">
       <Card>
-        {ready ? (
-          <>
-            {/* Success state */}
-            <div className="w-12 h-12 rounded-full bg-accent-light flex items-center justify-center mb-5">
-              <svg className="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <h1 className="text-2xl font-bold text-primary mb-2">You&apos;re all set!</h1>
-            <p className="text-primary-light text-sm mb-6">
-              Your 7-day free trial has started. Redirecting you now…
-            </p>
-            <Button className="w-full" onClick={() => router.push('/levels')}>
-              Start learning →
-            </Button>
-          </>
-        ) : (
-          <>
-            {/* Loading state */}
-            <div className="w-12 h-12 rounded-full bg-accent-light flex items-center justify-center mb-5">
-              <svg className="w-6 h-6 text-accent animate-spin" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-              </svg>
-            </div>
-            <h1 className="text-2xl font-bold text-primary mb-2">Activating your account…</h1>
-            <p className="text-primary-light text-sm">
-              {attempts < 3
-                ? 'Setting up your subscription, this only takes a moment.'
-                : 'Almost there, just a few more seconds…'}
-            </p>
-          </>
-        )}
+        <Suspense fallback={
+          <div className="text-center py-8">
+            <p className="text-muted text-sm">Loading…</p>
+          </div>
+        }>
+          <SuccessContent />
+        </Suspense>
       </Card>
     </div>
   );

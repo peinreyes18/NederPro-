@@ -59,6 +59,13 @@ export async function POST(request: NextRequest) {
       ? new Date(subAny.current_period_end * 1000).toISOString()
       : null;
 
+    const priceId = sub.items.data[0]?.price.id;
+    const plan = priceId === process.env.STRIPE_PRICE_ID_BIWEEKLY
+      ? 'biweekly'
+      : priceId === process.env.STRIPE_PRICE_ID_MONTHLY
+      ? 'monthly'
+      : null;
+
     // Write to Supabase using service role (no auth required)
     const { error: dbError } = await supabaseAdmin.from('subscriptions').upsert(
       {
@@ -66,6 +73,7 @@ export async function POST(request: NextRequest) {
         stripe_customer_id: customerId,
         stripe_subscription_id: sub.id,
         status: sub.status,
+        plan,
         trial_end: trialEnd,
         current_period_end: periodEnd,
         updated_at: new Date().toISOString(),

@@ -7,6 +7,7 @@ export async function POST(request: NextRequest) {
   const cookieStore = await cookies();
   const body = await request.json().catch(() => ({}));
   const plan: 'biweekly' | 'monthly' = body.plan === 'biweekly' ? 'biweekly' : 'monthly';
+  const skipTrial: boolean = body.skipTrial === true;
 
   const priceId =
     plan === 'biweekly'
@@ -63,7 +64,7 @@ export async function POST(request: NextRequest) {
       },
     ],
     mode: 'subscription',
-    subscription_data: {
+    subscription_data: skipTrial ? undefined : {
       trial_period_days: 7,
     },
     success_url: `${origin}/subscribe/success?session_id={CHECKOUT_SESSION_ID}`,

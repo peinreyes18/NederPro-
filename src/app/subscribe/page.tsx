@@ -27,6 +27,7 @@ export default function SubscribePage() {
   const router = useRouter();
   const { isSubscribed, isLoading: authLoading } = useAuth();
   const [selected, setSelected] = useState<Plan>('monthly');
+  const [skipTrial, setSkipTrial] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -49,7 +50,7 @@ export default function SubscribePage() {
       const res = await fetch('/api/stripe/create-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ plan: selected }),
+        body: JSON.stringify({ plan: selected, skipTrial }),
       });
       const data = await res.json();
 
@@ -140,6 +141,28 @@ export default function SubscribePage() {
         </div>
       </Card>
 
+      {/* Trial toggle */}
+      <button
+        onClick={() => setSkipTrial((v) => !v)}
+        className="w-full flex items-center justify-between px-4 py-3 rounded-xl border border-border bg-background hover:border-accent/40 transition-colors mb-4"
+      >
+        <div className="text-left">
+          <p className="text-sm font-medium text-primary">Start with 7-day free trial</p>
+          <p className="text-xs text-muted mt-0.5">
+            {skipTrial ? 'Off — you\'ll be charged immediately' : 'On — no charge for 7 days'}
+          </p>
+        </div>
+        <div className={cn(
+          'relative w-10 h-6 rounded-full transition-colors flex-shrink-0',
+          skipTrial ? 'bg-border' : 'bg-accent'
+        )}>
+          <div className={cn(
+            'absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-transform',
+            skipTrial ? 'translate-x-1' : 'translate-x-5'
+          )} />
+        </div>
+      </button>
+
       {error && (
         <p className="text-sm text-error bg-error-light rounded-lg px-3 py-2 mb-4">
           {error}
@@ -149,11 +172,15 @@ export default function SubscribePage() {
       <Button className="w-full" onClick={handleStartTrial} disabled={loading}>
         {loading
           ? 'Redirecting to checkout…'
+          : skipTrial
+          ? `Subscribe now — ${selectedPlan.price} ${selectedPlan.period} →`
           : `Start free trial — then ${selectedPlan.price} ${selectedPlan.period} →`}
       </Button>
 
       <p className="text-xs text-muted text-center mt-3">
-        Cancel anytime before the trial ends and you won&apos;t be charged. Secure payment via Stripe.
+        {skipTrial
+          ? 'You\'ll be charged immediately. Cancel anytime. Secure payment via Stripe.'
+          : 'Cancel anytime before the trial ends and you won\'t be charged. Secure payment via Stripe.'}
       </p>
     </div>
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSubscription } from '@/hooks/useSubscription';
@@ -12,6 +12,70 @@ import { cn } from '@/lib/utils';
 
 type Tab = 'subscription' | 'password' | 'account';
 
+interface CardInfo {
+  brand: string;
+  last4: string;
+  exp_month: number;
+  exp_year: number;
+}
+
+function formatCardBrand(brand: string) {
+  const map: Record<string, string> = {
+    visa: 'Visa',
+    mastercard: 'Mastercard',
+    amex: 'American Express',
+    discover: 'Discover',
+    jcb: 'JCB',
+    unionpay: 'UnionPay',
+    diners: 'Diners Club',
+  };
+  return map[brand] ?? brand.charAt(0).toUpperCase() + brand.slice(1);
+}
+
+function TrialCountdown({ trialEnd }: { trialEnd: string }) {
+  const [, setTick] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setTick((n) => n + 1), 60_000);
+    return () => clearInterval(id);
+  }, []);
+
+  const msLeft = Math.max(0, new Date(trialEnd).getTime() - Date.now());
+  const totalHours = Math.floor(msLeft / (1000 * 60 * 60));
+  const days = Math.floor(totalHours / 24);
+  const hours = totalHours % 24;
+
+  const isUrgent = days < 2;
+
+  let label: string;
+  if (msLeft === 0) {
+    label = 'Trial ended';
+  } else if (days === 0) {
+    label = hours <= 1 ? 'Less than 1 hour left' : `${hours} hours left`;
+  } else if (days === 1) {
+    label = hours > 0 ? `1 day ${hours}h left` : '1 day left';
+  } else {
+    label = `${days} days left`;
+  }
+
+  return (
+    <div className={cn(
+      'rounded-xl px-4 py-3 border',
+      isUrgent ? 'bg-error-light border-error/30' : 'bg-accent-light border-accent/30'
+    )}>
+      <p className={cn('text-sm font-semibold', isUrgent ? 'text-error' : 'text-accent')}>
+        {label} in your free trial
+      </p>
+      <p className="text-xs text-muted mt-0.5">
+        No charge until{' '}
+        <span className="font-medium text-primary">
+          {new Date(trialEnd).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })}
+        </span>
+        . Cancel any time before then.
+      </p>
+    </div>
+  );
+}
+
 export default function AccountPage() {
   const { user, signOut } = useAuth();
   const { subscription, isLoading: subLoading } = useSubscription();
@@ -19,6 +83,26 @@ export default function AccountPage() {
   const [tab, setTab] = useState<Tab>('subscription');
   const [portalLoading, setPortalLoading] = useState(false);
   const [portalError, setPortalError] = useState<string | null>(null);
+
+  // Payment method state
+  const [cardInfo, setCardInfo] = useState<CardInfo | null>(null);
+  const [cardLoading, setCardLoading] = useState(false);
+
+  // Cancel trial state
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
+  const [cancelLoading, setCancelLoading] = useState(false);
+  const [cancelError, setCancelError] = useState<string | null>(null);
+
+  // Fetch card info when subscription is loaded
+  useEffect(() => {
+    if (!subscription?.stripe_customer_id) return;
+    setCardLoading(true);
+    fetch('/api/stripe/payment-method')
+      .then((r) => r.json())
+      .then((d) => { setCardInfo(d.card ?? null); })
+      .catch(() => {})
+      .finally(() => setCardLoading(false));
+  }, [subscription?.stripe_customer_id]);
 
   async function handleManageBilling() {
     setPortalLoading(true);
@@ -35,6 +119,25 @@ export default function AccountPage() {
     } catch {
       setPortalError('Something went wrong. Please try again.');
       setPortalLoading(false);
+    }
+  }
+
+  async function handleCancelTrial() {
+    setCancelLoading(true);
+    setCancelError(null);
+    try {
+      const res = await fetch('/api/stripe/cancel', { method: 'POST' });
+      const data = await res.json();
+      if (!res.ok) {
+        setCancelError(data.error ?? 'Something went wrong.');
+        setCancelLoading(false);
+        return;
+      }
+      // Reload to show canceled state
+      window.location.reload();
+    } catch {
+      setCancelError('Something went wrong. Please try again.');
+      setCancelLoading(false);
     }
   }
 
@@ -94,7 +197,6 @@ export default function AccountPage() {
       return;
     }
 
-    // Server action signs out the session; also clear local auth state
     await signOut();
     router.push('/');
   }
@@ -105,13 +207,8 @@ export default function AccountPage() {
     { id: 'account', label: 'Account' },
   ];
 
-  // Calculate days remaining in trial
-  const trialDaysLeft = subscription?.trial_end
-    ? Math.max(0, Math.ceil((new Date(subscription.trial_end).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
-    : null;
-
-  const planLabel = subscription?.plan === 'monthly' ? 'Monthly (€3.49/month)'
-    : subscription?.plan === 'biweekly' ? 'Every 2 weeks (€2.49/2 weeks)'
+  const planLabel = subscription?.plan === 'monthly' ? 'Monthly plan · €3.49/month'
+    : subscription?.plan === 'biweekly' ? 'Biweekly plan · €2.49/2 weeks'
     : null;
 
   return (
@@ -149,107 +246,200 @@ export default function AccountPage() {
 
       {/* ── Subscription tab ── */}
       {tab === 'subscription' && (
-        <Card>
-          <h2 className="text-lg font-semibold text-primary mb-4">Subscription</h2>
+        <div className="space-y-4">
+          <Card>
+            <h2 className="text-lg font-semibold text-primary mb-4">Subscription</h2>
 
-          {subLoading ? (
-            <p className="text-sm text-muted">Loading…</p>
-          ) : !subscription || subscription.status === 'canceled' ? (
-            <div>
-              <p className="text-sm text-muted mb-4">
-                {subscription?.status === 'canceled'
-                  ? 'Your subscription has been canceled. Resubscribe anytime to regain full access.'
-                  : 'You don\'t have an active subscription.'}
-              </p>
-              <Button onClick={() => router.push('/subscribe')}>
-                {subscription?.status === 'canceled' ? 'Resubscribe' : 'Start free trial'}
-              </Button>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {/* Trial countdown banner */}
-              {subscription.status === 'trialing' && trialDaysLeft !== null && (
-                <div className={cn(
-                  'rounded-xl px-4 py-3 border',
-                  trialDaysLeft <= 2
-                    ? 'bg-error-light border-error/30'
-                    : 'bg-accent-light border-accent/30'
-                )}>
-                  <p className={cn('text-sm font-semibold', trialDaysLeft <= 2 ? 'text-error' : 'text-accent')}>
-                    {trialDaysLeft === 0
-                      ? 'Your trial ends today'
-                      : trialDaysLeft === 1
-                      ? '1 day left in your free trial'
-                      : `${trialDaysLeft} days left in your free trial`}
-                  </p>
-                  <p className="text-xs text-muted mt-0.5">
-                    Add a payment method to keep access after your trial ends — no charge until{' '}
-                    {new Date(subscription.trial_end!).toLocaleDateString('en-GB', { day: 'numeric', month: 'long' })}.
-                  </p>
+            {subLoading ? (
+              <p className="text-sm text-muted">Loading…</p>
+            ) : !subscription || subscription.status === 'canceled' ? (
+              <div>
+                <p className="text-sm text-muted mb-4">
+                  {subscription?.status === 'canceled'
+                    ? 'Your subscription has been canceled. Resubscribe anytime to regain full access.'
+                    : 'You don\'t have an active subscription.'}
+                </p>
+                <Button onClick={() => router.push('/subscribe')}>
+                  {subscription?.status === 'canceled' ? 'Resubscribe' : 'Start free trial'}
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {/* Trial countdown banner */}
+                {subscription.status === 'trialing' && subscription.trial_end && (
+                  <TrialCountdown trialEnd={subscription.trial_end} />
+                )}
+
+                {/* Status badge + plan */}
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className={cn(
+                    'text-xs font-semibold px-2.5 py-1 rounded-full',
+                    subscription.status === 'active' && 'bg-accent-light text-accent',
+                    subscription.status === 'trialing' && 'bg-accent-light text-accent',
+                    subscription.status === 'past_due' && 'bg-error-light text-error',
+                  )}>
+                    {subscription.status === 'trialing' ? 'Free trial'
+                      : subscription.status === 'active' ? 'Active'
+                      : 'Payment failed'}
+                  </span>
+                  {planLabel && (
+                    <span className="text-sm text-muted">{planLabel}</span>
+                  )}
                 </div>
-              )}
 
-              {/* Status + plan */}
-              <div className="flex flex-wrap items-center gap-3">
-                <span className={cn(
-                  'text-xs font-semibold px-2.5 py-1 rounded-full',
-                  subscription.status === 'active' && 'bg-accent-light text-accent',
-                  subscription.status === 'trialing' && 'bg-accent-light text-accent',
-                  subscription.status === 'past_due' && 'bg-error-light text-error',
-                )}>
-                  {subscription.status === 'trialing' ? 'Free trial'
-                    : subscription.status === 'active' ? 'Active'
-                    : 'Payment failed'}
-                </span>
-                {planLabel && (
-                  <span className="text-sm text-muted">{planLabel}</span>
+                {/* Key dates */}
+                <div className="rounded-xl border border-border bg-surface p-4 space-y-2.5">
+                  {subscription.created_at && (
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted">Started</span>
+                      <span className="text-primary font-medium">
+                        {new Date(subscription.created_at).toLocaleDateString('en-GB', {
+                          day: 'numeric', month: 'long', year: 'numeric',
+                        })}
+                      </span>
+                    </div>
+                  )}
+                  {subscription.status === 'trialing' && subscription.trial_end && (
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted">Trial ends</span>
+                      <span className="text-primary font-medium">
+                        {new Date(subscription.trial_end).toLocaleDateString('en-GB', {
+                          day: 'numeric', month: 'long', year: 'numeric',
+                        })}
+                      </span>
+                    </div>
+                  )}
+                  {subscription.status === 'active' && subscription.current_period_end && (
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted">Next billing date</span>
+                      <span className="text-primary font-medium">
+                        {new Date(subscription.current_period_end).toLocaleDateString('en-GB', {
+                          day: 'numeric', month: 'long', year: 'numeric',
+                        })}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Past due recovery */}
+                {subscription.status === 'past_due' && (
+                  <div className="rounded-xl bg-error-light border border-error/30 px-4 py-3">
+                    <p className="text-sm font-semibold text-error mb-1">Payment failed</p>
+                    <p className="text-xs text-muted mb-3">
+                      Your last payment didn&apos;t go through. Update your payment method to keep access.
+                    </p>
+                    <Button onClick={handleManageBilling} disabled={portalLoading}>
+                      {portalLoading ? 'Opening portal…' : 'Update payment method'}
+                    </Button>
+                  </div>
+                )}
+
+                {portalError && (
+                  <p className="text-sm text-error bg-error-light rounded-lg px-3 py-2">
+                    {portalError}
+                  </p>
+                )}
+
+                {/* Manage billing (for active/past_due) */}
+                {subscription.status !== 'trialing' && (
+                  <>
+                    <Button variant="outline" onClick={handleManageBilling} disabled={portalLoading}>
+                      {portalLoading ? 'Opening portal…' : 'Manage billing'}
+                    </Button>
+                    <p className="text-xs text-muted">
+                      Update your payment method, view invoices, or cancel via the Stripe billing portal.
+                    </p>
+                  </>
+                )}
+
+                {/* Cancel trial (inline for trialing) */}
+                {subscription.status === 'trialing' && (
+                  <>
+                    {!showCancelConfirm ? (
+                      <button
+                        onClick={() => setShowCancelConfirm(true)}
+                        className="text-sm text-muted hover:text-error transition-colors underline underline-offset-2"
+                      >
+                        Cancel free trial
+                      </button>
+                    ) : (
+                      <div className="rounded-xl border border-error/30 bg-error-light p-4 space-y-3">
+                        <p className="text-sm font-semibold text-error">Cancel your free trial?</p>
+                        <p className="text-xs text-muted leading-relaxed">
+                          Your access will end immediately and you won&apos;t be charged. Your progress will be saved if you resubscribe later.
+                        </p>
+                        {cancelError && (
+                          <p className="text-xs text-error">{cancelError}</p>
+                        )}
+                        <div className="flex gap-2">
+                          <Button
+                            variant="outline"
+                            className="border-error/40 text-error hover:bg-error-light text-sm"
+                            onClick={handleCancelTrial}
+                            disabled={cancelLoading}
+                          >
+                            {cancelLoading ? 'Cancelling…' : 'Yes, cancel trial'}
+                          </Button>
+                          <Button
+                            variant="outline"
+                            onClick={() => { setShowCancelConfirm(false); setCancelError(null); }}
+                            disabled={cancelLoading}
+                          >
+                            Keep trial
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
+            )}
+          </Card>
 
-              {/* Past due recovery */}
-              {subscription.status === 'past_due' && (
-                <div className="rounded-xl bg-error-light border border-error/30 px-4 py-3">
-                  <p className="text-sm font-semibold text-error mb-1">Payment failed</p>
-                  <p className="text-xs text-muted mb-3">
-                    Your last payment didn&apos;t go through. Update your payment method to keep access.
-                  </p>
+          {/* Payment method card — shown when subscribed */}
+          {!subLoading && subscription && subscription.status !== 'canceled' && (
+            <Card>
+              <h2 className="text-lg font-semibold text-primary mb-4">Payment method</h2>
+              {cardLoading ? (
+                <p className="text-sm text-muted">Loading…</p>
+              ) : cardInfo ? (
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    {/* Card icon */}
+                    <div className="w-10 h-7 rounded border border-border bg-surface flex items-center justify-center flex-shrink-0">
+                      <svg width="20" height="14" viewBox="0 0 24 16" fill="none" className="text-muted">
+                        <rect x="0.5" y="0.5" width="23" height="15" rx="2.5" stroke="currentColor"/>
+                        <rect y="3" width="24" height="3" fill="currentColor" opacity="0.3"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-primary">
+                        {formatCardBrand(cardInfo.brand)} ending in {cardInfo.last4}
+                      </p>
+                      <p className="text-xs text-muted">
+                        Expires {String(cardInfo.exp_month).padStart(2, '0')}/{cardInfo.exp_year}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={handleManageBilling}
+                    disabled={portalLoading}
+                    className="text-sm text-accent hover:text-accent/80 transition-colors font-medium"
+                  >
+                    {portalLoading ? 'Opening portal…' : 'Update payment method →'}
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <p className="text-sm text-muted">No payment method on file yet.</p>
                   <Button onClick={handleManageBilling} disabled={portalLoading}>
-                    {portalLoading ? 'Opening portal…' : 'Update payment method'}
+                    {portalLoading ? 'Opening portal…' : 'Add payment method'}
                   </Button>
                 </div>
               )}
-
-              {/* Active billing info */}
-              {subscription.status === 'active' && subscription.current_period_end && (
-                <p className="text-sm text-muted">
-                  Next billing date:{' '}
-                  <span className="text-primary font-medium">
-                    {new Date(subscription.current_period_end).toLocaleDateString('en-GB', {
-                      day: 'numeric', month: 'long', year: 'numeric',
-                    })}
-                  </span>
-                </p>
-              )}
-
-              {portalError && (
-                <p className="text-sm text-error bg-error-light rounded-lg px-3 py-2">
-                  {portalError}
-                </p>
-              )}
-
-              {subscription.status !== 'past_due' && (
-                <>
-                  <Button variant="outline" onClick={handleManageBilling} disabled={portalLoading}>
-                    {portalLoading ? 'Opening portal…' : 'Manage billing'}
-                  </Button>
-                  <p className="text-xs text-muted">
-                    Update your payment method, view invoices, or cancel via the Stripe billing portal.
-                  </p>
-                </>
-              )}
-            </div>
+            </Card>
           )}
-        </Card>
+        </div>
       )}
 
       {/* ── Password tab ── */}

@@ -34,9 +34,18 @@ async function getUserProfile(userId: string): Promise<{
 }
 
 export async function GET(request: NextRequest) {
-  // Verify cron secret to prevent unauthorised calls
-  const secret = request.headers.get('x-cron-secret') ?? request.nextUrl.searchParams.get('secret');
-  if (secret !== process.env.CRON_SECRET) {
+  // Vercel cron sends the secret as "Authorization: Bearer <CRON_SECRET>"
+  // Fall back to x-cron-secret or ?secret= for manual testing
+  const cronSecret = process.env.CRON_SECRET;
+  const authHeader = request.headers.get('authorization');
+  const manualSecret =
+    request.headers.get('x-cron-secret') ??
+    request.nextUrl.searchParams.get('secret');
+
+  const isVercelCron = cronSecret && authHeader === `Bearer ${cronSecret}`;
+  const isManualTest = cronSecret && manualSecret === cronSecret;
+
+  if (!isVercelCron && !isManualTest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -116,7 +125,7 @@ export async function GET(request: NextRequest) {
 
   const { data: expirySubs } = await supabaseAdmin
     .from('subscriptions')
-    .select('user_id, trial_end, stripe_subscription_id')
+    .select('user_id, trial_end, stripe_subscription_id, plan')
     .eq('status', 'trialing')
     .gte('trial_end', expiryStart)
     .lte('trial_end', expiryEnd);
@@ -131,11 +140,16 @@ export async function GET(request: NextRequest) {
       month: 'long',
     });
 
+    const planPrice = sub.plan === 'biweekly' ? '€2.49' : '€3.49';
+    const planPeriod = sub.plan === 'biweekly' ? 'every 2 weeks' : 'per month';
+
     try {
       await sendTrialExpiryEmail({
         to: profile.email,
         firstName: profile.firstName,
         trialEndDate,
+        planPrice,
+        planPeriod,
       });
       results.expiry++;
     } catch (e) {

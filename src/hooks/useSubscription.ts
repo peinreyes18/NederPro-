@@ -9,7 +9,9 @@ interface Subscription {
   trial_end: string | null;
   current_period_end: string | null;
   stripe_customer_id: string | null;
+  stripe_subscription_id: string | null;
   plan: string | null;
+  created_at: string | null;
 }
 
 export function useSubscription() {
@@ -27,7 +29,7 @@ export function useSubscription() {
     const supabase = createClient();
     supabase
       .from('subscriptions')
-      .select('status, trial_end, current_period_end, stripe_customer_id, plan')
+      .select('status, trial_end, current_period_end, stripe_customer_id, stripe_subscription_id, plan, created_at')
       .eq('user_id', user.id)
       .single()
       .then(({ data }) => {

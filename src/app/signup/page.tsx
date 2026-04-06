@@ -3,26 +3,20 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { createClient } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import { trackSignUp } from '@/lib/analytics';
 
 function SignUpForm() {
-  const { signUp } = useAuth();
+  const { signUp, signIn } = useAuth();
   const router = useRouter();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  // Resend confirmation email
-  const [resendLoading, setResendLoading] = useState(false);
-  const [resendSent, setResendSent] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -43,95 +37,25 @@ function SignUpForm() {
 
     if (error) {
       setError(error);
-    } else {
-      trackSignUp();
-      setSuccess(true);
+      return;
     }
-  }
 
-  async function handleResend() {
-    setResendLoading(true);
-    setResendSent(false);
-    const supabase = createClient();
-    await supabase.auth.resend({
-      type: 'signup',
-      email,
-      options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
-    });
-    setResendLoading(false);
-    setResendSent(true);
-  }
+    trackSignUp();
 
-  if (success) {
-    return (
-      <Card>
-        {/* Icon */}
-        <div className="w-12 h-12 rounded-full bg-accent-light flex items-center justify-center mb-4">
-          <svg className="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-          </svg>
-        </div>
-
-        <h1 className="text-2xl font-bold text-primary mb-2">Check your email</h1>
-        <p className="text-primary-light text-sm mb-1">We sent a confirmation link to:</p>
-        <p className="font-semibold text-primary text-sm mb-5">{email}</p>
-
-        {/* Steps */}
-        <ol className="space-y-2.5 mb-6">
-          {[
-            'Open the email from NederPro',
-            'Click the "Confirm your email" link',
-            "You'll be taken straight to account setup",
-          ].map((step, i) => (
-            <li key={i} className="flex items-start gap-3 text-sm text-primary-light">
-              <span className="flex-shrink-0 w-5 h-5 rounded-full bg-accent text-white text-xs font-bold flex items-center justify-center mt-0.5">
-                {i + 1}
-              </span>
-              {step}
-            </li>
-          ))}
-        </ol>
-
-        {/* Spam hint */}
-        <div className="rounded-lg bg-surface border border-border px-3 py-2.5 mb-5">
-          <p className="text-xs text-muted">
-            💡 <strong className="text-primary">Can&apos;t find it?</strong>{' '}
-            Check your spam or junk folder. The email comes from{' '}
-            <span className="font-mono text-primary">no-reply@mail.app.supabase.io</span>.
-          </p>
-        </div>
-
-        {/* Resend */}
-        {resendSent ? (
-          <p className="text-sm text-success text-center mb-4 font-medium">
-            ✓ New confirmation email sent!
-          </p>
-        ) : (
-          <p className="text-sm text-muted text-center mb-4">
-            Didn&apos;t receive it?{' '}
-            <button
-              onClick={handleResend}
-              disabled={resendLoading}
-              className="text-accent hover:underline font-medium disabled:opacity-50"
-            >
-              {resendLoading ? 'Sending…' : 'Resend email'}
-            </button>
-          </p>
-        )}
-
-        <Button variant="outline" className="w-full" onClick={() => router.push('/login')}>
-          Go to sign in
-        </Button>
-      </Card>
-    );
+    // Sign in immediately (email confirmation is disabled)
+    const { error: signInError } = await signIn(email, password);
+    if (!signInError) {
+      router.push('/subscribe');
+    } else {
+      router.push('/login');
+    }
   }
 
   return (
     <Card>
       <h1 className="text-2xl font-bold text-primary mb-2">Start your free trial</h1>
       <p className="text-primary-light text-sm mb-6">
-        7 days free — no credit card required at signup. Then from €2.49.
+        7 days free — no credit card required at signup. Then from €3.49/month.
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-4">

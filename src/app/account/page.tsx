@@ -11,6 +11,7 @@ import Button from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 
 type Tab = 'subscription' | 'password' | 'account';
+type Plan = 'monthly' | 'yearly';
 
 interface CardInfo {
   brand: string;
@@ -88,10 +89,46 @@ export default function AccountPage() {
   const [cardInfo, setCardInfo] = useState<CardInfo | null>(null);
   const [cardLoading, setCardLoading] = useState(false);
 
+  // Subscribe-now (early conversion) state
+  const [selectedPlan, setSelectedPlan] = useState<Plan>('yearly');
+  const [subscribeNowLoading, setSubscribeNowLoading] = useState(false);
+  const [subscribeNowError, setSubscribeNowError] = useState<string | null>(null);
+
+  // Sync selectedPlan with the user's current plan once subscription loads
+  useEffect(() => {
+    if (subscription?.plan === 'monthly' || subscription?.plan === 'yearly') {
+      setSelectedPlan(subscription.plan as Plan);
+    }
+  }, [subscription?.plan]);
+
+  async function handleSubscribeNow() {
+    setSubscribeNowLoading(true);
+    setSubscribeNowError(null);
+    try {
+      const res = await fetch('/api/stripe/subscribe-now', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan: selectedPlan }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setSubscribeNowError(data.error ?? 'Something went wrong. Please try again.');
+        setSubscribeNowLoading(false);
+        return;
+      }
+      window.location.href = data.url;
+    } catch {
+      setSubscribeNowError('Something went wrong. Please try again.');
+      setSubscribeNowLoading(false);
+    }
+  }
+
   // Cancel trial state
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const [cancelLoading, setCancelLoading] = useState(false);
   const [cancelError, setCancelError] = useState<string | null>(null);
+  const [cancelReason, setCancelReason] = useState('');
+  const [cancelReasonOther, setCancelReasonOther] = useState('');
 
   // Fetch card info when subscription is loaded
   useEffect(() => {
@@ -125,8 +162,13 @@ export default function AccountPage() {
   async function handleCancelTrial() {
     setCancelLoading(true);
     setCancelError(null);
+    const reason = cancelReason === 'Other' ? cancelReasonOther.trim() : cancelReason;
     try {
-      const res = await fetch('/api/stripe/cancel', { method: 'POST' });
+      const res = await fetch('/api/stripe/cancel', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reason: reason || null }),
+      });
       const data = await res.json();
       if (!res.ok) {
         setCancelError(data.error ?? 'Something went wrong.');
@@ -208,7 +250,7 @@ export default function AccountPage() {
   ];
 
   const planLabel = subscription?.plan === 'monthly' ? 'Monthly plan · €3.49/month'
-    : subscription?.plan === 'biweekly' ? 'Biweekly plan · €2.49/2 weeks'
+    : subscription?.plan === 'yearly' ? 'Yearly plan · €34.99/year'
     : null;
 
   return (
@@ -352,6 +394,77 @@ export default function AccountPage() {
                   </>
                 )}
 
+                {/* ── Subscribe early — plan selector ── */}
+                {subscription.status === 'trialing' && !showCancelConfirm && (
+                  <div className="rounded-xl border border-accent/30 bg-accent-light/40 p-4 space-y-3">
+                    <div>
+                      <p className="text-sm font-semibold text-primary">Subscribe now</p>
+                      <p className="text-xs text-muted mt-0.5">
+                        Lock in your plan and add a payment method — your trial days still count.
+                      </p>
+                    </div>
+
+                    {/* Plan cards */}
+                    <div className="space-y-2">
+                      {(
+                        [
+                          { id: 'yearly' as Plan, label: 'Yearly', price: '€34.99', period: 'per year', badge: 'Best value' },
+                          { id: 'monthly' as Plan, label: 'Monthly', price: '€3.49', period: 'per month' },
+                        ]
+                      ).map((plan) => (
+                        <button
+                          key={plan.id}
+                          onClick={() => setSelectedPlan(plan.id)}
+                          className={cn(
+                            'w-full flex items-center justify-between px-3 py-2.5 rounded-lg border-2 transition-all duration-150 text-left',
+                            selectedPlan === plan.id
+                              ? 'border-accent bg-background'
+                              : 'border-border bg-background hover:border-accent/40'
+                          )}
+                        >
+                          <div className="flex items-center gap-2.5">
+                            <div className={cn(
+                              'w-3.5 h-3.5 rounded-full border-2 flex-shrink-0 flex items-center justify-center',
+                              selectedPlan === plan.id ? 'border-accent' : 'border-border'
+                            )}>
+                              {selectedPlan === plan.id && (
+                                <div className="w-1.5 h-1.5 rounded-full bg-accent" />
+                              )}
+                            </div>
+                            <span className="text-sm font-medium text-primary">{plan.label}</span>
+                            {plan.badge && (
+                              <span className="text-xs font-semibold text-accent bg-accent-light px-1.5 py-0.5 rounded-md">
+                                {plan.badge}
+                              </span>
+                            )}
+                          </div>
+                          <div className="text-right">
+                            <span className="text-sm font-bold text-primary">{plan.price}</span>
+                            <span className="text-xs text-muted ml-1">{plan.period}</span>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+
+                    {subscribeNowError && (
+                      <p className="text-xs text-error bg-error-light rounded-lg px-3 py-2">
+                        {subscribeNowError}
+                      </p>
+                    )}
+
+                    <Button
+                      className="w-full"
+                      onClick={handleSubscribeNow}
+                      disabled={subscribeNowLoading}
+                    >
+                      {subscribeNowLoading ? 'Redirecting…' : 'Subscribe now →'}
+                    </Button>
+                    <p className="text-xs text-muted text-center">
+                      Your remaining trial days still apply. Secure payment via Stripe.
+                    </p>
+                  </div>
+                )}
+
                 {/* Cancel trial (inline for trialing) */}
                 {subscription.status === 'trialing' && (
                   <>
@@ -368,6 +481,43 @@ export default function AccountPage() {
                         <p className="text-xs text-muted leading-relaxed">
                           Your access will end immediately and you won&apos;t be charged. Your progress will be saved if you resubscribe later.
                         </p>
+
+                        {/* Cancellation reason */}
+                        <div className="space-y-2">
+                          <p className="text-xs font-medium text-primary">Mind telling us why? (optional)</p>
+                          <div className="space-y-1.5">
+                            {[
+                              'Too expensive',
+                              'Not using it enough',
+                              'Missing features I need',
+                              'Found a better alternative',
+                              'Just exploring, not ready yet',
+                              'Other',
+                            ].map((option) => (
+                              <label key={option} className="flex items-center gap-2 cursor-pointer group">
+                                <input
+                                  type="radio"
+                                  name="cancelReason"
+                                  value={option}
+                                  checked={cancelReason === option}
+                                  onChange={() => setCancelReason(option)}
+                                  className="accent-error"
+                                />
+                                <span className="text-xs text-primary group-hover:text-error transition-colors">{option}</span>
+                              </label>
+                            ))}
+                          </div>
+                          {cancelReason === 'Other' && (
+                            <textarea
+                              rows={2}
+                              value={cancelReasonOther}
+                              onChange={(e) => setCancelReasonOther(e.target.value)}
+                              placeholder="Tell us more…"
+                              className="w-full mt-1 px-3 py-2 rounded-lg border border-error/30 bg-background text-primary text-xs focus:outline-none focus:ring-2 focus:ring-error resize-none"
+                            />
+                          )}
+                        </div>
+
                         {cancelError && (
                           <p className="text-xs text-error">{cancelError}</p>
                         )}
@@ -382,7 +532,7 @@ export default function AccountPage() {
                           </Button>
                           <Button
                             variant="outline"
-                            onClick={() => { setShowCancelConfirm(false); setCancelError(null); }}
+                            onClick={() => { setShowCancelConfirm(false); setCancelError(null); setCancelReason(''); setCancelReasonOther(''); }}
                             disabled={cancelLoading}
                           >
                             Keep trial

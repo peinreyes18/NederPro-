@@ -1,15 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { createAdminClient } from '@/lib/supabase-admin';
 import { stripe } from '@/lib/stripe';
 import Stripe from 'stripe';
 
-// Service role bypasses RLS — safe to use server-side only
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
 export async function POST(request: NextRequest) {
+  const supabaseAdmin = createAdminClient();
   try {
     const body = await request.json();
     const sessionId = body?.sessionId as string | undefined;
@@ -60,8 +55,8 @@ export async function POST(request: NextRequest) {
       : null;
 
     const priceId = sub.items.data[0]?.price.id;
-    const plan = priceId === process.env.STRIPE_PRICE_ID_BIWEEKLY
-      ? 'biweekly'
+    const plan = priceId === process.env.STRIPE_PRICE_ID_YEARLY
+      ? 'yearly'
       : priceId === process.env.STRIPE_PRICE_ID_MONTHLY
       ? 'monthly'
       : null;

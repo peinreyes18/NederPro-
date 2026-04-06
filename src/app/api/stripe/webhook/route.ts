@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createAdminClient } from '@/lib/supabase';
+import { createAdminClient } from '@/lib/supabase-admin';
 import { stripe } from '@/lib/stripe';
 import Stripe from 'stripe';
 import { sendWelcomeEmail, sendWinbackEmail } from '@/lib/email';

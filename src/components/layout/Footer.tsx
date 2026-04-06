@@ -29,7 +29,7 @@ export default function Footer() {
                 Join our Discord
               </a>
               <a
-                href="https://www.facebook.com/nederpro"
+                href="https://www.facebook.com/profile.php?id=61576465746009"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-xs font-medium text-muted hover:text-accent transition-colors"

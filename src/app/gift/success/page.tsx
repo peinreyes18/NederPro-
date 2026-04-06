@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 
-export default function GiftSuccessPage() {
+function GiftSuccessContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get('session_id');
 
@@ -156,5 +156,17 @@ export default function GiftSuccessPage() {
         </a>
       </p>
     </div>
+  );
+}
+
+export default function GiftSuccessPage() {
+  return (
+    <Suspense fallback={
+      <div className="max-w-lg mx-auto px-4 py-16 text-center">
+        <div className="w-6 h-6 border-2 border-accent border-t-transparent rounded-full animate-spin mx-auto" />
+      </div>
+    }>
+      <GiftSuccessContent />
+    </Suspense>
   );
 }

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 import { useAuth } from '@/contexts/AuthContext';
@@ -29,11 +29,90 @@ const navItems = [
   { href: '/exams', label: 'Exams' },
   { href: '/daily-practice', label: 'Daily Practice' },
   { href: '/reference', label: 'Reference' },
-  { href: '/culture', label: 'Culture' },
-  { href: '/history', label: 'History' },
-  { href: '/blog', label: 'Blog' },
   { href: '/progress', label: 'Progress' },
 ];
+
+const exploreItems = [
+  { href: '/culture', emoji: '🌷', label: 'Culture',  sub: 'Dutch customs & society' },
+  { href: '/history', emoji: '📜', label: 'History',  sub: 'The Netherlands through time' },
+  { href: '/blog',    emoji: '✍️', label: 'Blog',     sub: 'Tips, guides & news' },
+];
+
+const practiceItems = [
+  { href: '/listening',  emoji: '🎧', label: 'Listening',       sub: 'Audio comprehension' },
+  { href: '/reading',    emoji: '📖', label: 'Reading',          sub: 'Timed text exercises' },
+  { href: '/speaking',   emoji: '🦉', label: 'Speaking',         sub: 'Talk to the owl' },
+  { href: '/knm',        emoji: '🏛️', label: 'KNM Quiz',         sub: 'Civic knowledge' },
+  { href: '/mock-exam',  emoji: '🇳🇱', label: 'Mock Exam',        sub: 'Full 50-min simulation' },
+];
+
+function NavDropdown({ label, items, pathname }: {
+  label: string;
+  items: { href: string; emoji: string; label: string; sub: string }[];
+  pathname: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const isActive = items.some((p) => pathname.startsWith(p.href));
+
+  useEffect(() => {
+    function handler(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className={cn(
+          'flex items-center gap-1 px-3.5 py-2 rounded-lg text-sm font-medium transition-all duration-200',
+          isActive || open
+            ? 'bg-accent-light text-accent-hover font-semibold'
+            : 'text-primary-light hover:bg-surface-hover hover:text-primary'
+        )}
+      >
+        {label}
+        <svg
+          className={cn('w-3.5 h-3.5 transition-transform duration-200', open && 'rotate-180')}
+          fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      {open && (
+        <div className="absolute left-0 top-full mt-1.5 w-56 rounded-xl border border-border bg-background shadow-lg z-50 overflow-hidden">
+          {items.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setOpen(false)}
+              className={cn(
+                'flex items-center gap-3 px-4 py-2.5 text-sm transition-colors',
+                pathname.startsWith(item.href)
+                  ? 'bg-accent-light text-accent font-medium'
+                  : 'text-primary hover:bg-surface-hover'
+              )}
+            >
+              <span className="text-base w-5 text-center">{item.emoji}</span>
+              <div>
+                <p className="font-medium leading-none">{item.label}</p>
+                <p className="text-xs text-muted mt-0.5">{item.sub}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function PracticeDropdown({ pathname }: { pathname: string }) {
+  return <NavDropdown label="Practice" items={practiceItems} pathname={pathname} />;
+}
 
 export default function Header() {
   const pathname = usePathname();
@@ -41,6 +120,8 @@ export default function Header() {
   const { user, signOut, isLoading } = useAuth();
   const streak = useStreak();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobilePracticeOpen, setMobilePracticeOpen] = useState(false);
+  const [mobileExploreOpen, setMobileExploreOpen] = useState(false);
 
   async function handleSignOut() {
     await signOut();
@@ -75,6 +156,13 @@ export default function Header() {
                 {item.label}
               </Link>
             ))}
+
+            {/* Practice dropdown */}
+            <PracticeDropdown pathname={pathname} />
+
+            {/* Explore dropdown */}
+            <NavDropdown label="Explore" items={exploreItems} pathname={pathname} />
+
             <ThemeToggle />
             {!isLoading && (
               user ? (
@@ -155,6 +243,83 @@ export default function Header() {
                 {item.label}
               </Link>
             ))}
+
+            {/* Practice section in mobile */}
+            <div>
+              <button
+                onClick={() => setMobilePracticeOpen((v) => !v)}
+                className={cn(
+                  'w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all duration-200',
+                  practiceItems.some((p) => pathname.startsWith(p.href))
+                    ? 'bg-accent-light text-accent-hover font-semibold'
+                    : 'text-primary-light hover:bg-surface-hover'
+                )}
+              >
+                <span>Practice</span>
+                <svg className={cn('w-4 h-4 transition-transform', mobilePracticeOpen && 'rotate-180')} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {mobilePracticeOpen && (
+                <div className="ml-4 mt-1 space-y-1 border-l-2 border-border pl-3">
+                  {practiceItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => { setMobileMenuOpen(false); setMobilePracticeOpen(false); }}
+                      className={cn(
+                        'flex items-center gap-2 px-2 py-2 rounded-lg text-sm transition-colors',
+                        pathname.startsWith(item.href)
+                          ? 'text-accent font-medium'
+                          : 'text-primary-light hover:text-primary'
+                      )}
+                    >
+                      <span>{item.emoji}</span>
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Explore section in mobile */}
+            <div>
+              <button
+                onClick={() => setMobileExploreOpen((v) => !v)}
+                className={cn(
+                  'w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all duration-200',
+                  exploreItems.some((p) => pathname.startsWith(p.href))
+                    ? 'bg-accent-light text-accent-hover font-semibold'
+                    : 'text-primary-light hover:bg-surface-hover'
+                )}
+              >
+                <span>Explore</span>
+                <svg className={cn('w-4 h-4 transition-transform', mobileExploreOpen && 'rotate-180')} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {mobileExploreOpen && (
+                <div className="ml-4 mt-1 space-y-1 border-l-2 border-border pl-3">
+                  {exploreItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => { setMobileMenuOpen(false); setMobileExploreOpen(false); }}
+                      className={cn(
+                        'flex items-center gap-2 px-2 py-2 rounded-lg text-sm transition-colors',
+                        pathname.startsWith(item.href)
+                          ? 'text-accent font-medium'
+                          : 'text-primary-light hover:text-primary'
+                      )}
+                    >
+                      <span>{item.emoji}</span>
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
             {!isLoading && (
               user ? (
                 <>

@@ -12,12 +12,12 @@ import Button from '@/components/ui/Button';
  */
 export default function DailyPracticeBanner() {
   const { user, isLoading: authLoading } = useAuth();
-  const { doneToday, streak, grammarCount, vocabCount, isLoaded } = useDailyPractice();
+  const { doneToday, streak, topicTitle, exercises, isLoaded } = useDailyPractice();
 
   // Don't render for guests or while loading
   if (authLoading || !user || !isLoaded) return null;
 
-  const total = grammarCount + vocabCount;
+  const total = exercises.length;
 
   if (doneToday) {
     return (
@@ -52,9 +52,9 @@ export default function DailyPracticeBanner() {
             )}
           </div>
           <p className="text-sm text-muted">
-            {total > 0
-              ? `${total} exercises ready — ~3 min`
-              : 'Quick daily review — grammar + vocabulary'}
+            {topicTitle
+              ? `${topicTitle} · ${total} exercises`
+              : `${total} exercises ready — ~3 min`}
           </p>
         </div>
       </div>

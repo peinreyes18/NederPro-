@@ -8,6 +8,7 @@ interface SubscriptionData {
   status: string;
   trial_end: string | null;
   current_period_end: string | null;
+  has_payment_method: boolean | null;
 }
 
 interface AuthContextValue {
@@ -15,8 +16,9 @@ interface AuthContextValue {
   session: Session | null;
   isLoading: boolean;
   subscription: SubscriptionData | null;
+  subscriptionLoaded: boolean;
   isSubscribed: boolean;
-  signUp: (email: string, password: string) => Promise<{ error: string | null }>;
+  signUp: (email: string, password: string) => Promise<{ error: string | null; session: import('@supabase/supabase-js').Session | null }>;
   signIn: (email: string, password: string) => Promise<{ error: string | null; user: User | null }>;
   signOut: () => Promise<void>;
 }
@@ -28,6 +30,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [subscription, setSubscription] = useState<SubscriptionData | null>(null);
+  const [subscriptionLoaded, setSubscriptionLoaded] = useState(false);
 
   useEffect(() => {
     const supabase = createClient();
@@ -38,12 +41,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(false);
 
       if (session?.user) {
-        supabase
-          .from('subscriptions')
-          .select('status, trial_end, current_period_end')
-          .eq('user_id', session.user.id)
-          .single()
-          .then(({ data }) => setSubscription(data));
+        const uid = session.user.id;
+        (async () => {
+          try {
+            const { data } = await supabase
+              .from('subscriptions')
+              .select('status, trial_end, current_period_end, has_payment_method')
+              .eq('user_id', uid)
+              .maybeSingle();
+            setSubscription(data);
+          } catch {
+            // keep subscription null
+          } finally {
+            setSubscriptionLoaded(true);
+          }
+        })();
+      } else {
+        setSubscriptionLoaded(true);
       }
     });
 
@@ -52,14 +66,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(session?.user ?? null);
 
       if (session?.user) {
-        supabase
-          .from('subscriptions')
-          .select('status, trial_end, current_period_end')
-          .eq('user_id', session.user.id)
-          .single()
-          .then(({ data }) => setSubscription(data));
+        const uid = session.user.id;
+        (async () => {
+          try {
+            const { data } = await supabase
+              .from('subscriptions')
+              .select('status, trial_end, current_period_end, has_payment_method')
+              .eq('user_id', uid)
+              .maybeSingle();
+            setSubscription(data);
+          } catch {
+            // keep subscription null
+          } finally {
+            setSubscriptionLoaded(true);
+          }
+        })();
       } else {
         setSubscription(null);
+        setSubscriptionLoaded(true);
       }
     });
 
@@ -69,7 +93,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signUp = useCallback(async (email: string, password: string) => {
     const supabase = createClient();
     const redirectTo = `${window.location.origin}/auth/callback`;
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: { emailRedirectTo: redirectTo },
@@ -83,7 +107,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         body: JSON.stringify({ email }),
       }).catch(() => {});
     }
-    return { error: error ? clean : null };
+    return { error: error ? clean : null, session: data?.session ?? null };
   }, []);
 
   const signIn = useCallback(async (email: string, password: string) => {
@@ -97,11 +121,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await supabase.auth.signOut();
   }, []);
 
-  const isSubscribed =
-    subscription?.status === 'active' || subscription?.status === 'trialing';
+  const isSubscribed = (() => {
+    if (!subscription) return false;
+    if (subscription.status === 'active') return true;
+    if (subscription.status === 'trialing') {
+      if (!subscription.has_payment_method) return false; // trial requires a card on file
+      if (!subscription.trial_end) return true;
+      return new Date(subscription.trial_end) > new Date();
+    }
+    return false;
+  })();
 
   return (
-    <AuthContext.Provider value={{ user, session, isLoading, subscription, isSubscribed, signUp, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, session, isLoading, subscription, subscriptionLoaded, isSubscribed, signUp, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );

@@ -6,7 +6,7 @@ import Card from '@/components/ui/Card';
 export const metadata: Metadata = {
   title: 'Pricing — NederPro',
   description:
-    'NederPro is free to browse. Unlock all exercises, vocabulary drills, exam practice, and AI writing feedback from €2.49 — with a 7-day free trial.',
+    'NederPro is free to browse. Unlock all exercises, vocabulary drills, exam practice, and AI writing feedback from €3.49/month — with a 7-day free trial.',
 };
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.com';
@@ -40,11 +40,11 @@ const paidItems = [
 const faqs = [
   {
     q: 'Do I need a credit card to start the trial?',
-    a: 'No. You create a free account with just your email. You only enter payment details when you choose to upgrade — and you won\'t be charged until the 7-day trial ends.',
+    a: 'Yes. A card is required at signup so your access continues automatically if you decide to keep it. You won\'t be charged until the 7-day trial ends — cancel any time before then and you pay nothing.',
   },
   {
     q: 'What happens after the trial?',
-    a: 'After 7 days, your chosen plan (€2.49/2 weeks or €3.49/month) begins automatically. If you cancel before the trial ends, you won\'t be charged anything.',
+    a: 'After 7 days, your chosen plan (€34.99/year or €3.49/month) begins automatically. If you cancel before the trial ends, you won\'t be charged anything.',
   },
   {
     q: 'Can I cancel at any time?',
@@ -56,7 +56,7 @@ const faqs = [
   },
   {
     q: 'Which plan should I choose?',
-    a: 'Both plans include everything. The monthly plan (€3.49/month) saves about 30% compared to the biweekly plan over the same period — it\'s the better deal for most learners.',
+    a: 'Both plans include everything. The yearly plan (€34.99/year) works out to about €2.92/month — saving over 15% compared to the monthly plan. Great if you\'re committed to learning Dutch.',
   },
   {
     q: 'Is there a student discount?',
@@ -90,7 +90,7 @@ export default function PricingPage() {
         </h1>
         <p className="text-muted max-w-lg mx-auto leading-relaxed">
           All grammar lessons are free to read. Upgrade to unlock exercises, exam practice,
-          and AI feedback — with a 7-day free trial, no credit card required.
+          and AI feedback — with a 7-day free trial. Cancel before day 7 and pay nothing.
         </p>
       </div>
 
@@ -127,8 +127,8 @@ export default function PricingPage() {
           <div className="mb-4">
             <h2 className="text-lg font-bold text-primary mb-0.5">Full access</h2>
             <div className="flex items-end gap-1">
-              <p className="text-2xl font-extrabold text-primary">from €2.49</p>
-              <span className="text-sm text-muted mb-0.5">/ 2 weeks</span>
+              <p className="text-2xl font-extrabold text-primary">from €3.49</p>
+              <span className="text-sm text-muted mb-0.5">/ month</span>
             </div>
           </div>
           <ul className="space-y-2.5 mb-6">
@@ -156,22 +156,22 @@ export default function PricingPage() {
         <h2 className="text-xl font-bold text-primary mb-1 text-center">Choose your billing cycle</h2>
         <p className="text-sm text-muted text-center mb-6">Both plans include every feature. Pick whatever fits your learning pace.</p>
         <div className="grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
-          <Card className="text-center">
-            <p className="text-xs font-semibold text-muted uppercase tracking-wider mb-2">Every 2 weeks</p>
-            <p className="text-3xl font-extrabold text-primary mb-1">€2.49</p>
-            <p className="text-sm text-muted mb-4">per 2-week period</p>
-            <p className="text-xs text-muted">≈ €6.43/month · flexible cadence</p>
-          </Card>
           <Card className="text-center border-accent/40 bg-accent-light/10 relative">
             <span className="absolute top-3 right-3 text-xs font-semibold text-accent bg-accent-light px-2 py-0.5 rounded-full">Best value</span>
+            <p className="text-xs font-semibold text-muted uppercase tracking-wider mb-2">Yearly</p>
+            <p className="text-3xl font-extrabold text-primary mb-1">€34.99</p>
+            <p className="text-sm text-muted mb-4">per year</p>
+            <p className="text-xs text-muted">≈ €2.92/month · save 16%</p>
+          </Card>
+          <Card className="text-center">
             <p className="text-xs font-semibold text-muted uppercase tracking-wider mb-2">Monthly</p>
             <p className="text-3xl font-extrabold text-primary mb-1">€3.49</p>
             <p className="text-sm text-muted mb-4">per month</p>
-            <p className="text-xs text-muted">~45% cheaper than biweekly</p>
+            <p className="text-xs text-muted">€41.88/year · flexible</p>
           </Card>
         </div>
         <p className="text-center text-xs text-muted mt-4">
-          7-day free trial on both plans. No credit card required at signup. Cancel any time.
+          7-day free trial on both plans. Card required — cancel before day 7 and pay nothing.
         </p>
       </div>
 
@@ -205,7 +205,7 @@ export default function PricingPage() {
       <div className="text-center rounded-2xl border border-accent/30 bg-accent-light/20 px-6 py-10">
         <h2 className="text-2xl font-bold text-primary mb-2">Ready to start?</h2>
         <p className="text-muted mb-6 max-w-md mx-auto">
-          Create a free account in 30 seconds. No credit card needed — try everything for 7 days.
+          Create a free account in 30 seconds. Try everything for 7 days — cancel before day 7 and you won't be charged a cent.
         </p>
         <div className="flex flex-wrap gap-3 justify-center">
           <Link href="/signup">

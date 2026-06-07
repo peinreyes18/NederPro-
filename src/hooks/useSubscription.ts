@@ -12,6 +12,7 @@ interface Subscription {
   stripe_subscription_id: string | null;
   plan: string | null;
   created_at: string | null;
+  has_payment_method: boolean | null;
 }
 
 export function useSubscription() {
@@ -29,7 +30,7 @@ export function useSubscription() {
     const supabase = createClient();
     supabase
       .from('subscriptions')
-      .select('status, trial_end, current_period_end, stripe_customer_id, stripe_subscription_id, plan, created_at')
+      .select('status, trial_end, current_period_end, stripe_customer_id, stripe_subscription_id, plan, created_at, has_payment_method')
       .eq('user_id', user.id)
       .single()
       .then(({ data }) => {
@@ -38,9 +39,12 @@ export function useSubscription() {
       });
   }, [user]);
 
-  const isActive =
-    subscription?.status === 'active' || subscription?.status === 'trialing';
-  const isTrialing = subscription?.status === 'trialing';
+  const trialStillValid =
+    subscription?.status === 'trialing' &&
+    (!subscription.trial_end || new Date(subscription.trial_end) > new Date());
+
+  const isActive = subscription?.status === 'active' || trialStillValid;
+  const isTrialing = trialStillValid;
 
   return {
     subscription,

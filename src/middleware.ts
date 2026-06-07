@@ -34,6 +34,13 @@ function isSubscriberOnly(pathname: string): boolean {
   // User account pages
   if (pathname === '/progress' || pathname.startsWith('/progress/')) return true;
   if (pathname === '/account' || pathname.startsWith('/account/')) return true;
+  // Practice & exam tools
+  if (pathname === '/speaking' || pathname.startsWith('/speaking/')) return true;
+  if (pathname === '/knm' || pathname.startsWith('/knm/')) return true;
+  if (pathname === '/mock-exam' || pathname.startsWith('/mock-exam/')) return true;
+  if (pathname === '/reading' || pathname.startsWith('/reading/')) return true;
+  if (pathname === '/listening' || pathname.startsWith('/listening/')) return true;
+  if (pathname === '/verbs' || pathname.startsWith('/verbs/')) return true;
   return false;
 }
 
@@ -74,6 +81,23 @@ function isPublic(pathname: string): boolean {
   return PUBLIC_PREFIXES.some(
     (p) => pathname === p || pathname.startsWith(p + '/')
   );
+}
+
+/** Returns true only if the subscription grants access right now.
+ *  For trialing subscriptions, also verifies trial_end has not passed —
+ *  so a missed/delayed Stripe webhook can't keep a user permanently unlocked.
+ *  Trials also require a card on file (has_payment_method) — no-card trials are blocked. */
+function isSubscriptionActive(
+  sub: { status: string; trial_end?: string | null; has_payment_method?: boolean | null } | null | undefined
+): boolean {
+  if (!sub) return false;
+  if (sub.status === 'active') return true;
+  if (sub.status === 'trialing') {
+    if (!sub.has_payment_method) return false; // trial requires a card on file
+    if (!sub.trial_end) return true; // no end date recorded yet — Stripe hasn't confirmed yet
+    return new Date(sub.trial_end) > new Date();
+  }
+  return false;
 }
 
 export async function middleware(request: NextRequest) {
@@ -119,12 +143,11 @@ export async function middleware(request: NextRequest) {
 
     const { data: subscription } = await supabase
       .from('subscriptions')
-      .select('status')
+      .select('status, trial_end, has_payment_method')
       .eq('user_id', session.user.id)
       .single();
 
-    const hasAccess =
-      subscription?.status === 'active' || subscription?.status === 'trialing';
+    const hasAccess = isSubscriptionActive(subscription);
 
     if (!hasAccess) {
       return NextResponse.redirect(new URL('/subscribe', request.url));
@@ -154,10 +177,10 @@ export async function middleware(request: NextRequest) {
     if (session) {
       const { data: sub } = await supabase
         .from('subscriptions')
-        .select('status')
+        .select('status, trial_end, has_payment_method')
         .eq('user_id', session.user.id)
         .single();
-      const hasAccess = sub?.status === 'active' || sub?.status === 'trialing';
+      const hasAccess = isSubscriptionActive(sub);
       if (hasAccess) {
         return NextResponse.redirect(new URL('/levels', request.url));
       }
@@ -200,14 +223,11 @@ export async function middleware(request: NextRequest) {
 
   const { data: subscription } = await supabase
     .from('subscriptions')
-    .select('status')
+    .select('status, trial_end')
     .eq('user_id', session.user.id)
     .single();
 
-  const hasAccess =
-    subscription?.status === 'active' || subscription?.status === 'trialing';
-
-  if (!hasAccess) {
+  if (!isSubscriptionActive(subscription)) {
     return NextResponse.redirect(new URL('/subscribe', request.url));
   }
 

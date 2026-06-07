@@ -6,12 +6,11 @@ import { stripe } from '@/lib/stripe';
 export async function POST(request: NextRequest) {
   const cookieStore = await cookies();
   const body = await request.json().catch(() => ({}));
-  const plan: 'biweekly' | 'monthly' = body.plan === 'biweekly' ? 'biweekly' : 'monthly';
-  const skipTrial: boolean = body.skipTrial === true;
+  const plan: 'yearly' | 'monthly' = body.plan === 'yearly' ? 'yearly' : 'monthly';
 
   const priceId =
-    plan === 'biweekly'
-      ? process.env.STRIPE_PRICE_ID_BIWEEKLY!
+    plan === 'yearly'
+      ? process.env.STRIPE_PRICE_ID_YEARLY!
       : process.env.STRIPE_PRICE_ID_MONTHLY!;
 
   const supabase = createServerClient(
@@ -35,12 +34,20 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  // Check if user already has a Stripe customer ID
+  // Check if user already has an active or trialing subscription — block duplicate checkout
   const { data: subscription } = await supabase
     .from('subscriptions')
-    .select('stripe_customer_id')
+    .select('stripe_customer_id, status, trial_end')
     .eq('user_id', session.user.id)
     .single();
+
+  const trialStillActive =
+    subscription?.status === 'trialing' &&
+    (!subscription.trial_end || new Date(subscription.trial_end) > new Date());
+
+  if (subscription?.status === 'active' || trialStillActive) {
+    return NextResponse.json({ error: 'You already have an active subscription.' }, { status: 409 });
+  }
 
   let customerId = subscription?.stripe_customer_id;
 
@@ -54,9 +61,12 @@ export async function POST(request: NextRequest) {
 
   const origin = request.headers.get('origin') ?? 'https://nederpro.com';
 
+  // First-time users (no subscription row) get a 7-day trial.
+  // Returning users who previously cancelled get no trial — they already used it.
+  const isFirstTime = !subscription;
+
   const checkoutSession = await stripe.checkout.sessions.create({
     customer: customerId,
-    payment_method_types: ['card'],
     line_items: [
       {
         price: priceId,
@@ -64,9 +74,8 @@ export async function POST(request: NextRequest) {
       },
     ],
     mode: 'subscription',
-    subscription_data: skipTrial ? undefined : {
-      trial_period_days: 7,
-    },
+    payment_method_collection: 'always',
+    ...(isFirstTime && { subscription_data: { trial_period_days: 7 } }),
     success_url: `${origin}/subscribe/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}/subscribe`,
   });

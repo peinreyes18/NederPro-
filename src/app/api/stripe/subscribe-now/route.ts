@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
 
   const { data: sub } = await supabase
     .from('subscriptions')
-    .select('stripe_customer_id, stripe_subscription_id, plan, status')
+    .select('stripe_customer_id, stripe_subscription_id, plan, status, trial_end')
     .eq('user_id', session.user.id)
     .single();
 
@@ -53,8 +53,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'No subscription found.' }, { status: 404 });
   }
 
-  if (sub.status !== 'trialing') {
-    return NextResponse.json({ error: 'Subscription is not in trial.' }, { status: 409 });
+  const trialStillActive =
+    sub.status === 'trialing' &&
+    (!sub.trial_end || new Date(sub.trial_end) > new Date());
+
+  if (!trialStillActive) {
+    return NextResponse.json({ error: 'Subscription is not in an active trial.' }, { status: 409 });
   }
 
   // ── Switch plan if different ────────────────────────────────────────────────

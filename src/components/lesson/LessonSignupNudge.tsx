@@ -25,7 +25,7 @@ export default function LessonSignupNudge() {
             Create a free account to save your progress
           </h2>
           <p className="text-sm text-muted">
-            7-day free trial · No credit card required · Full access to all lessons &amp; exercises
+            7-day free trial · Cancel before day 7, pay nothing · Full access to all lessons &amp; exercises
           </p>
         </div>
         <div className="flex gap-3 flex-shrink-0">

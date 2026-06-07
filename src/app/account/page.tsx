@@ -77,6 +77,12 @@ function TrialCountdown({ trialEnd }: { trialEnd: string }) {
   );
 }
 
+function isTrialActive(subscription: { status: string; trial_end: string | null } | null): boolean {
+  if (!subscription || subscription.status !== 'trialing') return false;
+  if (!subscription.trial_end) return true;
+  return new Date(subscription.trial_end) > new Date();
+}
+
 export default function AccountPage() {
   const { user, signOut } = useAuth();
   const { subscription, isLoading: subLoading } = useSubscription();
@@ -308,7 +314,7 @@ export default function AccountPage() {
             ) : (
               <div className="space-y-4">
                 {/* Trial countdown banner */}
-                {subscription.status === 'trialing' && subscription.trial_end && (
+                {isTrialActive(subscription) && subscription.trial_end && (
                   <TrialCountdown trialEnd={subscription.trial_end} />
                 )}
 
@@ -317,10 +323,10 @@ export default function AccountPage() {
                   <span className={cn(
                     'text-xs font-semibold px-2.5 py-1 rounded-full',
                     subscription.status === 'active' && 'bg-accent-light text-accent',
-                    subscription.status === 'trialing' && 'bg-accent-light text-accent',
+                    isTrialActive(subscription) && 'bg-accent-light text-accent',
                     subscription.status === 'past_due' && 'bg-error-light text-error',
                   )}>
-                    {subscription.status === 'trialing' ? 'Free trial'
+                    {isTrialActive(subscription) ? 'Free trial'
                       : subscription.status === 'active' ? 'Active'
                       : 'Payment failed'}
                   </span>
@@ -341,7 +347,7 @@ export default function AccountPage() {
                       </span>
                     </div>
                   )}
-                  {subscription.status === 'trialing' && subscription.trial_end && (
+                  {isTrialActive(subscription) && subscription.trial_end && (
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-muted">Trial ends</span>
                       <span className="text-primary font-medium">
@@ -383,7 +389,7 @@ export default function AccountPage() {
                 )}
 
                 {/* Manage billing (for active/past_due) */}
-                {subscription.status !== 'trialing' && (
+                {!isTrialActive(subscription) && subscription.status !== 'canceled' && (
                   <>
                     <Button variant="outline" onClick={handleManageBilling} disabled={portalLoading}>
                       {portalLoading ? 'Opening portal…' : 'Manage billing'}
@@ -395,7 +401,7 @@ export default function AccountPage() {
                 )}
 
                 {/* ── Subscribe early — plan selector ── */}
-                {subscription.status === 'trialing' && !showCancelConfirm && (
+                {isTrialActive(subscription) && !showCancelConfirm && (
                   <div className="rounded-xl border border-accent/30 bg-accent-light/40 p-4 space-y-3">
                     <div>
                       <p className="text-sm font-semibold text-primary">Subscribe now</p>
@@ -466,7 +472,7 @@ export default function AccountPage() {
                 )}
 
                 {/* Cancel trial (inline for trialing) */}
-                {subscription.status === 'trialing' && (
+                {isTrialActive(subscription) && (
                   <>
                     {!showCancelConfirm ? (
                       <button

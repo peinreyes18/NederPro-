@@ -9,9 +9,11 @@ import SearchResults from '@/components/vocabulary/SearchResults';
 import LessonSignupNudge from '@/components/lesson/LessonSignupNudge';
 import { vocabularyCategories } from '@/content/vocabulary';
 import { useVocabularySearch } from '@/hooks/useVocabularySearch';
+import { getAllVerbs } from '@/content/verbs/verb-database';
 
 export default function VocabularyPageContent() {
   const { query, setQuery, results, isSearching } = useVocabularySearch();
+  const verbCount = new Set(getAllVerbs().map((v) => v.infinitive)).size;
 
   return (
     <>
@@ -43,7 +45,21 @@ export default function VocabularyPageContent() {
                 </Card>
               </Link>
             ))}
+
+            {/* Verbs card */}
+            <Link href="/verbs/practice">
+              <Card hover>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-2xl" role="img" aria-label="Verbs">🔤</span>
+                  <Badge variant="accent">{verbCount} verbs</Badge>
+                </div>
+                <h3 className="font-semibold text-primary mb-0.5">Verbs</h3>
+                <p className="text-xs text-accent font-medium mb-1">Werkwoorden</p>
+                <p className="text-sm text-muted leading-relaxed">Regular, irregular, modal and separable verbs with conjugations.</p>
+              </Card>
+            </Link>
           </div>
+
           <LessonSignupNudge />
         </>
       )}

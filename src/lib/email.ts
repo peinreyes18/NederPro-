@@ -1,6 +1,8 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResend() {
+  return new Resend(process.env.RESEND_API_KEY);
+}
 
 const FROM = 'NederPro <hello@nederpro.com>';
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.com';
@@ -133,7 +135,7 @@ export async function sendWelcomeEmail({
     </p>
   `);
 
-  return resend.emails.send({
+  return getResend().emails.send({
     from: FROM,
     to,
     subject: 'Your NederPro trial has started 🇳🇱',
@@ -205,7 +207,7 @@ export async function sendDay3Email({
     </table>
   `);
 
-  return resend.emails.send({
+  return getResend().emails.send({
     from: FROM,
     to,
     subject: '3 days into your Dutch trial — a few things to try',
@@ -271,7 +273,7 @@ export async function sendTrialExpiryEmail({
     </p>
   `);
 
-  return resend.emails.send({
+  return getResend().emails.send({
     from: FROM,
     to,
     subject: `Your NederPro trial ends ${endDate} — what happens next`,
@@ -328,10 +330,163 @@ export async function sendSignupNudgeEmail({
     </p>
   `);
 
-  return resend.emails.send({
+  return getResend().emails.send({
     from: FROM,
     to,
     subject: 'Your NederPro trial is waiting — start free today',
+    html,
+  });
+}
+
+// ─── Email: Re-engagement (signed up, never subscribed) ──────────────────────
+
+export async function sendReengagementEmail({
+  to,
+  firstName,
+}: {
+  to: string;
+  firstName?: string;
+}) {
+  const name = firstName || 'there';
+
+  const html = wrap(`
+    <h1 style="margin:0 0 8px;font-size:24px;font-weight:800;color:#111827;">You signed up — here's what you're missing 🦉</h1>
+    <p style="margin:0 0 20px;font-size:15px;color:#6b7280;line-height:1.6;">
+      Hi ${name}, you created a NederPro account a while back — but we never saw you dive in. We get it, life gets busy. But we wanted to reach out because something is waiting for you.
+    </p>
+
+    <div style="background:#eff6ff;border-radius:12px;padding:20px 24px;margin-bottom:24px;border-left:4px solid #2563eb;">
+      <p style="margin:0 0 8px;font-size:16px;font-weight:800;color:#1e40af;">Meet the Dutch Owl. 🦉</p>
+      <p style="margin:0;font-size:14px;color:#1e40af;line-height:1.7;">
+        NederPro has a conversational speaking feature where you talk directly to an AI owl — in Dutch. It plays the role of a supermarket cashier, a doctor, your HR manager, or a train station employee. You speak, it responds in natural Dutch at your level, corrects your mistakes gently, and translates everything so you always follow along.
+      </p>
+      <p style="margin:10px 0 0;font-size:13px;color:#3b82f6;font-weight:600;">
+        It's the closest thing to real Dutch practice without being in the Netherlands.
+      </p>
+    </div>
+
+    <p style="margin:0 0 12px;font-size:15px;color:#374151;font-weight:600;">Here's what's waiting for you inside:</p>
+
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+      ${[
+        ['🎙️', 'Speaking practice', '10 real-life scenarios — supermarket, doctor, job interview, and more'],
+        ['📖', 'Grammar lessons', 'A0 through B2, structured and clearly explained'],
+        ['🏛️', 'KNM quiz &amp; mock exam', 'Full inburgeringsexamen prep with detailed feedback'],
+        ['🎧', 'Listening &amp; reading', 'Exercises with transcripts and answer explanations'],
+        ['📊', 'Progress tracking', 'So you always know exactly where you stand'],
+      ].map(([icon, title, desc]) => `
+      <tr>
+        <td style="padding:8px 0;vertical-align:top;width:32px;">
+          <span style="font-size:18px;">${icon}</span>
+        </td>
+        <td style="padding:8px 0 8px 12px;vertical-align:top;">
+          <p style="margin:0;font-size:14px;font-weight:600;color:#111827;">${title}</p>
+          <p style="margin:2px 0 0;font-size:13px;color:#6b7280;line-height:1.5;">${desc}</p>
+        </td>
+      </tr>`).join('')}
+    </table>
+
+    <div style="background:#f0fdf4;border-radius:12px;padding:16px 20px;margin-bottom:24px;border-left:4px solid #16a34a;">
+      <p style="margin:0;font-size:14px;font-weight:700;color:#15803d;">✓ 7-day free trial — cancel before day 7 and pay nothing</p>
+      <p style="margin:4px 0 0;font-size:13px;color:#166534;line-height:1.5;">Your trial starts the moment your card is entered. Cancel any time before day 7 and you won't be charged.</p>
+    </div>
+
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
+      <tr>
+        <td>
+          <a href="${BASE_URL}/login" style="display:inline-block;background:#2563eb;color:#ffffff;font-size:15px;font-weight:700;text-decoration:none;padding:14px 28px;border-radius:10px;">
+            Start speaking Dutch today →
+          </a>
+        </td>
+      </tr>
+    </table>
+
+    <p style="margin:0;font-size:13px;color:#9ca3af;line-height:1.6;">
+      Questions? Just reply to this email — we read every message.<br/>
+      Tot ziens, <strong style="color:#6b7280;">The NederPro Team</strong>
+    </p>
+  `);
+
+  return getResend().emails.send({
+    from: FROM,
+    to,
+    subject: 'You signed up — here\'s what you\'re missing 🦉',
+    html,
+  });
+}
+
+// ─── Email: Trial last day (24h before expiry) ───────────────────────────────
+
+export async function sendTrialLastDayEmail({
+  to,
+  firstName,
+  planPrice,
+  planPeriod,
+}: {
+  to: string;
+  firstName?: string;
+  planPrice?: string;
+  planPeriod?: string;
+}) {
+  const name = firstName || 'there';
+  const price = planPrice ?? '€3.49';
+  const period = planPeriod ?? 'per month';
+
+  const html = wrap(`
+    <h1 style="margin:0 0 8px;font-size:22px;font-weight:800;color:#111827;">Last day of your trial, ${name} 🇳🇱</h1>
+    <p style="margin:0 0 20px;font-size:15px;color:#6b7280;line-height:1.6;">
+      Your NederPro free trial ends <strong>today</strong>. After midnight, your subscription continues at <strong>${price} ${period}</strong> — or cancels automatically if you haven't added a payment method.
+    </p>
+
+    <div style="background:#fef3c7;border-radius:12px;padding:16px 20px;margin-bottom:24px;border-left:4px solid #d97706;">
+      <p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#92400e;">⏰ Trial ends today</p>
+      <p style="margin:0;font-size:13px;color:#92400e;line-height:1.6;">
+        To keep your access, add a payment method from your account page. Takes 30 seconds.
+      </p>
+    </div>
+
+    <p style="margin:0 0 16px;font-size:14px;color:#374151;line-height:1.6;">
+      Here's what you'll keep with a subscription:
+    </p>
+
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+      ${[
+        ['🦉', 'Speaking practice', '22 real-life scenarios — speak Dutch with the AI owl and get instant corrections'],
+        ['📚', '69 grammar lessons', 'A0 through B2, structured for adults preparing for exams'],
+        ['📋', 'Mock exam sets', 'Full Inburgeringsexamen & NT2 practice with timed conditions'],
+        ['🎧', 'Listening & reading', '12 audio + 12 text exercises at your level'],
+        ['📈', 'Your progress', 'Everything you\'ve done so far — saved and waiting for you'],
+      ].map(([icon, title, desc]) => `
+      <tr>
+        <td style="padding:7px 0;vertical-align:top;width:32px;">
+          <span style="font-size:18px;">${icon}</span>
+        </td>
+        <td style="padding:7px 0 7px 12px;vertical-align:top;">
+          <p style="margin:0;font-size:14px;font-weight:600;color:#111827;">${title}</p>
+          <p style="margin:2px 0 0;font-size:13px;color:#6b7280;line-height:1.5;">${desc}</p>
+        </td>
+      </tr>`).join('')}
+    </table>
+
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:16px;">
+      <tr>
+        <td>
+          <a href="${BASE_URL}/account" style="display:inline-block;background:#2563eb;color:#ffffff;font-size:15px;font-weight:700;text-decoration:none;padding:14px 28px;border-radius:10px;">
+            Add payment method →
+          </a>
+        </td>
+      </tr>
+    </table>
+
+    <p style="margin:0;font-size:13px;color:#9ca3af;line-height:1.6;">
+      Want to cancel instead? No problem — go to your <a href="${BASE_URL}/account" style="color:#6b7280;">account page</a> and cancel before midnight. No charge.
+    </p>
+  `);
+
+  return getResend().emails.send({
+    from: FROM,
+    to,
+    subject: 'Last day of your NederPro trial — keep your access',
     html,
   });
 }
@@ -392,7 +547,7 @@ export async function sendWinbackEmail({
     </p>
   `);
 
-  return resend.emails.send({
+  return getResend().emails.send({
     from: FROM,
     to,
     subject: 'Your NederPro subscription has been cancelled',

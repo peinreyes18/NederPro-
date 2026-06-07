@@ -64,7 +64,7 @@ const faqJsonLd = {
       name: 'Is NederPro free to use?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'All Dutch grammar lessons on NederPro are free to read. Interactive exercises, exam practice, vocabulary quizzes, and progress tracking require a subscription, which starts with a 7-day free trial. No credit card is required to start.',
+        text: 'All Dutch grammar lessons on NederPro are free to read. Interactive exercises, exam practice, vocabulary quizzes, and progress tracking require a subscription, which starts with a 7-day free trial. Cancel before day 7 and you won\'t be charged.',
       },
     },
     {

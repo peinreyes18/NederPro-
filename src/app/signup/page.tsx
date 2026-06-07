@@ -55,7 +55,7 @@ function SignUpForm() {
     <Card>
       <h1 className="text-2xl font-bold text-primary mb-2">Start your free trial</h1>
       <p className="text-primary-light text-sm mb-6">
-        7 days free — no credit card required at signup. Then from €3.49/month.
+        7 days free — cancel before day 7 and you won't be charged. Then from €3.49/month.
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-4">

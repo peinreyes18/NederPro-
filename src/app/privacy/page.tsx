@@ -22,7 +22,7 @@ export default function PrivacyPolicyPage() {
           <p>
             NederPro (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;) is an online Dutch language learning platform
             operated by <strong className="text-primary">Laine Consulting</strong>, registered in the Netherlands
-            (KvK number: 42005798). For the purposes of the General Data Protection Regulation (GDPR),
+            (KvK number: 42005798 · BTW-id: NL00542901B96). For the purposes of the General Data Protection Regulation (GDPR),
             we are the data controller of your personal information.
           </p>
           <p className="mt-2">

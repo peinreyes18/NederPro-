@@ -79,7 +79,26 @@ export default function ContactPage() {
 
       </div>
 
-      <div className="mt-10 pt-8 border-t border-border flex flex-wrap gap-4 text-sm text-muted">
+      {/* Legal info */}
+      <div className="mt-8 rounded-2xl border border-border bg-surface p-5">
+        <p className="text-xs font-semibold text-muted uppercase tracking-wider mb-2">Legal information</p>
+        <dl className="space-y-1 text-sm text-muted">
+          <div className="flex gap-2">
+            <dt className="font-medium text-primary shrink-0">Company</dt>
+            <dd>Laine Consulting</dd>
+          </div>
+          <div className="flex gap-2">
+            <dt className="font-medium text-primary shrink-0">KvK</dt>
+            <dd>42005798</dd>
+          </div>
+          <div className="flex gap-2">
+            <dt className="font-medium text-primary shrink-0">BTW-id</dt>
+            <dd>NL00542901B96</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div className="mt-6 pt-6 border-t border-border flex flex-wrap gap-4 text-sm text-muted">
         <Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
         <Link href="/terms" className="hover:text-primary transition-colors">Terms &amp; Conditions</Link>
         <Link href="/" className="hover:text-primary transition-colors">← Back to home</Link>

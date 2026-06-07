@@ -109,7 +109,7 @@ export default async function BlogPostPage(
         <p className="font-semibold text-primary mb-1">Start learning Dutch today</p>
         <p className="text-sm text-muted mb-4">
           Structured CEFR A0–B2 lessons, exam practice, and AI writing feedback.
-          7-day free trial — no credit card needed.
+          7-day free trial — cancel before day 7 and pay nothing.
         </p>
         <Link
           href="/subscribe"

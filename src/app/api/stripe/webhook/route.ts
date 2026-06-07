@@ -16,6 +16,16 @@ function generateGiftCode(): string {
   return 'GIFT-' + segments.join('-');
 }
 
+/** True if the Stripe customer has at least one card on file. */
+async function customerHasCard(customerId: string): Promise<boolean> {
+  try {
+    const pms = await stripe.paymentMethods.list({ customer: customerId, type: 'card', limit: 1 });
+    return pms.data.length > 0;
+  } catch {
+    return false;
+  }
+}
+
 /** Pull email + display name from Supabase auth for a given user ID */
 async function getUserProfile(userId: string): Promise<{ email: string; firstName?: string; goal?: string; level?: string } | null> {
   const supabaseAdmin = createAdminClient();
@@ -142,6 +152,7 @@ export async function POST(request: NextRequest) {
           status: sub.status,
           plan,
           trial_end: trialEnd,
+          has_payment_method: await customerHasCard(customerId),
           current_period_end: sub.items.data[0]?.current_period_end
             ? new Date(sub.items.data[0].current_period_end * 1000).toISOString()
             : null,
@@ -189,6 +200,7 @@ export async function POST(request: NextRequest) {
           trial_end: sub.trial_end
             ? new Date(sub.trial_end * 1000).toISOString()
             : null,
+          has_payment_method: await customerHasCard(sub.customer as string),
           current_period_end: sub.items.data[0]?.current_period_end
             ? new Date((sub.items.data[0].current_period_end as number) * 1000).toISOString()
             : null,
@@ -215,6 +227,18 @@ export async function POST(request: NextRequest) {
             }).catch(console.error);
           }
         }
+      }
+      break;
+    }
+
+    // Fires when a trial user adds a card via the billing portal — unblocks their access.
+    case 'payment_method.attached': {
+      const pm = event.data.object as Stripe.PaymentMethod;
+      if (pm.customer) {
+        await supabaseAdmin
+          .from('subscriptions')
+          .update({ has_payment_method: true, updated_at: new Date().toISOString() })
+          .eq('stripe_customer_id', pm.customer as string);
       }
       break;
     }

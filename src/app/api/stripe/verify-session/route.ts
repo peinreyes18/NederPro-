@@ -61,6 +61,15 @@ export async function POST(request: NextRequest) {
       ? 'monthly'
       : null;
 
+    // A completed checkout always collects a card, but confirm against Stripe.
+    let hasPaymentMethod = false;
+    try {
+      const pms = await stripe.paymentMethods.list({ customer: customerId, type: 'card', limit: 1 });
+      hasPaymentMethod = pms.data.length > 0;
+    } catch {
+      hasPaymentMethod = false;
+    }
+
     // Write to Supabase using service role (no auth required)
     const { error: dbError } = await supabaseAdmin.from('subscriptions').upsert(
       {
@@ -70,6 +79,7 @@ export async function POST(request: NextRequest) {
         status: sub.status,
         plan,
         trial_end: trialEnd,
+        has_payment_method: hasPaymentMethod,
         current_period_end: periodEnd,
         updated_at: new Date().toISOString(),
       },

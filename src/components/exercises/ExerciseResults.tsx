@@ -6,6 +6,7 @@ import { ExerciseSessionResult } from '@/hooks/useExercise';
 interface ExerciseResultsProps {
   results: ExerciseSessionResult[];
   totalExercises: number;
+  xpEarned?: number;
   onRetry: () => void;
   onBack: () => void;
   nextTopic?: { id: string; title: string; levelId: string };
@@ -15,6 +16,7 @@ interface ExerciseResultsProps {
 export default function ExerciseResults({
   results,
   totalExercises,
+  xpEarned = 0,
   onRetry,
   onBack,
   nextTopic,
@@ -35,12 +37,19 @@ export default function ExerciseResults({
         </div>
 
         <h2 className="text-2xl font-bold text-primary mb-1">
-          {passed ? 'Great work! 🎉' : score >= 50 ? 'Good effort!' : 'Keep practising'}
+          {passed ? 'Great work!' : score >= 50 ? 'Good effort!' : 'Keep practising'}
         </h2>
         <p className="text-muted text-sm mb-1">
           {correctCount} of {totalExercises} correct
         </p>
-        <p className="text-primary-light text-sm mb-6">
+
+        {xpEarned > 0 && (
+          <div className="inline-flex items-center gap-1.5 bg-accent-light text-accent rounded-full px-3 py-1 text-xs font-semibold mt-2 mb-1">
+            +{xpEarned} XP earned
+          </div>
+        )}
+
+        <p className="text-primary-light text-sm mb-6 mt-2">
           {passed
             ? 'You\'ve got a strong grasp of this topic.'
             : score >= 50

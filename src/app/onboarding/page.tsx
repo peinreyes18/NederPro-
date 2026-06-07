@@ -280,11 +280,10 @@ export default function OnboardingPage() {
 
     setSaving(false);
     if (goal && level) trackOnboardingComplete(goal, level);
-    // Send unsubscribed users to the subscribe page first, then to their level
-    if (!isSubscribed) {
-      router.push(`/subscribe`);
-    } else {
+    if (isSubscribed) {
       router.push(`/levels/${level}`);
+    } else {
+      router.push('/subscribe');
     }
   }
 

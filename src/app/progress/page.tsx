@@ -7,10 +7,13 @@ import ProgressBar from '@/components/ui/ProgressBar';
 import Badge from '@/components/ui/Badge';
 import Button from '@/components/ui/Button';
 import { useProgress } from '@/hooks/useProgress';
+import { useActivityProgress } from '@/hooks/useActivityProgress';
 import { levels } from '@/content/levels';
 import { getTopic } from '@/lib/content-loader';
 import { getLevelCompletionPercent, getOverallStats } from '@/lib/progress';
 import { formatDate } from '@/lib/utils';
+import { listeningExercises } from '@/data/listening-exercises';
+import { readingExercises } from '@/data/reading-exercises';
 
 // ── Skeleton ─────────────────────────────────────────────────────────────────
 
@@ -105,8 +108,9 @@ function EmptyState() {
 
 export default function ProgressPage() {
   const { progress, isLoaded } = useProgress();
+  const { data: activity, isLoaded: activityLoaded } = useActivityProgress();
 
-  if (!isLoaded) return <ProgressSkeleton />;
+  if (!isLoaded || !activityLoaded) return <ProgressSkeleton />;
 
   const stats = getOverallStats(progress);
   const hasActivity = stats.totalExercisesCompleted > 0 || stats.totalTopicsInProgress > 0;
@@ -212,6 +216,73 @@ export default function ProgressPage() {
             {stats.overallScore > 0 ? `${stats.overallScore}%` : '--'}
           </p>
         </Card>
+      </div>
+
+      {/* Exam skills progress */}
+      <h2 className="text-xl font-bold text-primary mb-4">Exam Skills</h2>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+        {/* Listening */}
+        <Link href="/listening">
+          <Card hover className="h-full">
+            <div className="text-2xl mb-2">🎧</div>
+            <p className="text-sm text-muted mb-1">Listening</p>
+            <p className="text-2xl font-bold text-primary">{activity.listening.completed.length}<span className="text-sm font-normal text-muted">/{listeningExercises.length}</span></p>
+            <p className="text-xs text-muted mt-1">exercises completed</p>
+            <div className="mt-3 h-1.5 bg-border rounded-full overflow-hidden">
+              <div className="h-full bg-purple-500 rounded-full" style={{ width: `${Math.round((activity.listening.completed.length / listeningExercises.length) * 100)}%` }} />
+            </div>
+          </Card>
+        </Link>
+        {/* Reading */}
+        <Link href="/reading">
+          <Card hover className="h-full">
+            <div className="text-2xl mb-2">📖</div>
+            <p className="text-sm text-muted mb-1">Reading</p>
+            <p className="text-2xl font-bold text-primary">{activity.reading.completed.length}<span className="text-sm font-normal text-muted">/{readingExercises.length}</span></p>
+            <p className="text-xs text-muted mt-1">exercises completed</p>
+            <div className="mt-3 h-1.5 bg-border rounded-full overflow-hidden">
+              <div className="h-full bg-blue-500 rounded-full" style={{ width: `${Math.round((activity.reading.completed.length / readingExercises.length) * 100)}%` }} />
+            </div>
+          </Card>
+        </Link>
+        {/* KNM */}
+        <Link href="/knm">
+          <Card hover className="h-full">
+            <div className="text-2xl mb-2">🏛️</div>
+            <p className="text-sm text-muted mb-1">KNM</p>
+            {activity.knm.attempts > 0 ? (
+              <>
+                <p className="text-2xl font-bold text-primary">{activity.knm.bestScore}%</p>
+                <p className="text-xs text-muted mt-1">best score · {activity.knm.attempts} attempt{activity.knm.attempts !== 1 ? 's' : ''}</p>
+                <div className="mt-3 h-1.5 bg-border rounded-full overflow-hidden">
+                  <div className={`h-full rounded-full ${activity.knm.bestScore >= 70 ? 'bg-green-500' : 'bg-orange-400'}`} style={{ width: `${activity.knm.bestScore}%` }} />
+                </div>
+              </>
+            ) : (
+              <><p className="text-2xl font-bold text-muted">—</p><p className="text-xs text-muted mt-1">not attempted yet</p></>
+            )}
+          </Card>
+        </Link>
+        {/* Mock Exam */}
+        <Link href="/mock-exam">
+          <Card hover className="h-full">
+            <div className="text-2xl mb-2">🇳🇱</div>
+            <p className="text-sm text-muted mb-1">Mock Exam</p>
+            {activity.mockExam.attempts > 0 ? (
+              <>
+                <p className="text-2xl font-bold text-primary">{activity.mockExam.bestScore}%</p>
+                <p className="text-xs text-muted mt-1">
+                  {activity.mockExam.passed ? '✓ Passed' : 'Not passed yet'} · {activity.mockExam.attempts} attempt{activity.mockExam.attempts !== 1 ? 's' : ''}
+                </p>
+                <div className="mt-3 h-1.5 bg-border rounded-full overflow-hidden">
+                  <div className={`h-full rounded-full ${activity.mockExam.passed ? 'bg-green-500' : 'bg-orange-400'}`} style={{ width: `${activity.mockExam.bestScore}%` }} />
+                </div>
+              </>
+            ) : (
+              <><p className="text-2xl font-bold text-muted">—</p><p className="text-xs text-muted mt-1">not attempted yet</p></>
+            )}
+          </Card>
+        </Link>
       </div>
 
       {/* Study streak + community */}

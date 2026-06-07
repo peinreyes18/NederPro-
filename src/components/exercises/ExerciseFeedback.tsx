@@ -7,6 +7,7 @@ interface ExerciseFeedbackProps {
   almostCorrect?: boolean;
   correctAnswer?: string;
   explanation?: string;
+  combo?: number;
   onNext: () => void;
 }
 
@@ -15,6 +16,7 @@ export default function ExerciseFeedback({
   almostCorrect,
   correctAnswer,
   explanation,
+  combo = 0,
   onNext,
 }: ExerciseFeedbackProps) {
   return (
@@ -30,6 +32,11 @@ export default function ExerciseFeedback({
           <p className={`font-semibold ${correct ? 'text-success' : 'text-error'}`}>
             {correct ? 'Correct!' : almostCorrect ? 'Almost correct!' : 'Incorrect'}
           </p>
+          {correct && combo >= 2 && (
+            <p className="text-xs font-semibold text-accent mt-0.5">
+              {combo} in a row{combo >= 3 ? ' — +5 XP bonus' : ''}
+            </p>
+          )}
           {!correct && correctAnswer && (
             <p className="text-sm text-primary mt-1">
               Correct answer: <span className="font-medium">{correctAnswer}</span>

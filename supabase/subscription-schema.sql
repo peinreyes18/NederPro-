@@ -7,8 +7,13 @@ create table public.subscriptions (
   stripe_subscription_id text unique,
   status text not null default 'trialing',
   -- status values: trialing | active | past_due | canceled | incomplete
+  plan text,                       -- 'monthly' | 'yearly'
   trial_end timestamptz,
   current_period_end timestamptz,
+  cancellation_reason text,
+  -- True once a card is attached in Stripe. Trial access REQUIRES this to be true
+  -- (set via the Stripe webhook). No-card trials are blocked from the app.
+  has_payment_method boolean not null default false,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   unique(user_id)

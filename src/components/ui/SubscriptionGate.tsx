@@ -57,7 +57,7 @@ export default function SubscriptionGate({
           Create a free account to access {feature}
         </h2>
         <p className="text-sm text-muted mb-5 max-w-sm mx-auto">
-          7-day free trial · Full access · No credit card at signup
+          7-day free trial · Full access · Cancel before day 7 and pay nothing
         </p>
 
         <ul className="text-left space-y-2 mb-6 max-w-xs mx-auto">
@@ -96,7 +96,7 @@ export default function SubscriptionGate({
         Unlock {feature} with a free trial
       </h2>
       <p className="text-sm text-muted mb-5 max-w-sm mx-auto">
-        Your 7-day free trial gives you full access — no credit card required until the trial ends.
+        7 days free — enter your card now, cancel before day 7 and you won&apos;t be charged.
       </p>
 
       <ul className="text-left space-y-2 mb-6 max-w-xs mx-auto">

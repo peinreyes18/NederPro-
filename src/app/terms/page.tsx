@@ -26,7 +26,7 @@ export default function TermsPage() {
           </p>
           <p className="mt-2">
             NederPro is operated by <strong className="text-primary">Laine Consulting</strong>, registered in the Netherlands
-            (KvK number: 42005798). For questions, contact us at{' '}
+            (KvK number: 42005798 · BTW-id: NL00542901B96). For questions, contact us at{' '}
             <a href="mailto:nederprohelp@gmail.com" className="text-accent hover:underline">
               nederprohelp@gmail.com
             </a>.

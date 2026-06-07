@@ -3,6 +3,7 @@
 import { createServerClient } from '@supabase/ssr';
 import { createClient as createAdminClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
+import Stripe from 'stripe';
 
 export async function deleteAccount(): Promise<{ error: string | null }> {
   const cookieStore = await cookies();
@@ -48,6 +49,24 @@ export async function deleteAccount(): Promise<{ error: string | null }> {
     serviceRoleKey,
     { auth: { autoRefreshToken: false, persistSession: false } }
   );
+
+  // Cancel any active Stripe subscription before deleting the user.
+  // Without this, the user would keep getting billed after deletion because
+  // the DB row cascades away but Stripe has no knowledge of the deletion.
+  const { data: sub } = await adminSupabase
+    .from('subscriptions')
+    .select('stripe_subscription_id, status')
+    .eq('user_id', user.id)
+    .maybeSingle();
+
+  if (sub?.stripe_subscription_id && (sub.status === 'active' || sub.status === 'trialing' || sub.status === 'past_due')) {
+    try {
+      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+      await stripe.subscriptions.cancel(sub.stripe_subscription_id);
+    } catch {
+      // If Stripe cancel fails (e.g. already canceled), proceed anyway
+    }
+  }
 
   const { error } = await adminSupabase.auth.admin.deleteUser(user.id);
 

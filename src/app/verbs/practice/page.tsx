@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 import Button from '@/components/ui/Button';
 import Badge from '@/components/ui/Badge';
@@ -16,6 +16,7 @@ import {
   type DrillQuestion,
   type CategoryMeta,
 } from '@/hooks/useVerbDrill';
+import { getAllVerbs } from '@/content/verbs/verb-database';
 
 // ---------------------------------------------------------------------------
 // Tense option definitions
@@ -35,14 +36,110 @@ const SESSION_SIZES = [
 ];
 
 // ---------------------------------------------------------------------------
+// Learn Screen (flashcard browse)
+// ---------------------------------------------------------------------------
+
+interface LearnScreenProps {
+  onBack: () => void;
+}
+
+function LearnScreen({ onBack }: LearnScreenProps) {
+  const categories = useCategoryMeta();
+  const [selectedCategory, setSelectedCategory] = useState<DrillCategory>('all');
+
+  const PRONOUN_LABELS: Record<string, string> = {
+    ik: 'ik', jij: 'jij / je', u: 'u', hijZijHet: 'hij / zij / het',
+    wij: 'wij / we', jullie: 'jullie', zij: 'zij / ze',
+  };
+
+  const verbs = useMemo(() => {
+    const all = getAllVerbs();
+    const seen = new Set<string>();
+    const unique = all.filter((v) => { if (seen.has(v.infinitive)) return false; seen.add(v.infinitive); return true; });
+    if (selectedCategory === 'all') return unique;
+    if (selectedCategory === 'regular') return unique.filter((v) => v.isRegular && !v.separablePrefix);
+    if (selectedCategory === 'irregular') return unique.filter((v) => !v.isRegular);
+    if (selectedCategory === 'separable') return unique.filter((v) => !!v.separablePrefix);
+    if (selectedCategory === 'modals') return unique.filter((v) => ['kunnen','mogen','moeten','willen','zullen','hoeven'].includes(v.infinitive));
+    return unique;
+  }, [selectedCategory]);
+
+  return (
+    <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="mb-6">
+        <button onClick={onBack} className="text-muted hover:text-primary text-sm transition-colors mb-3 block">
+          ← Back
+        </button>
+        <h1 className="text-2xl font-bold text-primary">Learn Verbs</h1>
+        <p className="text-muted mt-1">Browse all verb conjugations by category.</p>
+      </div>
+
+      {/* Category filter */}
+      <div className="flex flex-wrap gap-2 mb-8">
+        {categories.map((cat: CategoryMeta) => (
+          <button
+            key={cat.id}
+            onClick={() => setSelectedCategory(cat.id)}
+            className={`px-3.5 py-1.5 rounded-lg text-sm font-medium transition-all ${
+              selectedCategory === cat.id
+                ? 'bg-accent text-white'
+                : 'bg-surface border border-border text-primary hover:bg-surface-hover'
+            }`}
+          >
+            {cat.label} <span className="opacity-70 text-xs ml-1">{cat.verbCount}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Verb list */}
+      <div className="space-y-4">
+        {verbs.map((verb) => (
+          <div key={verb.infinitive} className="rounded-xl border border-border bg-surface p-4">
+            {/* Header row */}
+            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-3">
+              <span className="text-lg font-bold text-primary">{verb.infinitive}</span>
+              <span className="text-muted text-sm italic">{verb.translation}</span>
+              <div className="flex flex-wrap gap-1.5 ml-auto">
+                <Badge variant={verb.isRegular ? 'success' : 'warning'}>{verb.isRegular ? 'regular' : 'irregular'}</Badge>
+                {verb.separablePrefix && <Badge variant="accent">separable</Badge>}
+                {verb.reflexive && <Badge variant="default">reflexive</Badge>}
+              </div>
+            </div>
+
+            {/* Conjugation grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-1 text-sm mb-3">
+              {(Object.entries(verb.present) as [string, string][]).map(([person, form]) => (
+                <div key={person} className="flex items-baseline gap-2">
+                  <span className="text-muted text-xs w-24 shrink-0">{PRONOUN_LABELS[person] ?? person}</span>
+                  <span className="font-semibold text-primary">{form}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Past participle */}
+            <div className="text-xs text-muted border-t border-border pt-2">
+              Past participle: <span className="font-semibold text-primary">{verb.auxiliary} + {verb.pastParticiple}</span>
+              {verb.examples?.[0] && (
+                <span className="ml-4 italic">&ldquo;{verb.examples[0].dutch}&rdquo;</span>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Setup Screen
 // ---------------------------------------------------------------------------
 
 interface SetupScreenProps {
   onStart: (category: DrillCategory, tense: DrillTense, count: number) => void;
+  onLearn: () => void;
 }
 
-function SetupScreen({ onStart }: SetupScreenProps) {
+function SetupScreen({ onStart, onLearn }: SetupScreenProps) {
   const categories = useCategoryMeta();
   const [selectedCategory, setSelectedCategory] = useState<DrillCategory>('irregular');
   const [selectedTense, setSelectedTense] = useState<DrillTense>('present');
@@ -57,10 +154,29 @@ function SetupScreen({ onStart }: SetupScreenProps) {
             ← Verb Reference
           </Link>
         </div>
-        <h1 className="text-2xl font-bold text-primary">Verb Conjugation Drill</h1>
+        <h1 className="text-2xl font-bold text-primary">Verbs</h1>
         <p className="text-muted mt-1">
-          Type the correct conjugated form to practise all 200 Dutch verbs.
+          Study verb conjugations, then test yourself with a drill.
         </p>
+      </div>
+
+      {/* Mode toggle */}
+      <div className="flex gap-3 mb-8">
+        <button
+          onClick={onLearn}
+          className="flex-1 rounded-xl border-2 border-border bg-surface hover:border-accent/40 hover:bg-surface-hover px-4 py-4 text-left transition-all"
+        >
+          <p className="text-lg mb-1">📖</p>
+          <p className="font-semibold text-primary text-sm">Learn</p>
+          <p className="text-xs text-muted mt-0.5">Study with flashcards</p>
+        </button>
+        <button
+          className="flex-1 rounded-xl border-2 border-accent bg-accent-light/40 px-4 py-4 text-left"
+        >
+          <p className="text-lg mb-1">✏️</p>
+          <p className="font-semibold text-accent text-sm">Drill</p>
+          <p className="text-xs text-muted mt-0.5">Type the conjugations</p>
+        </button>
       </div>
 
       {/* Step 1: Category */}
@@ -450,7 +566,7 @@ function ResultsScreen({ results, onRetryMissed, onNewSession }: ResultsScreenPr
 // Main Page (orchestrator)
 // ---------------------------------------------------------------------------
 
-type Screen = 'setup' | 'drill' | 'results';
+type Screen = 'setup' | 'learn' | 'drill' | 'results';
 
 export default function VerbPracticePage() {
   const { isSubscribed, isLoading: authLoading } = useAuth();
@@ -475,10 +591,8 @@ export default function VerbPracticePage() {
   }, []);
 
   const handleRetryMissed = useCallback((missed: DrillQuestion[]) => {
-    // Shuffle the missed questions fresh
     const seed = Date.now();
     const shuffled = [...missed].sort(() => 0.5 - Math.random());
-    // Rebuild a deterministic shuffle using seed
     let s = seed >>> 0;
     const result = [...missed];
     for (let i = result.length - 1; i > 0; i--) {
@@ -486,7 +600,7 @@ export default function VerbPracticePage() {
       const j = s % (i + 1);
       [result[i], result[j]] = [result[j], result[i]];
     }
-    void shuffled; // suppress unused warning
+    void shuffled;
     setQuestions(result);
     setResults([]);
     setScreen('drill');
@@ -508,7 +622,12 @@ export default function VerbPracticePage() {
 
   return (
     <main className="min-h-screen bg-background">
-      {screen === 'setup' && <SetupScreen onStart={handleStart} />}
+      {screen === 'setup' && (
+        <SetupScreen onStart={handleStart} onLearn={() => setScreen('learn')} />
+      )}
+      {screen === 'learn' && (
+        <LearnScreen onBack={() => setScreen('setup')} />
+      )}
       {screen === 'drill' && questions.length > 0 && (
         <DrillScreen questions={questions} onComplete={handleComplete} />
       )}

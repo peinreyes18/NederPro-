@@ -8,11 +8,11 @@ import { cn } from '@/lib/utils';
 import { trackBeginCheckout } from '@/lib/analytics';
 import { useAuth } from '@/contexts/AuthContext';
 
-type Plan = 'biweekly' | 'monthly';
+type Plan = 'yearly' | 'monthly';
 
 const plans: { id: Plan; label: string; price: string; period: string; badge?: string }[] = [
-  { id: 'biweekly', label: 'Every 2 weeks', price: '€2.49', period: 'per 2 weeks' },
-  { id: 'monthly', label: 'Monthly', price: '€3.49', period: 'per month', badge: 'Best value' },
+  { id: 'yearly', label: 'Yearly', price: '€34.99', period: 'per year', badge: 'Best value' },
+  { id: 'monthly', label: 'Monthly', price: '€3.49', period: 'per month' },
 ];
 
 const included = [
@@ -25,9 +25,8 @@ const included = [
 
 export default function SubscribePage() {
   const router = useRouter();
-  const { isSubscribed, isLoading: authLoading } = useAuth();
-  const [selected, setSelected] = useState<Plan>('monthly');
-  const [skipTrial, setSkipTrial] = useState(false);
+  const { isSubscribed, isLoading: authLoading, subscription, subscriptionLoaded } = useAuth();
+  const [selected, setSelected] = useState<Plan>('yearly');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -38,8 +37,40 @@ export default function SubscribePage() {
     }
   }, [authLoading, isSubscribed, router]);
 
-  // Show nothing while checking auth to avoid flash of subscribe page
-  if (authLoading || isSubscribed) return null;
+  // Show nothing while checking auth
+  if (authLoading || !subscriptionLoaded || isSubscribed) return null;
+
+  // subscription === null → first-time user (will get 7-day trial at checkout)
+  // trialing + no card → existing trial user who must add a card to keep access
+  // otherwise → returning user who previously cancelled (no trial)
+  const isFirstTime = subscription === null;
+  const trialValid =
+    subscription?.status === 'trialing' &&
+    (!subscription.trial_end || new Date(subscription.trial_end) > new Date());
+  const needsCardForTrial = !!trialValid && !subscription?.has_payment_method;
+
+  // Add a card to an existing trial subscription (keeps remaining trial days, no charge now)
+  async function handleAddCard() {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch('/api/stripe/subscribe-now', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan: selected }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error ?? 'Something went wrong. Please try again.');
+        setLoading(false);
+        return;
+      }
+      window.location.href = data.url;
+    } catch {
+      setError('Something went wrong. Please try again.');
+      setLoading(false);
+    }
+  }
 
   async function handleStartTrial() {
     setLoading(true);
@@ -50,7 +81,7 @@ export default function SubscribePage() {
       const res = await fetch('/api/stripe/create-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ plan: selected, skipTrial }),
+        body: JSON.stringify({ plan: selected }),
       });
       const data = await res.json();
 
@@ -78,9 +109,19 @@ export default function SubscribePage() {
               d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
           </svg>
         </div>
-        <h1 className="text-2xl font-bold text-primary mb-1">Start your free trial</h1>
+        <h1 className="text-2xl font-bold text-primary mb-1">
+          {needsCardForTrial
+            ? 'Add a card to keep your trial'
+            : isFirstTime
+              ? 'Start your free trial'
+              : 'Continue learning Dutch'}
+        </h1>
         <p className="text-primary-light text-sm">
-          7 days free — full access, no charge until the trial ends.
+          {needsCardForTrial
+            ? 'Add a payment method to keep your remaining trial days. You won\'t be charged until the trial ends — cancel before then and you pay nothing.'
+            : isFirstTime
+              ? '7 days free — enter your card now, cancel before day 7 and you won\'t be charged.'
+              : 'Your free trial has ended — choose a plan to keep your access.'}
         </p>
       </div>
 
@@ -141,46 +182,28 @@ export default function SubscribePage() {
         </div>
       </Card>
 
-      {/* Trial toggle */}
-      <button
-        onClick={() => setSkipTrial((v) => !v)}
-        className="w-full flex items-center justify-between px-4 py-3 rounded-xl border border-border bg-background hover:border-accent/40 transition-colors mb-4"
-      >
-        <div className="text-left">
-          <p className="text-sm font-medium text-primary">Start with 7-day free trial</p>
-          <p className="text-xs text-muted mt-0.5">
-            {skipTrial ? 'Off — you\'ll be charged immediately' : 'On — no charge for 7 days'}
-          </p>
-        </div>
-        <div className={cn(
-          'relative w-10 h-6 rounded-full transition-colors flex-shrink-0',
-          skipTrial ? 'bg-border' : 'bg-accent'
-        )}>
-          <div className={cn(
-            'absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-transform',
-            skipTrial ? 'translate-x-1' : 'translate-x-5'
-          )} />
-        </div>
-      </button>
-
       {error && (
         <p className="text-sm text-error bg-error-light rounded-lg px-3 py-2 mb-4">
           {error}
         </p>
       )}
 
-      <Button className="w-full" onClick={handleStartTrial} disabled={loading}>
+      <Button className="w-full" onClick={needsCardForTrial ? handleAddCard : handleStartTrial} disabled={loading}>
         {loading
-          ? 'Redirecting to checkout…'
-          : skipTrial
-          ? `Subscribe now — ${selectedPlan.price} ${selectedPlan.period} →`
-          : `Start free trial — then ${selectedPlan.price} ${selectedPlan.period} →`}
+          ? 'Redirecting…'
+          : needsCardForTrial
+            ? 'Add card & continue trial →'
+            : isFirstTime
+              ? `Start free trial — ${selectedPlan.price} ${selectedPlan.period} after 7 days →`
+              : `Subscribe — ${selectedPlan.price} ${selectedPlan.period} →`}
       </Button>
 
       <p className="text-xs text-muted text-center mt-3">
-        {skipTrial
-          ? 'You\'ll be charged immediately. Cancel anytime. Secure payment via Stripe.'
-          : 'Cancel anytime before the trial ends and you won\'t be charged. Secure payment via Stripe.'}
+        {needsCardForTrial
+          ? 'Your remaining trial days still apply. No charge until the trial ends. Secure payment via Stripe.'
+          : isFirstTime
+            ? 'Card required. Cancel before day 7 and you won\'t be charged. Secure payment via Stripe.'
+            : 'Cancel anytime. Secure payment via Stripe.'}
       </p>
     </div>
   );

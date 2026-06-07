@@ -75,7 +75,7 @@ export default function TermsPage() {
           <ul className="space-y-1.5 list-none mb-3">
             <li className="flex items-start gap-2">
               <span className="text-accent mt-0.5 flex-shrink-0">•</span>
-              <span><strong className="text-primary">Biweekly Plan</strong> — €2.49 every 2 weeks, cancel anytime.</span>
+              <span><strong className="text-primary">Yearly Plan</strong> — €34.99 per year, cancel anytime.</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-accent mt-0.5 flex-shrink-0">•</span>

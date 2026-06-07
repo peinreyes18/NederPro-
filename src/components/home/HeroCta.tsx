@@ -42,7 +42,7 @@ export default function HeroCta() {
         </Link>
       </div>
       <p className="mt-4 text-sm text-muted">
-        From €2.49 · 7-day free trial · Cancel anytime
+        From €3.49 · 7-day free trial · Cancel anytime
       </p>
     </>
   );

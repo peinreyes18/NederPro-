@@ -28,7 +28,7 @@ export function trackSignUp() {
 export function trackBeginCheckout(plan: string) {
   gtag('event', 'begin_checkout', {
     currency: 'EUR',
-    value: plan === 'monthly' ? 3.49 : 2.49,
+    value: plan === 'monthly' ? 3.49 : 34.99,
     items: [{ item_id: plan, item_name: `NederPro ${plan}` }],
   });
 }

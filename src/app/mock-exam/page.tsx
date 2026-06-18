@@ -129,6 +129,7 @@ export default function MockExamPage() {
   const [timeLeft, setTimeLeft] = useState(EXAM_DURATION);
   const [timedOut, setTimedOut] = useState(false);
   const [resumeData, setResumeData] = useState<ResumeData | null>(null);
+  const [limitMsg, setLimitMsg] = useState<string | null>(null);
 
   const { completeMockExam } = useActivityProgress();
 
@@ -186,7 +187,31 @@ export default function MockExamPage() {
   // Cleanup TTS on unmount
   useEffect(() => () => { window.speechSynthesis?.cancel(); }, []);
 
-  const startExam = () => {
+  const startExam = async () => {
+    // Daily trial cap — consume one mock-exam credit before building the exam.
+    // Paid users always pass (server never increments their counter); trial
+    // users are blocked after their daily cap. Fails open on any error.
+    setLimitMsg(null);
+    try {
+      const res = await fetch('/api/usage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ kind: 'mock_exam' }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (!data.allowed) {
+          setLimitMsg(
+            `You've used your ${data.cap} mock exam for today on the free trial. Subscribe for unlimited exams, or come back tomorrow.`
+          );
+          setStage('intro'); // ensure the banner is visible (e.g. from "Try again")
+          return;
+        }
+      }
+    } catch {
+      /* network error → fail open, let them start */
+    }
+
     clearResume();
     setResumeData(null);
     const qs = buildExam();
@@ -326,6 +351,20 @@ export default function MockExamPage() {
                 Start fresh
               </button>
             </div>
+          </div>
+        )}
+
+        {limitMsg && (
+          <div className="rounded-xl border border-accent/30 bg-accent-light/30 px-6 py-6 mb-5 text-center">
+            <div className="text-3xl mb-2">⏳</div>
+            <p className="font-semibold text-primary mb-1">Daily trial limit reached</p>
+            <p className="text-sm text-muted mb-4 max-w-sm mx-auto">{limitMsg}</p>
+            <Link
+              href="/subscribe"
+              className="inline-block px-5 py-2.5 rounded-xl bg-accent hover:bg-accent-hover text-white text-sm font-semibold transition-colors"
+            >
+              Subscribe for unlimited access →
+            </Link>
           </div>
         )}
 

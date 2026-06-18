@@ -2,6 +2,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
+import { consume } from '@/lib/usage';
 
 // In-memory rate limit store: userId -> { count, windowStart }
 const rateLimitStore = new Map<string, { count: number; windowStart: number }>();
@@ -89,6 +90,21 @@ export async function POST(request: NextRequest) {
     }
 
     const userId = session.user.id;
+
+    // Daily trial cap (paid users are unlimited).
+    const usage = await consume(userId, 'writing');
+    if (!usage.allowed) {
+      return NextResponse.json(
+        {
+          error: usage.limited
+            ? `You've used all ${usage.cap} AI writing checks on your free trial today. Subscribe for unlimited feedback, or come back tomorrow.`
+            : 'Subscribe to use AI writing feedback.',
+          limitReached: true,
+        },
+        { status: 429 }
+      );
+    }
+
     const now = Date.now();
     const entry = rateLimitStore.get(userId);
     if (entry && now - entry.windowStart < RATE_LIMIT_WINDOW_MS) {

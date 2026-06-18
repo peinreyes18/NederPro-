@@ -2,6 +2,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
+import { consume } from '@/lib/usage';
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
@@ -78,6 +79,23 @@ export async function POST(request: NextRequest) {
   const { scenario, level, messages, userTranscript } = await request.json();
   const scenarioInfo = SCENARIOS[scenario] ?? SCENARIOS.shopping;
   const isOpening = !messages || messages.length === 0;
+
+  // Daily trial cap — counted once per conversation (on the opening turn) so
+  // a single chat doesn't burn multiple credits. Paid users are unlimited.
+  if (isOpening) {
+    const usage = await consume(userId, 'speaking');
+    if (!usage.allowed) {
+      return NextResponse.json(
+        {
+          error: usage.limited
+            ? `You've started all ${usage.cap} speaking conversations on your free trial today. Subscribe for unlimited practice, or come back tomorrow.`
+            : 'Subscribe to use speaking practice.',
+          limitReached: true,
+        },
+        { status: 429 }
+      );
+    }
+  }
 
   const systemPrompt = `You are a ${scenarioInfo.role} in a Dutch conversation with a language learner at CEFR level ${level}.
 

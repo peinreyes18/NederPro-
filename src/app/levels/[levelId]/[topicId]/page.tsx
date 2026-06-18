@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import LessonContent from '@/components/lesson/LessonContent';
+import LockedLessonContent from '@/components/lesson/LockedLessonContent';
 import LessonSignupNudge from '@/components/lesson/LessonSignupNudge';
 import Button from '@/components/ui/Button';
 import Badge from '@/components/ui/Badge';
@@ -11,6 +12,18 @@ import { getTopic, getAdjacentTopics, getLevel, getTopicsForLevel } from '@/lib/
 import { levels } from '@/content/levels';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.com';
+
+/**
+ * Levels whose lessons are half-locked for non-subscribers.
+ * A0 + A1 stay fully free — they're the SEO/Google funnel that brings people in.
+ * The second half of each A2/B1/B2 lesson is gated behind a free trial.
+ */
+const GATED_LEVELS = new Set(['a2', 'b1', 'b2']);
+
+/** Split point: everything up to (but not including) this index is free. */
+function freeSplit(total: number): number {
+  return Math.max(1, Math.ceil(total / 2));
+}
 
 export function generateStaticParams() {
   return levels.flatMap((level) =>
@@ -57,6 +70,8 @@ export default async function TopicPage({
     notFound();
   }
 
+  const isGated = GATED_LEVELS.has(levelId);
+
   const learningResourceJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'LearningResource',
@@ -69,7 +84,18 @@ export default async function TopicPage({
     teaches: topic.title,
     timeRequired: `PT${topic.estimatedMinutes}M`,
     inLanguage: 'en',
-    isAccessibleForFree: true,
+    isAccessibleForFree: !isGated,
+    // For gated levels, tell Google which part is paywalled so the blurred
+    // second half isn't treated as cloaking (Google's metered-paywall spec).
+    ...(isGated
+      ? {
+          hasPart: {
+            '@type': 'WebPageElement',
+            isAccessibleForFree: false,
+            cssSelector: '.npaywall',
+          },
+        }
+      : {}),
     learningResourceType: 'lesson',
     isPartOf: {
       '@type': 'Course',
@@ -148,19 +174,62 @@ export default async function TopicPage({
       )}
 
       {/* Lesson content */}
-      {topic.lesson ? (
-        <LessonContent lesson={topic.lesson} />
-      ) : (
-        topic.lessons?.map((unit) => (
+      {(() => {
+        // Renders a single units block (used for the `topic.lessons` shape).
+        const renderUnit = (unit: NonNullable<typeof topic.lessons>[number]) => (
           <div key={unit.id} className="mb-8">
             <h2 className="text-xl font-semibold text-primary mb-4">{unit.title}</h2>
             <LessonContent lesson={{ sections: unit.sections }} />
           </div>
-        ))
-      )}
+        );
 
-      {/* Sign-up nudge for unauthenticated visitors */}
-      <LessonSignupNudge />
+        // Non-gated levels (A0/A1) — render the whole lesson, fully free.
+        if (!isGated) {
+          return topic.lesson ? (
+            <LessonContent lesson={topic.lesson} />
+          ) : (
+            topic.lessons?.map(renderUnit)
+          );
+        }
+
+        // Gated levels (A2/B1/B2) — first half free, second half behind the gate.
+        if (topic.lesson) {
+          const secs = topic.lesson.sections;
+          const split = freeSplit(secs.length);
+          const free = secs.slice(0, split);
+          const locked = secs.slice(split);
+          return (
+            <>
+              <LessonContent lesson={{ sections: free }} />
+              {locked.length > 0 && (
+                <LockedLessonContent>
+                  <LessonContent lesson={{ sections: locked }} />
+                </LockedLessonContent>
+              )}
+            </>
+          );
+        }
+
+        const units = topic.lessons ?? [];
+        const split = freeSplit(units.length);
+        const freeUnits = units.slice(0, split);
+        const lockedUnits = units.slice(split);
+        return (
+          <>
+            {freeUnits.map(renderUnit)}
+            {lockedUnits.length > 0 && (
+              <LockedLessonContent>
+                {lockedUnits.map(renderUnit)}
+              </LockedLessonContent>
+            )}
+          </>
+        );
+      })()}
+
+      {/* Sign-up nudge for unauthenticated visitors.
+          On gated levels the locked-content gate already shows a trial CTA,
+          so we skip the extra nudge there to avoid two stacked CTAs. */}
+      {!isGated && <LessonSignupNudge />}
 
       {/* Navigation */}
       <div className="border-t border-border pt-6 mt-8 mb-24 sm:mb-0">

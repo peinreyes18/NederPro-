@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Breadcrumb from '@/components/layout/Breadcrumb';
-import GrammarTable from '@/components/lesson/GrammarTable';
-import Alert from '@/components/ui/Alert';
+import ReferenceSections from '@/components/reference/ReferenceSections';
 import { GrammarTableSection } from '@/content/types';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.com';
@@ -769,14 +768,7 @@ export default async function ReferenceTopicPage({
 
       <h1 className="text-3xl font-bold text-primary mb-8">{data.title}</h1>
 
-      {data.sections.map((section, i) => (
-        <div key={i} className="mb-8">
-          <GrammarTable section={section.table} />
-          {section.note && (
-            <Alert variant="tip">{section.note}</Alert>
-          )}
-        </div>
-      ))}
+      <ReferenceSections title={data.title} sections={data.sections} />
     </div>
   );
 }

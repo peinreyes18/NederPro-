@@ -6,14 +6,28 @@ import Badge from '@/components/ui/Badge';
 import QuizBanner from '@/components/vocabulary/QuizBanner';
 import VocabularySearch from '@/components/vocabulary/VocabularySearch';
 import SearchResults from '@/components/vocabulary/SearchResults';
+import SubscriptionGate from '@/components/ui/SubscriptionGate';
 import LessonSignupNudge from '@/components/lesson/LessonSignupNudge';
 import { vocabularyCategories } from '@/content/vocabulary';
 import { useVocabularySearch } from '@/hooks/useVocabularySearch';
 import { getAllVerbs } from '@/content/verbs/verb-database';
+import { useAuth } from '@/contexts/AuthContext';
+
+// How many search matches a non-subscriber can see before the paywall — keeps
+// search from becoming a back door around the per-category preview limit.
+const FREE_SEARCH_RESULTS = 8;
 
 export default function VocabularyPageContent() {
   const { query, setQuery, results, isSearching } = useVocabularySearch();
+  const { isSubscribed, subscriptionLoaded } = useAuth();
   const verbCount = new Set(getAllVerbs().map((v) => v.infinitive)).size;
+
+  // Non-subscribers only see a capped preview of search results.
+  const visibleResults = isSubscribed
+    ? results
+    : results.slice(0, FREE_SEARCH_RESULTS);
+  const hiddenResults = results.length - visibleResults.length;
+  const showSearchPaywall = subscriptionLoaded && !isSubscribed && hiddenResults > 0;
 
   return (
     <>
@@ -25,7 +39,18 @@ export default function VocabularyPageContent() {
       />
 
       {isSearching ? (
-        <SearchResults results={results} query={query} />
+        <>
+          <SearchResults results={visibleResults} query={query} />
+          {showSearchPaywall && (
+            <div className="mt-6">
+              <p className="text-sm text-muted text-center mb-3">
+                Showing {visibleResults.length} of {results.length} matches —
+                subscribe to search the full dictionary.
+              </p>
+              <SubscriptionGate feature="the full vocabulary search" />
+            </div>
+          )}
+        </>
       ) : (
         <>
           <QuizBanner />

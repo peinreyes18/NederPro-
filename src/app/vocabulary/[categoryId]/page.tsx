@@ -6,9 +6,14 @@ import Link from 'next/link';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import Button from '@/components/ui/Button';
 import PronunciationButton from '@/components/ui/PronunciationButton';
+import SubscriptionGate from '@/components/ui/SubscriptionGate';
 import { getVocabularyCategory } from '@/content/vocabulary';
 import { lookupVerb } from '@/content/verbs/verb-database';
 import { useVerb } from '@/components/verbs/VerbContext';
+import { useAuth } from '@/contexts/AuthContext';
+
+// How many words a non-subscriber can preview per category before the paywall.
+const FREE_PREVIEW_COUNT = 8;
 
 export default function VocabularyCategoryPage({
   params,
@@ -18,10 +23,23 @@ export default function VocabularyCategoryPage({
   const { categoryId } = use(params);
   const category = getVocabularyCategory(categoryId);
   const { openVerb } = useVerb();
+  const { isSubscribed, subscriptionLoaded } = useAuth();
 
   if (!category) {
     notFound();
   }
+
+  // Non-subscribers only see a short preview of each category. Subscribers (and
+  // valid trials) see the full list. While the subscription is still loading we
+  // stay locked to avoid flashing the full list to a free user / crawler.
+  const showAll = isSubscribed;
+  const visibleWords = showAll
+    ? category.words
+    : category.words.slice(0, FREE_PREVIEW_COUNT);
+  const hiddenCount = category.words.length - visibleWords.length;
+  // Only render the paywall once we know the user isn't subscribed, so paying
+  // users never see a CTA flash while auth resolves.
+  const showPaywall = subscriptionLoaded && !isSubscribed && hiddenCount > 0;
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
@@ -63,7 +81,7 @@ export default function VocabularyCategoryPage({
               </tr>
             </thead>
             <tbody>
-              {category.words.map((word, index) => (
+              {visibleWords.map((word, index) => (
                 <tr
                   key={index}
                   className="border-b border-border last:border-b-0 hover:bg-surface-hover transition-colors"
@@ -112,10 +130,23 @@ export default function VocabularyCategoryPage({
         </div>
       </div>
 
+      {/* Locked-content paywall for free users */}
+      {showPaywall && (
+        <div className="mt-6">
+          <p className="text-sm text-muted text-center mb-3">
+            Showing {visibleWords.length} of {category.words.length} words —{' '}
+            {hiddenCount} more {hiddenCount === 1 ? 'word is' : 'words are'} available.
+          </p>
+          <SubscriptionGate
+            feature={`all ${category.words.length} ${category.name} words`}
+          />
+        </div>
+      )}
+
       {/* Mobile: show examples below the table */}
       <div className="sm:hidden mt-6 space-y-3">
         <h2 className="text-lg font-semibold text-primary">Example Sentences</h2>
-        {category.words
+        {visibleWords
           .filter((w) => w.example)
           .map((word, index) => (
             <div key={index} className="bg-surface rounded-lg p-3">

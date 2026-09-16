@@ -10,9 +10,12 @@ import { useAuth } from '@/contexts/AuthContext';
 
 type Plan = 'yearly' | 'monthly';
 
-const plans: { id: Plan; label: string; price: string; period: string; badge?: string }[] = [
-  { id: 'yearly', label: 'Yearly', price: '€34.99', period: 'per year', badge: 'Best value' },
-  { id: 'monthly', label: 'Monthly', price: '€3.49', period: 'per month' },
+// `note` spells out the saving on the card itself. 6 of 7 paying subscribers chose
+// monthly even with yearly pre-selected — the €34.99 headline reads as "more"
+// unless the per-month equivalent is right next to it.
+const plans: { id: Plan; label: string; price: string; period: string; badge?: string; note: string }[] = [
+  { id: 'yearly', label: 'Yearly', price: '€34.99', period: 'per year', badge: 'Best value', note: '≈ €2.92 / month · save €6.89' },
+  { id: 'monthly', label: 'Monthly', price: '€3.49', period: 'per month', note: '€41.88 / year · cancel any time' },
 ];
 
 const included = [
@@ -176,6 +179,9 @@ export default function SubscribePage() {
               <div className="text-right">
                 <span className="text-base font-bold text-primary">{plan.price}</span>
                 <span className="text-xs text-muted ml-1">{plan.period}</span>
+                <p className={cn('text-xs mt-0.5', plan.id === 'yearly' ? 'text-accent font-medium' : 'text-muted')}>
+                  {plan.note}
+                </p>
               </div>
             </button>
           ))}

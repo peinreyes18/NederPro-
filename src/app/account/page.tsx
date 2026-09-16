@@ -414,8 +414,8 @@ export default function AccountPage() {
                     <div className="space-y-2">
                       {(
                         [
-                          { id: 'yearly' as Plan, label: 'Yearly', price: '€34.99', period: 'per year', badge: 'Best value' },
-                          { id: 'monthly' as Plan, label: 'Monthly', price: '€3.49', period: 'per month' },
+                          { id: 'yearly' as Plan, label: 'Yearly', price: '€34.99', period: 'per year', badge: 'Best value', note: '≈ €2.92 / month · save €6.89' },
+                          { id: 'monthly' as Plan, label: 'Monthly', price: '€3.49', period: 'per month', note: '€41.88 / year' },
                         ]
                       ).map((plan) => (
                         <button
@@ -447,6 +447,9 @@ export default function AccountPage() {
                           <div className="text-right">
                             <span className="text-sm font-bold text-primary">{plan.price}</span>
                             <span className="text-xs text-muted ml-1">{plan.period}</span>
+                            <p className={cn('text-xs mt-0.5', plan.id === 'yearly' ? 'text-accent font-medium' : 'text-muted')}>
+                              {plan.note}
+                            </p>
                           </div>
                         </button>
                       ))}

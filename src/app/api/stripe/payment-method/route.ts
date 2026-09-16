@@ -4,6 +4,46 @@ import { cookies } from 'next/headers';
 import { stripe } from '@/lib/stripe';
 import Stripe from 'stripe';
 
+/**
+ * What the account page shows under "Payment method".
+ *
+ * Any Stripe payment-method type counts, not just cards: Dutch customers mostly
+ * pay with iDEAL (which becomes a SEPA debit mandate), Revolut Pay or Link.
+ * The old card-only version told those subscribers "No payment method on file
+ * yet", which is both wrong and alarming for someone who is paying.
+ *
+ * `exp_month`/`exp_year` are null for non-card methods (there is no expiry).
+ */
+type MethodInfo = {
+  type: string;
+  brand: string;
+  last4: string;
+  exp_month: number | null;
+  exp_year: number | null;
+};
+
+function describe(pm: Stripe.PaymentMethod | string | null | undefined): MethodInfo | null {
+  if (!pm || typeof pm === 'string') return null;
+  switch (pm.type) {
+    case 'card':
+      return pm.card
+        ? { type: 'card', brand: pm.card.brand, last4: pm.card.last4, exp_month: pm.card.exp_month, exp_year: pm.card.exp_year }
+        : null;
+    case 'sepa_debit':
+      return { type: 'sepa_debit', brand: 'SEPA bank account (iDEAL)', last4: pm.sepa_debit?.last4 ?? '', exp_month: null, exp_year: null };
+    case 'ideal':
+      return { type: 'ideal', brand: 'iDEAL', last4: '', exp_month: null, exp_year: null };
+    case 'link':
+      return { type: 'link', brand: 'Link', last4: '', exp_month: null, exp_year: null };
+    case 'revolut_pay':
+      return { type: 'revolut_pay', brand: 'Revolut Pay', last4: '', exp_month: null, exp_year: null };
+    case 'paypal':
+      return { type: 'paypal', brand: 'PayPal', last4: '', exp_month: null, exp_year: null };
+    default:
+      return { type: pm.type, brand: pm.type.replace(/_/g, ' '), last4: '', exp_month: null, exp_year: null };
+  }
+}
+
 export async function GET() {
   const cookieStore = await cookies();
 
@@ -34,63 +74,31 @@ export async function GET() {
     return NextResponse.json({ card: null });
   }
 
-  // Try to get the payment method from the subscription first
+  // 1. The subscription's own default payment method
   if (sub.stripe_subscription_id) {
     try {
       const subscription = await stripe.subscriptions.retrieve(sub.stripe_subscription_id, {
         expand: ['default_payment_method'],
       });
-      const pm = subscription.default_payment_method as Stripe.PaymentMethod | null;
-      if (pm?.card) {
-        return NextResponse.json({
-          card: {
-            brand: pm.card.brand,
-            last4: pm.card.last4,
-            exp_month: pm.card.exp_month,
-            exp_year: pm.card.exp_year,
-          },
-        });
-      }
+      const info = describe(subscription.default_payment_method);
+      if (info) return NextResponse.json({ card: info });
     } catch {
-      // fall through to customer lookup
+      // fall through
     }
   }
 
-  // Fall back to customer's default payment method
   try {
+    // 2. The customer's default payment method
     const customer = await stripe.customers.retrieve(sub.stripe_customer_id, {
       expand: ['invoice_settings.default_payment_method'],
     }) as Stripe.Customer;
+    const info = describe(customer.invoice_settings?.default_payment_method);
+    if (info) return NextResponse.json({ card: info });
 
-    const pm = customer.invoice_settings?.default_payment_method as Stripe.PaymentMethod | null;
-    if (pm?.card) {
-      return NextResponse.json({
-        card: {
-          brand: pm.card.brand,
-          last4: pm.card.last4,
-          exp_month: pm.card.exp_month,
-          exp_year: pm.card.exp_year,
-        },
-      });
-    }
-
-    // Last resort: list payment methods
-    const methods = await stripe.paymentMethods.list({
-      customer: sub.stripe_customer_id,
-      type: 'card',
-      limit: 1,
-    });
-    const card = methods.data[0]?.card;
-    if (card) {
-      return NextResponse.json({
-        card: {
-          brand: methods.data[0].card!.brand,
-          last4: methods.data[0].card!.last4,
-          exp_month: methods.data[0].card!.exp_month,
-          exp_year: methods.data[0].card!.exp_year,
-        },
-      });
-    }
+    // 3. Any saved payment method of any type
+    const methods = await stripe.paymentMethods.list({ customer: sub.stripe_customer_id, limit: 1 });
+    const listed = describe(methods.data[0]);
+    if (listed) return NextResponse.json({ card: listed });
   } catch {
     // ignore
   }

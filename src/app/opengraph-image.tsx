@@ -1,6 +1,8 @@
 import { ImageResponse } from 'next/og';
 
-export const runtime = 'edge';
+// Note: this used to declare `runtime = 'edge'`. On production the edge version
+// returned a 200 with an EMPTY body, so every shared link (LinkedIn, WhatsApp,
+// Slack) showed no preview image. The default Node runtime renders it correctly.
 export const alt = 'NederPro – Structured Dutch Learning';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
@@ -77,9 +79,13 @@ export default function OGImage() {
             letterSpacing: '-2px',
             marginBottom: '24px',
             maxWidth: '900px',
+            // Satori (the OG renderer) requires explicit flex on any box with
+            // more than one child — without this the whole image failed to render.
+            display: 'flex',
+            flexWrap: 'wrap',
           }}
         >
-          Master Dutch Grammar.{' '}
+          <span>Master Dutch Grammar.&nbsp;</span>
           <span style={{ color: '#2563eb' }}>Systematically.</span>
         </div>
 

@@ -34,8 +34,14 @@ export default function SubscriptionGate({
   // While auth is resolving, render an invisible placeholder with the same
   // rough height so the page doesn't shift.
   if (isLoading) {
+    // Render the public teaser during the auth check too, so the page's <h1>
+    // and description are in the server-rendered HTML for search engines
+    // (otherwise /knm and /mock-exam had no heading at all in their markup).
     return (
-      <div className="animate-pulse rounded-2xl border border-border bg-surface h-64" />
+      <div className={className}>
+        {preview}
+        <div className="animate-pulse rounded-2xl border border-border bg-surface h-64" />
+      </div>
     );
   }
 

@@ -14,10 +14,13 @@ type Tab = 'subscription' | 'password' | 'account';
 type Plan = 'monthly' | 'yearly';
 
 interface CardInfo {
+  /** Stripe payment-method type, e.g. "card", "sepa_debit", "revolut_pay". */
+  type?: string;
   brand: string;
   last4: string;
-  exp_month: number;
-  exp_year: number;
+  /** null for non-card methods (bank accounts, Revolut Pay, Link have no expiry) */
+  exp_month: number | null;
+  exp_year: number | null;
 }
 
 function formatCardBrand(brand: string) {
@@ -573,11 +576,16 @@ export default function AccountPage() {
                     </div>
                     <div>
                       <p className="text-sm font-medium text-primary">
-                        {formatCardBrand(cardInfo.brand)} ending in {cardInfo.last4}
+                        {cardInfo.type && cardInfo.type !== 'card' ? cardInfo.brand : formatCardBrand(cardInfo.brand)}
+                        {cardInfo.last4 ? ` ending in ${cardInfo.last4}` : ''}
                       </p>
-                      <p className="text-xs text-muted">
-                        Expires {String(cardInfo.exp_month).padStart(2, '0')}/{cardInfo.exp_year}
-                      </p>
+                      {cardInfo.exp_month && cardInfo.exp_year ? (
+                        <p className="text-xs text-muted">
+                          Expires {String(cardInfo.exp_month).padStart(2, '0')}/{cardInfo.exp_year}
+                        </p>
+                      ) : (
+                        <p className="text-xs text-muted">Charged automatically each period</p>
+                      )}
                     </div>
                   </div>
                   <button

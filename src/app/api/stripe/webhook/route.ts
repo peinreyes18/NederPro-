@@ -16,11 +16,23 @@ function generateGiftCode(): string {
   return 'GIFT-' + segments.join('-');
 }
 
-/** True if the Stripe customer has at least one card on file. */
+/**
+ * True if the Stripe customer has ANY payment method on file.
+ *
+ * This used to check `type: 'card'` only. Dutch customers overwhelmingly pay
+ * with iDEAL (which sets up a SEPA debit mandate for subscriptions), and some
+ * use Revolut Pay or Link — none of which are type "card". Half of the current
+ * paying subscribers have a sepa_debit/revolut_pay method and were being marked
+ * has_payment_method=false, which locked them out during their trial
+ * ("trial requires a card on file"). Any saved method must count.
+ */
 async function customerHasCard(customerId: string): Promise<boolean> {
   try {
-    const pms = await stripe.paymentMethods.list({ customer: customerId, type: 'card', limit: 1 });
-    return pms.data.length > 0;
+    const pms = await stripe.paymentMethods.list({ customer: customerId, limit: 1 });
+    if (pms.data.length > 0) return true;
+    // Fallback: a default payment method set on the customer also counts.
+    const customer = await stripe.customers.retrieve(customerId);
+    return !!(customer as Stripe.Customer).invoice_settings?.default_payment_method;
   } catch {
     return false;
   }
@@ -193,10 +205,21 @@ export async function POST(request: NextRequest) {
       const sub = event.data.object as Stripe.Subscription;
       const prevSub = event.data.previous_attributes as Record<string, unknown> | undefined;
 
+      // Keep `plan` in sync on every update (renewals, plan switches). It was
+      // only ever written at checkout, so a row created before the yearly price
+      // existed, or via an unusual path, could sit with plan = null forever.
+      const updPriceId = sub.items.data[0]?.price.id;
+      const updPlan = updPriceId === process.env.STRIPE_PRICE_ID_YEARLY
+        ? 'yearly'
+        : updPriceId === process.env.STRIPE_PRICE_ID_MONTHLY
+        ? 'monthly'
+        : undefined; // unknown price → leave the existing value alone
+
       await supabaseAdmin
         .from('subscriptions')
         .update({
           status: sub.status,
+          ...(updPlan && { plan: updPlan }),
           trial_end: sub.trial_end
             ? new Date(sub.trial_end * 1000).toISOString()
             : null,

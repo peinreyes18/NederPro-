@@ -18,15 +18,16 @@ export async function GET() {
     }
   );
 
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) {
+  // getUser() validates the token with the Auth server (getSession() only decodes the cookie).
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   const { data: sub } = await supabase
     .from('subscriptions')
     .select('stripe_customer_id, stripe_subscription_id')
-    .eq('user_id', session.user.id)
+    .eq('user_id', user.id)
     .single();
 
   if (!sub?.stripe_customer_id) {

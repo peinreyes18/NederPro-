@@ -35,18 +35,17 @@ export async function POST(request: NextRequest) {
     }
   );
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  // getUser() validates the token with the Auth server (getSession() only decodes the cookie).
+  const { data: { user } } = await supabase.auth.getUser();
 
-  if (!session) {
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   const { data: sub } = await supabase
     .from('subscriptions')
     .select('stripe_customer_id, stripe_subscription_id, plan, status, trial_end')
-    .eq('user_id', session.user.id)
+    .eq('user_id', user.id)
     .single();
 
   if (!sub?.stripe_customer_id || !sub?.stripe_subscription_id) {
@@ -76,7 +75,7 @@ export async function POST(request: NextRequest) {
       await supabase
         .from('subscriptions')
         .update({ plan })
-        .eq('user_id', session.user.id);
+        .eq('user_id', user.id);
     }
   }
 

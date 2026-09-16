@@ -26,11 +26,10 @@ export async function POST(request: NextRequest) {
     }
   );
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  // getUser() validates the token with the Auth server (getSession() only decodes the cookie).
+  const { data: { user } } = await supabase.auth.getUser();
 
-  if (!session) {
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -38,7 +37,7 @@ export async function POST(request: NextRequest) {
   const { data: subscription } = await supabase
     .from('subscriptions')
     .select('stripe_customer_id, status, trial_end')
-    .eq('user_id', session.user.id)
+    .eq('user_id', user.id)
     .single();
 
   const trialStillActive =
@@ -53,8 +52,8 @@ export async function POST(request: NextRequest) {
 
   if (!customerId) {
     const customer = await stripe.customers.create({
-      email: session.user.email,
-      metadata: { supabase_user_id: session.user.id },
+      email: user.email,
+      metadata: { supabase_user_id: user.id },
     });
     customerId = customer.id;
   }

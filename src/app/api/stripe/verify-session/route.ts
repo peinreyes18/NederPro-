@@ -61,13 +61,16 @@ export async function POST(request: NextRequest) {
       ? 'monthly'
       : null;
 
-    // A completed checkout always collects a card, but confirm against Stripe.
+    // A completed checkout always collects a payment method, but confirm against
+    // Stripe. Any type counts — iDEAL/SEPA, Revolut Pay and Link are common for
+    // Dutch customers and are NOT type "card" (the old card-only check marked
+    // those users as having no payment method and locked them out of their trial).
     let hasPaymentMethod = false;
     try {
-      const pms = await stripe.paymentMethods.list({ customer: customerId, type: 'card', limit: 1 });
-      hasPaymentMethod = pms.data.length > 0;
+      const pms = await stripe.paymentMethods.list({ customer: customerId, limit: 1 });
+      hasPaymentMethod = pms.data.length > 0 || !!sub.default_payment_method;
     } catch {
-      hasPaymentMethod = false;
+      hasPaymentMethod = !!sub.default_payment_method;
     }
 
     // Write to Supabase using service role (no auth required)

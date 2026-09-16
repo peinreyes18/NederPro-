@@ -19,18 +19,17 @@ export async function POST(request: NextRequest) {
     }
   );
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  // getUser() validates the token with the Auth server (getSession() only decodes the cookie).
+  const { data: { user } } = await supabase.auth.getUser();
 
-  if (!session) {
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   const { data: subscription } = await supabase
     .from('subscriptions')
     .select('stripe_customer_id')
-    .eq('user_id', session.user.id)
+    .eq('user_id', user.id)
     .single();
 
   if (!subscription?.stripe_customer_id) {

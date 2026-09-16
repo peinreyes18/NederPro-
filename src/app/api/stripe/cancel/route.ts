@@ -23,15 +23,16 @@ export async function POST(request: NextRequest) {
     }
   );
 
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) {
+  // getUser() validates the token with the Auth server (getSession() only decodes the cookie).
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   const { data: sub } = await supabase
     .from('subscriptions')
     .select('stripe_subscription_id, status')
-    .eq('user_id', session.user.id)
+    .eq('user_id', user.id)
     .single();
 
   if (!sub?.stripe_subscription_id) {
@@ -50,7 +51,7 @@ export async function POST(request: NextRequest) {
     await createAdminClient()
       .from('subscriptions')
       .update({ status: 'canceled', cancellation_reason: reason, updated_at: new Date().toISOString() })
-      .eq('user_id', session.user.id);
+      .eq('user_id', user.id);
 
     return NextResponse.json({ ok: true });
   } catch (err) {

@@ -37,12 +37,13 @@ export async function POST(request: NextRequest) {
     }
   );
 
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) {
+  // getUser() validates the token with the Auth server (getSession() only decodes the cookie).
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
     return NextResponse.json({ error: 'You need to be signed in to redeem a gift code.' }, { status: 401 });
   }
 
-  const userId = session.user.id;
+  const userId = user.id;
   const supabaseAdmin = createAdminClient();
 
   // ── Validate the gift code ─────────────────────────────────────────────────
@@ -74,7 +75,7 @@ export async function POST(request: NextRequest) {
   let customerId = existing?.stripe_customer_id ?? null;
   if (!customerId) {
     const customer = await stripe.customers.create({
-      email: session.user.email,
+      email: user.email,
       metadata: { supabase_user_id: userId },
     });
     customerId = customer.id;

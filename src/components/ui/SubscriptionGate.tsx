@@ -9,6 +9,14 @@ interface SubscriptionGateProps {
   children?: React.ReactNode;
   /** Short label for what the user is trying to access, e.g. "exercises" */
   feature?: string;
+  /**
+   * Optional public teaser rendered ABOVE the paywall for non-subscribers
+   * (e.g. the page title + one-line description), so a visitor understands
+   * what they'd unlock. Subscribers never see it — the real page has its own.
+   */
+  preview?: React.ReactNode;
+  /** Wrapper classes for the paywall view only (e.g. a page container). Subscribers get children as-is. */
+  className?: string;
 }
 
 /**
@@ -18,6 +26,8 @@ interface SubscriptionGateProps {
 export default function SubscriptionGate({
   children,
   feature = 'this feature',
+  preview,
+  className,
 }: SubscriptionGateProps) {
   const { user, isLoading, isSubscribed } = useAuth();
 
@@ -46,6 +56,8 @@ export default function SubscriptionGate({
   // ── Not logged in ──────────────────────────────────────────────────────────
   if (!user) {
     return (
+      <div className={className}>
+      {preview}
       <div className="rounded-2xl border border-accent/30 bg-accent-light/30 px-6 py-8 text-center">
         <div className="w-12 h-12 rounded-full bg-accent-light flex items-center justify-center mx-auto mb-4">
           <svg className="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -80,11 +92,14 @@ export default function SubscriptionGate({
           </Link>
         </div>
       </div>
+      </div>
     );
   }
 
   // ── Logged in, no subscription ─────────────────────────────────────────────
   return (
+    <div className={className}>
+    {preview}
     <div className="rounded-2xl border border-accent/30 bg-accent-light/30 px-6 py-8 text-center">
       <div className="w-12 h-12 rounded-full bg-accent-light flex items-center justify-center mx-auto mb-4">
         <svg className="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -116,6 +131,7 @@ export default function SubscriptionGate({
       <p className="text-xs text-muted mt-3">
         Cancel any time before the trial ends and you won&apos;t be charged.
       </p>
+    </div>
     </div>
   );
 }

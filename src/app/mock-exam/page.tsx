@@ -671,8 +671,22 @@ function MockExamRunner() {
 
 export default function MockExamPage() {
   return (
-    <SubscriptionGate feature="the full mock exam">
-      <MockExamRunner />
-    </SubscriptionGate>
+      <SubscriptionGate
+        feature="the full mock exam"
+        className="max-w-3xl mx-auto px-4 py-10"
+        preview={
+          <div className="mb-8 text-center">
+            <p className="text-xs font-semibold text-accent uppercase tracking-wider mb-2">Practice Test</p>
+            <h1 className="text-3xl font-extrabold text-primary mb-3">Mock Inburgeringsexamen 🇳🇱</h1>
+            <p className="text-muted text-lg max-w-xl mx-auto">
+              A full 50-minute timed practice exam covering Reading, Listening and KNM —
+              just like the real inburgeringsexamen, with a 70% pass threshold and randomised
+              questions every attempt.
+            </p>
+          </div>
+        }
+      >
+        <MockExamRunner />
+      </SubscriptionGate>
   );
 }

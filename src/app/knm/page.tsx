@@ -389,8 +389,21 @@ function KnmTrainer() {
 
 export default function KnmPage() {
   return (
-    <SubscriptionGate feature="the KNM exam trainer">
-      <KnmTrainer />
-    </SubscriptionGate>
+      <SubscriptionGate
+        feature="the KNM exam trainer"
+        className="max-w-3xl mx-auto px-4 py-10"
+        preview={
+          <div className="mb-8 text-center">
+            <h1 className="text-3xl font-bold text-primary mb-3">KNM Quiz 🏛️</h1>
+            <p className="text-muted text-lg max-w-xl mx-auto">
+              Kennis van de Nederlandse Maatschappij — the civic-knowledge part of the
+              inburgeringsexamen. Practise real-style questions on Dutch society, work,
+              healthcare and government, with instant explanations.
+            </p>
+          </div>
+        }
+      >
+        <KnmTrainer />
+      </SubscriptionGate>
   );
 }

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { sendReadinessResultsEmail } from '@/lib/email';
 import { createAdminClient } from '@/lib/supabase-admin';
+import { describeAttribution } from '@/lib/attribution';
 
 /**
  * POST /api/readiness-results
@@ -58,6 +59,15 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
   }
 
+  // Where this lead came from (tracked link / referrer), captured in the browser.
+  const str = (v: unknown, max = 80) => (typeof v === 'string' ? v.slice(0, max) : undefined);
+  const a = (body.attribution && typeof body.attribution === 'object' ? body.attribution : {}) as Record<string, unknown>;
+  const attribution = {
+    source: str(a.source), medium: str(a.medium), campaign: str(a.campaign),
+    content: str(a.content), landing: str(a.landing, 120), referrer: str(a.referrer),
+  };
+  const where = describeAttribution(attribution);
+
   // 1. Results email to the visitor
   try {
     await sendReadinessResultsEmail({
@@ -79,8 +89,8 @@ export async function POST(request: NextRequest) {
     await new Resend(process.env.RESEND_API_KEY).emails.send({
       from: 'hello@nederpro.com',
       to: 'lainefajardo18@gmail.com',
-      subject: `🎯 Readiness test lead: ${email} (${pct}%, ${verdict})`,
-      html: `<p><strong>${email}</strong> took the readiness test.</p><p>Score ${pct}% · ${verdict} · start at ${startLevel.toUpperCase()}</p><p>A1 ${area('a1')} · A2 ${area('a2')} · KNM ${area('knm')}</p>`,
+      subject: `🎯 Readiness test lead: ${email} (${pct}%, ${verdict}) — via ${attribution.source ?? 'unknown'}`,
+      html: `<p><strong>${email}</strong> took the readiness test.</p><p>Score ${pct}% · ${verdict} · start at ${startLevel.toUpperCase()}</p><p>A1 ${area('a1')} · A2 ${area('a2')} · KNM ${area('knm')}</p><p><strong>Came from:</strong> ${where}</p>`,
     });
   } catch (err) { console.error('owner notify failed:', err); }
 
@@ -88,7 +98,12 @@ export async function POST(request: NextRequest) {
   try {
     await createAdminClient()
       .from('leads')
-      .insert({ email, source: 'readiness-test', score_pct: pct, verdict, start_level: startLevel });
+      .insert({
+        email, source: 'readiness-test', score_pct: pct, verdict, start_level: startLevel,
+        utm_source: attribution.source ?? null, utm_medium: attribution.medium ?? null,
+        utm_campaign: attribution.campaign ?? null, utm_content: attribution.content ?? null,
+        landing_path: attribution.landing ?? null,
+      });
   } catch { /* table may not exist yet */ }
 
   return NextResponse.json({ ok: true });

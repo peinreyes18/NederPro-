@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import type { User, Session } from '@supabase/supabase-js';
 import { createClient } from '@/lib/supabase';
+import { getAttribution } from '@/lib/attribution';
 
 interface SubscriptionData {
   status: string;
@@ -93,10 +94,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signUp = useCallback(async (email: string, password: string) => {
     const supabase = createClient();
     const redirectTo = `${window.location.origin}/auth/callback`;
+    // Where did this person first arrive from? (tracked link / referrer — see lib/attribution)
+    const attribution = getAttribution();
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { emailRedirectTo: redirectTo },
+      options: {
+        emailRedirectTo: redirectTo,
+        // Stored on the auth user (raw_user_meta_data) so signups can be
+        // grouped by source in Supabase without any analytics tool.
+        data: attribution
+          ? {
+              signup_source: attribution.source,
+              signup_medium: attribution.medium ?? null,
+              signup_campaign: attribution.campaign ?? null,
+              signup_content: attribution.content ?? null,
+              signup_landing: attribution.landing,
+              signup_referrer: attribution.referrer ?? null,
+            }
+          : { signup_source: 'unknown' },
+      },
     });
     const msg = error?.message;
     const clean = !msg || msg === '{}' ? 'Something went wrong. Please try again.' : msg;
@@ -104,7 +121,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       fetch('/api/notify-signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, attribution }),
       }).catch(() => {});
     }
     return { error: error ? clean : null, session: data?.session ?? null };

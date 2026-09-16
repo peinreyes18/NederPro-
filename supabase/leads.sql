@@ -9,6 +9,12 @@ create table if not exists public.leads (
   score_pct     integer,
   verdict       text,
   start_level   text,
+  -- first-touch attribution (tracked links: utm_source / utm_medium / utm_campaign)
+  utm_source    text,
+  utm_medium    text,
+  utm_campaign  text,
+  utm_content   text,
+  landing_path  text,
   created_at    timestamptz not null default now()
 );
 

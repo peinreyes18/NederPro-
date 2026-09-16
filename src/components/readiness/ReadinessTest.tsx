@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Button from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
+import { getAttribution } from '@/lib/attribution';
 import {
   AREA_LABELS,
   VERDICT_COPY,
@@ -196,6 +197,7 @@ function Results({
           startLevelLabel: result.startLevelLabel,
           byArea: result.byArea,
           gaps: result.gaps,
+          attribution: getAttribution(),
         }),
       });
       setEmailState(res.ok ? 'sent' : 'error');

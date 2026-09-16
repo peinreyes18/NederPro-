@@ -8,6 +8,7 @@ import { ThemeContext, useThemeProvider } from '@/hooks/useTheme';
 import dynamic from 'next/dynamic';
 import { VerbProvider } from '@/components/verbs/VerbContext';
 import { AuthProvider } from '@/contexts/AuthContext';
+import AttributionCapture from './AttributionCapture';
 
 const VerbModal = dynamic(() => import('@/components/verbs/VerbModal'), { ssr: false });
 
@@ -21,6 +22,7 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
       <AuthProvider>
         <ThemeContext.Provider value={themeValue}>
           <VerbProvider>
+            <AttributionCapture />
             {children}
             <VerbModal />
           </VerbProvider>
@@ -33,6 +35,7 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
     <AuthProvider>
       <ThemeContext.Provider value={themeValue}>
         <VerbProvider>
+          <AttributionCapture />
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />

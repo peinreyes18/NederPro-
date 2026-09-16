@@ -27,6 +27,9 @@ const csp = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https://www.googletagmanager.com https://www.google-analytics.com",
   "font-src 'self' data:",
+  // Audio the page builds itself (server TTS MP3s and the iOS unlock clip are
+  // played from blob:/data: URLs). Without this the browser blocks the owl's voice.
+  "media-src 'self' blob: data:",
   `connect-src 'self' ${SUPABASE_ORIGIN} ${SUPABASE_WS} https://www.google-analytics.com https://region1.google-analytics.com https://www.googletagmanager.com`,
   "frame-src 'self'",
   "frame-ancestors 'none'",

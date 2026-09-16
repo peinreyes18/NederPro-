@@ -8,6 +8,8 @@ import LessonSignupNudge from '@/components/lesson/LessonSignupNudge';
 import Button from '@/components/ui/Button';
 import Badge from '@/components/ui/Badge';
 import MarkLessonRead from '@/components/progress/MarkLessonRead';
+import ExplainerPlayer from '@/components/lesson/ExplainerPlayer';
+import { buildExplainerSlides } from '@/lib/explainer';
 import { getTopic, getAdjacentTopics, getLevel, getTopicsForLevel } from '@/lib/content-loader';
 import { levels } from '@/content/levels';
 
@@ -172,6 +174,13 @@ export default async function TopicPage({
           </p>
         </div>
       )}
+
+      {/* Auto-generated 1-minute explainer (built from this lesson's content; free for everyone) */}
+      <section id="watch" className="mb-10 scroll-mt-24" aria-label="One-minute explainer">
+        <ExplainerPlayer
+          slides={buildExplainerSlides(topic, level.shortName, `/levels/${levelId}/${topicId}/exercises`)}
+        />
+      </section>
 
       {/* Lesson content */}
       {(() => {

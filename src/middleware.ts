@@ -84,6 +84,8 @@ const PUBLIC_PREFIXES = [
   '/about',
   // Blog
   '/blog',
+  // Auto-generated grammar explainers hub (free, public)
+  '/videos',
   // Daily practice landing (actual practice requires subscription via isSubscriberOnly)
   '/daily-practice',
   // Practice landing pages — public preview; content gated in-page or on detail routes.

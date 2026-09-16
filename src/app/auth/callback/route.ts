@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
+import { safeInternalPath } from '@/lib/safe-redirect';
 
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
-  const next = searchParams.get('next') ?? '/progress';
+  // Sanitise ?next= so a crafted confirmation link can't redirect off-site.
+  const next = safeInternalPath(searchParams.get('next'), '/progress')!;
 
   if (code) {
     const cookieStore = await cookies();

@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
+import { safeInternalPath } from '@/lib/safe-redirect';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 
@@ -57,8 +58,10 @@ function LoginForm() {
       return;
     }
 
-    // If there's a specific page they were trying to reach, go there
-    const next = searchParams.get('next');
+    // If there's a specific page they were trying to reach, go there —
+    // but only if it's a safe internal path (guards against open-redirect
+    // phishing via ?next=https://evil.example).
+    const next = safeInternalPath(searchParams.get('next'));
     if (next) {
       router.push(next);
       return;

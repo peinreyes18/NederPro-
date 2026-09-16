@@ -138,7 +138,7 @@ Rules for feedback — THIS IS THE MOST IMPORTANT PART:
   try {
     const response = await client.messages.create({
       model: 'claude-haiku-4-5',
-      max_tokens: 350,
+      max_tokens: 600,
       system: systemPrompt,
       messages: convoMessages,
     });

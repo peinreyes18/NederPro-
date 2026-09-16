@@ -184,6 +184,12 @@ function SpeakingPractice() {
     if (speakTimeoutRef.current) clearTimeout(speakTimeoutRef.current);
     setLastOwlText(text);
 
+    // The owl's reply is already on screen by the time we get here, so the
+    // learner is free to answer straight away — audio is a bonus, not a gate.
+    // (Previously the mic stayed locked until speech ended, or until a fixed
+    // 30 s timeout when iOS silently refused to play it.)
+    isBusyRef.current = false;
+
     const doSpeak = () => {
       const utter = new SpeechSynthesisUtterance(text);
       if (dutchVoice) utter.voice = dutchVoice;
@@ -191,33 +197,44 @@ function SpeakingPractice() {
       utter.rate = 0.88;
       utter.pitch = 1;
 
-      // Safety timeout: if speech hasn't ended in 30s, force-complete
+      let finished = false;
+      const finish = () => {
+        if (finished) return;
+        finished = true;
+        clearInterval(keepAlive);
+        clearTimeout(startWatchdog);
+        clearTimeout(safetyTimer);
+        // Only drop back to idle if we're still "speaking" — if the learner has
+        // already tapped the mic, leave the listening state alone.
+        setOwlState((s) => (s === 'speaking' ? 'idle' : s));
+        onDone();
+      };
+
+      // iOS Safari frequently never fires onstart/onend (audio blocked, or the
+      // utterance quietly dropped). If nothing is playing after 1.5 s, stop waiting.
+      const startWatchdog = setTimeout(() => {
+        if (!window.speechSynthesis.speaking) {
+          window.speechSynthesis.cancel();
+          finish();
+        }
+      }, 1500);
+
+      // Overall cap scales with the text (two short sentences ≈ 8–10 s), max 15 s.
+      const maxMs = Math.min(15000, 3000 + text.length * 90);
       const safetyTimer = setTimeout(() => {
         window.speechSynthesis.cancel();
-        isBusyRef.current = false;
-        setOwlState('idle');
-        onDone();
-      }, 30000);
+        finish();
+      }, maxMs);
 
+      // Desktop Chrome pauses long utterances after ~15 s; nudge it along.
       const keepAlive = setInterval(() => {
         if (window.speechSynthesis.paused) window.speechSynthesis.resume();
       }, 8000);
 
       utter.onstart = () => setOwlState('speaking');
-      utter.onend = () => {
-        clearInterval(keepAlive);
-        clearTimeout(safetyTimer);
-        isBusyRef.current = false;
-        setOwlState('idle');
-        onDone();
-      };
-      utter.onerror = () => {
-        clearInterval(keepAlive);
-        clearTimeout(safetyTimer);
-        isBusyRef.current = false;
-        setOwlState('idle');
-        onDone();
-      };
+      utter.onend = finish;
+      utter.onerror = finish;
+      setOwlState('speaking');
       window.speechSynthesis.speak(utter);
     };
 
@@ -225,10 +242,9 @@ function SpeakingPractice() {
   }, [dutchVoice, ios]);
 
   const replayOwl = useCallback(() => {
-    if (!lastOwlText || isBusyRef.current) return;
-    isBusyRef.current = true;
+    if (!lastOwlText || owlState === 'thinking') return;
     speakDutch(lastOwlText, () => {});
-  }, [lastOwlText, speakDutch]);
+  }, [lastOwlText, owlState, speakDutch]);
 
   const callAPI = useCallback(async (transcript: string, currentMessages: Message[]) => {
     isBusyRef.current = true;
@@ -300,8 +316,11 @@ function SpeakingPractice() {
         if (transcript) callAPI(transcript, messagesRef.current);
         return;
       }
-      // iOS: auto-restart when continuous=false
-      if (isListeningRef.current && ios) {
+      // The browser ended recognition on its own (silence timeout, brief network
+      // hiccup, iOS non-continuous mode). Keep the mic open until the learner
+      // presses Stop — otherwise the UI showed "Listening…" while nothing was
+      // actually being recorded, and Stop then did nothing.
+      if (isListeningRef.current) {
         try { recognition.start(); } catch { /* already started */ }
       }
     };
@@ -309,10 +328,16 @@ function SpeakingPractice() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     recognition.onerror = (e: any) => {
       if (e.error === 'no-speech' || e.error === 'aborted') return;
-      if (e.error === 'not-allowed') {
+      if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
         setError('Microphone access denied. Please allow microphone in your browser settings.');
         setBrowserSupported(false);
         setInputMode('text');
+      } else if (e.error === 'network') {
+        setError('Speech recognition lost its connection. Check your internet and try again, or switch to text.');
+      } else if (e.error === 'audio-capture') {
+        setError('No microphone found. Check your device settings, or switch to text.');
+      } else {
+        setError('The microphone stopped unexpectedly. Tap Speak to try again, or switch to text.');
       }
       isListeningRef.current = false;
       setOwlState('idle');
@@ -346,12 +371,23 @@ function SpeakingPractice() {
   const stopListening = useCallback(() => {
     intentionalStopRef.current = true;
     isListeningRef.current = false;
-    recognitionRef.current?.stop();
-  }, []);
+    try { recognitionRef.current?.stop(); } catch { /* not running */ }
+    // Safety net: if recognition had already died, onend never fires and what
+    // the learner said would be lost. Submit it ourselves after a short grace.
+    setTimeout(() => {
+      if (submittedRef.current) return;
+      submittedRef.current = true;
+      const transcript = transcriptRef.current.trim();
+      setInterimTranscript('');
+      setOwlState('idle');
+      if (transcript) callAPI(transcript, messagesRef.current);
+    }, 1200);
+  }, [callAPI]);
 
   const handleTextSubmit = useCallback(() => {
     const text = textInput.trim();
     if (!text || isBusyRef.current) return;
+    window.speechSynthesis.cancel();
     setTextInput('');
     setError('');
     callAPI(text, messagesRef.current);
@@ -359,6 +395,10 @@ function SpeakingPractice() {
 
   const handleStart = useCallback(() => {
     window.speechSynthesis.cancel();
+    // iOS only plays speech that originates from a user gesture. Speaking an
+    // empty utterance here, inside the tap, unlocks audio for the replies that
+    // arrive later from the network.
+    try { window.speechSynthesis.speak(new SpeechSynthesisUtterance('')); } catch { /* ignore */ }
     setStarted(true);
     setMessages([]);
     setLastFeedback('');
@@ -417,7 +457,9 @@ function SpeakingPractice() {
     setSummary(null);
   }, []);
 
-  const isDisabled = owlState === 'thinking' || owlState === 'speaking';
+  // Only the API round-trip locks the controls. While the owl is talking the
+  // learner may tap Speak or type — that cuts the owl off, like a real chat.
+  const isDisabled = owlState === 'thinking';
   const scenarioObj = SCENARIOS.find(s => s.id === scenario);
 
   // ── Setup screen ──────────────────────────────────────────────────────────────

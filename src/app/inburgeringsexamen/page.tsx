@@ -177,8 +177,11 @@ export default function InburgeringsexamenPage() {
             The Dutch civic integration exam is required for most non-EU immigrants settling in the Netherlands. This guide explains what it tests, who must take it, and how to prepare systematically from A0 to A2.
           </p>
           <div className="flex flex-wrap gap-3">
+            <Link href="/readiness-test">
+              <Button size="sm">Am I ready? Free 8-min test</Button>
+            </Link>
             <Link href="/levels/a0">
-              <Button size="sm">Start A0 lessons — free</Button>
+              <Button variant="outline" size="sm">Start A0 lessons — free</Button>
             </Link>
             <Link href="/exams">
               <Button variant="outline" size="sm">Practice KNM exam</Button>

@@ -338,6 +338,79 @@ export async function sendSignupNudgeEmail({
   });
 }
 
+// ─── Email: Readiness-test results + 4-week plan (lead magnet) ───────────────
+export async function sendReadinessResultsEmail({
+  to,
+  pct,
+  verdict,
+  startLevel,
+  startLevelLabel,
+  gaps,
+  areas,
+}: {
+  to: string;
+  pct: number;
+  verdict: 'ready' | 'nearly' | 'not-yet';
+  startLevel: string;
+  startLevelLabel: string;
+  gaps: { title: string; href: string }[];
+  areas: { a1: string; a2: string; knm: string };
+}) {
+  const headline =
+    verdict === 'ready' ? 'You look ready for the inburgeringsexamen 🎉'
+    : verdict === 'nearly' ? 'Nearly there — a few gaps to close 💪'
+    : 'Not yet — but you know where to start 🌱';
+
+  const plan = [
+    ['Week 1', `Start the ${startLevelLabel} lessons in order. 20–30 minutes a day, one topic per session.`],
+    ['Week 2', gaps.length ? 'Work through the topics you missed (links below) and do the exercises after each one.' : 'Keep going through the level; do the exercises after every topic.'],
+    ['Week 3', 'Add KNM: 10 civic-knowledge questions a day from the KNM trainer.'],
+    ['Week 4', 'Take a full timed mock exam, then retake the readiness test to measure the change.'],
+  ];
+
+  const html = wrap(`
+    <h1 style="margin:0 0 8px;font-size:22px;font-weight:800;color:#111827;">${headline}</h1>
+    <p style="margin:0 0 20px;font-size:15px;color:#6b7280;line-height:1.6;">
+      Your readiness-test score: <strong style="color:#111827;">${pct}%</strong>
+      &nbsp;·&nbsp; A1 grammar ${areas.a1} &nbsp;·&nbsp; A2 grammar ${areas.a2} &nbsp;·&nbsp; KNM ${areas.knm}
+    </p>
+
+    <div style="background:#eff6ff;border-radius:12px;padding:16px 20px;margin-bottom:24px;">
+      <p style="margin:0 0 6px;font-size:14px;font-weight:700;color:#1e40af;">Where to start</p>
+      <a href="${BASE_URL}/levels/${startLevel}" style="font-size:15px;font-weight:700;color:#2563eb;text-decoration:none;">${startLevelLabel} → free lessons</a>
+    </div>
+
+    ${gaps.length ? `
+    <p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#111827;">Topics you missed</p>
+    <ul style="margin:0 0 24px;padding-left:20px;">
+      ${gaps.map((g) => `<li style="font-size:14px;margin-bottom:6px;"><a href="${BASE_URL}${g.href}" style="color:#2563eb;text-decoration:none;">${g.title}</a></li>`).join('')}
+    </ul>` : ''}
+
+    <p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#111827;">Your 4-week plan</p>
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;border-collapse:collapse;">
+      ${plan.map(([w, t]) => `<tr><td style="padding:8px 10px 8px 0;font-size:13px;font-weight:700;color:#2563eb;vertical-align:top;white-space:nowrap;">${w}</td><td style="padding:8px 0;font-size:14px;color:#374151;line-height:1.5;border-bottom:1px solid #f3f4f6;">${t}</td></tr>`).join('')}
+    </table>
+
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:16px;">
+      <tr><td>
+        <a href="${BASE_URL}/signup" style="display:inline-block;background:#2563eb;color:#ffffff;font-size:15px;font-weight:700;text-decoration:none;padding:14px 28px;border-radius:10px;">
+          Start my free 7-day trial →
+        </a>
+      </td></tr>
+    </table>
+    <p style="margin:0;font-size:13px;color:#9ca3af;line-height:1.6;">
+      Grammar lessons are free to read. The trial unlocks exercises, KNM practice, mock exams and AI feedback. Cancel any time before day 7 and pay nothing.
+    </p>
+  `);
+
+  return getResend().emails.send({
+    from: FROM,
+    to,
+    subject: `Your inburgeringsexamen readiness result: ${pct}% — and your 4-week plan`,
+    html,
+  });
+}
+
 // ─── Email: Re-engagement (signed up, never subscribed) ──────────────────────
 
 export async function sendReengagementEmail({

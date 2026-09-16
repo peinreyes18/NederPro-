@@ -86,6 +86,8 @@ const PUBLIC_PREFIXES = [
   '/blog',
   // Auto-generated grammar explainers hub (free, public)
   '/videos',
+  // Free readiness test — the lead magnet, no account needed
+  '/readiness-test',
   // Daily practice landing (actual practice requires subscription via isSubscriberOnly)
   '/daily-practice',
   // Practice landing pages — public preview; content gated in-page or on detail routes.

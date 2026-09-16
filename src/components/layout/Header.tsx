@@ -33,6 +33,7 @@ const navItems = [
 ];
 
 const exploreItems = [
+  { href: '/readiness-test', emoji: '🎯', label: 'Readiness test', sub: 'Am I ready for the exam? Free' },
   { href: '/videos',  emoji: '▶️', label: 'Explainers', sub: '1-minute grammar, read aloud' },
   { href: '/culture', emoji: '🌷', label: 'Culture',  sub: 'Dutch customs & society' },
   { href: '/history', emoji: '📜', label: 'History',  sub: 'The Netherlands through time' },

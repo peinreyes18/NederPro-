@@ -44,6 +44,11 @@ export default function HeroCta() {
       <p className="mt-4 text-sm text-muted">
         From €3.49 · 7-day free trial · Cancel anytime
       </p>
+      <p className="mt-3 text-sm">
+        <Link href="/readiness-test" className="text-accent font-medium hover:underline underline-offset-4">
+          Not sure where to start? Take the free 8-minute readiness test →
+        </Link>
+      </p>
     </>
   );
 }

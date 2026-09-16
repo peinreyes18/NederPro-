@@ -41,6 +41,7 @@ export default function Footer() {
               <Link href="/staatsexamen-nt2" className="hover:text-primary transition-colors">Staatsexamen NT2</Link>
               <Link href="/progress" className="hover:text-primary transition-colors">My Progress</Link>
               <Link href="/pricing" className="hover:text-primary transition-colors">Pricing</Link>
+              <Link href="/teams" className="hover:text-primary transition-colors">For teams</Link>
               <Link href="/about" className="hover:text-primary transition-colors">About</Link>
               <Link href="/contact" className="hover:text-primary transition-colors">Contact</Link>
             </nav>

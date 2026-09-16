@@ -81,6 +81,7 @@ const PUBLIC_PREFIXES = [
   '/staatsexamen-nt2',
   // Info pages
   '/pricing',
+  '/teams',
   '/about',
   // Blog
   '/blog',

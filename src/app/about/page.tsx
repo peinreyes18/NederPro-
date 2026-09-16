@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Button from '@/components/ui/Button';
 
 export const metadata: Metadata = {
-  title: 'About NederPro — Structured Dutch Learning for Adults',
+  title: { absolute: 'About NederPro — Structured Dutch Learning for Adults' },
   description:
     'NederPro is a structured Dutch grammar platform for adult learners, built around the CEFR framework and aligned with the Inburgeringsexamen and Staatsexamen NT2.',
 };

@@ -1,10 +1,7 @@
 import { MetadataRoute } from 'next';
-import { allExams } from '@/content/exams';
 import { levels } from '@/content/levels';
 import { vocabularyCategories } from '@/content/vocabulary';
 import { blogPosts } from '@/content/blog/posts';
-import { listeningExercises } from '@/data/listening-exercises';
-import { readingExercises } from '@/data/reading-exercises';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.com';
 
@@ -151,36 +148,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'yearly',
       priority: 0.3,
     },
-    {
-      url: `${BASE_URL}/listening`,
-      lastModified: now,
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${BASE_URL}/reading`,
-      lastModified: now,
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${BASE_URL}/knm`,
-      lastModified: now,
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${BASE_URL}/speaking`,
-      lastModified: now,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${BASE_URL}/mock-exam`,
-      lastModified: now,
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
   ];
 
   // ── Level pages ──────────────────────────────────────────────────────────
@@ -201,13 +168,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     return [levelPage, ...topicPages];
   });
 
-  // ── Exam pages ───────────────────────────────────────────────────────────
-  const examPages: MetadataRoute.Sitemap = allExams.map((exam) => ({
-    url: `${BASE_URL}/exams/${exam.id}`,
-    lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.8,
-  }));
+  // Note: individual exam pages (/exams/[id]), reading, listening, speaking, KNM and
+  // mock-exam pages are subscriber-only (middleware redirects to /login), so they are
+  // deliberately NOT in the sitemap. Only the public /exams overview is listed.
 
   // ── Vocabulary pages ─────────────────────────────────────────────────────
   // Note: /practice pages are subscriber-only (redirect to login) — exclude from sitemap
@@ -258,32 +221,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
   ];
 
-  // ── Listening exercise pages ─────────────────────────────────────────────
-  const listeningPages: MetadataRoute.Sitemap = listeningExercises.map((e) => ({
-    url: `${BASE_URL}/listening/${e.id}`,
-    lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.8,
-  }));
-
-  // ── Reading exercise pages ───────────────────────────────────────────────
-  const readingPages: MetadataRoute.Sitemap = readingExercises.map((e) => ({
-    url: `${BASE_URL}/reading/${e.id}`,
-    lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.8,
-  }));
-
   return [
     ...staticPages,
     ...levelPages,
-    ...examPages,
     ...vocabPages,
     ...referencePages,
     ...culturePages,
     ...historyPages,
     ...blogPages,
-    ...listeningPages,
-    ...readingPages,
   ];
 }

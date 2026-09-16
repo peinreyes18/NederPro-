@@ -990,7 +990,7 @@ export async function generateMetadata({
   const { tipId } = await params;
   const tip = cultureContent[tipId];
   return {
-    title: `${tip?.title || 'Culture'} | NederPro`,
+    title: `${tip?.title || 'Culture'}`,
     description: tip?.intro?.slice(0, 160) || 'Dutch culture tips',
   };
 }

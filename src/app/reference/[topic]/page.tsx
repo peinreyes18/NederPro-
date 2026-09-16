@@ -693,7 +693,7 @@ export async function generateMetadata({
   const { topic: topicId } = await params;
   const data = referenceTables[topicId];
   return {
-    title: `${data?.title || 'Reference'} | NederPro`,
+    title: `${data?.title || 'Reference'}`,
     description: `Dutch grammar reference: ${data?.title}`,
   };
 }

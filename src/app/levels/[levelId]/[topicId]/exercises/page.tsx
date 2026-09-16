@@ -25,7 +25,7 @@ export async function generateMetadata({
   const topic = getTopic(levelId, topicId);
   const level = getLevel(levelId);
   return {
-    title: `Exercises: ${topic?.title || 'Topic'} - ${level?.shortName || ''} | NederPro`,
+    title: `Exercises: ${topic?.title || 'Topic'} (${level?.shortName || ''})`,
     description: `Practice exercises for ${topic?.title}`,
   };
 }

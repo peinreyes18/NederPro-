@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Speaking Practice — NederPro',
+  title: 'Speaking Practice',
   description: 'Practice speaking Dutch with an AI conversation partner. Get instant feedback on your pronunciation and grammar.',
 };
 

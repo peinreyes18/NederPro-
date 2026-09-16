@@ -4,7 +4,7 @@ import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 
 export const metadata: Metadata = {
-  title: 'Pricing — NederPro',
+  title: 'Pricing',
   description:
     'NederPro is free to browse. Unlock all exercises, vocabulary drills, exam practice, and AI writing feedback from €3.49/month — with a 7-day free trial.',
 };

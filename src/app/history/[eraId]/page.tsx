@@ -627,7 +627,7 @@ export async function generateMetadata({
   const { eraId } = await params;
   const era = historyContent[eraId];
   return {
-    title: `${era?.title || 'History'} | NederPro`,
+    title: `${era?.title || 'History'}`,
     description: era?.intro?.slice(0, 160) || 'Dutch history',
   };
 }

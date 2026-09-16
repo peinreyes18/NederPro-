@@ -118,9 +118,9 @@ ANTHROPIC_API_KEY, RESEND_API_KEY
 NEXT_PUBLIC_SITE_URL, NEXT_PUBLIC_GA_MEASUREMENT_ID, CRON_SECRET
 ```
 
-Note: local `.env.local` currently has `STRIPE_PRICE_ID_BIWEEKLY` instead of
-`STRIPE_PRICE_ID_YEARLY` — the code uses `STRIPE_PRICE_ID_YEARLY`, so confirm the correct
-yearly price ID is set (production Vercel likely has it). Worth reconciling.
+Note: `STRIPE_PRICE_ID_YEARLY` must be set in Vercel (production) — the code reads it for
+yearly checkout, gift redemption and webhook plan detection. Local `.env.local` was
+reconciled on 2026-09-16 (the retired `STRIPE_PRICE_ID_BIWEEKLY` was replaced).
 
 ## Email (Resend)
 

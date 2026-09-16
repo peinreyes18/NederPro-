@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Terms & Conditions — NederPro',
+  title: 'Terms & Conditions',
   description: 'Terms and conditions governing use of the NederPro Dutch learning platform.',
 };
 

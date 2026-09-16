@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Reset Password — NederPro',
+  title: 'Reset Password',
   description: 'Set a new password for your NederPro account.',
   robots: { index: false },
 };

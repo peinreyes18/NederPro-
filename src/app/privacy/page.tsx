@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy — NederPro',
+  title: 'Privacy Policy',
   description: 'How NederPro collects, uses, and protects your personal data under GDPR.',
 };
 

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Vocabulary Quiz — NederPro',
+  title: 'Vocabulary Quiz',
   description: 'Test yourself on Dutch vocabulary you\'ve practised across all categories. Multiple choice and type-answer modes.',
 };
 

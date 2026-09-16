@@ -20,6 +20,9 @@ import type { NextRequest } from 'next/server';
  *    - /history, /history/[eraId]
  *
  * 3. AUTH_PAGES — always public (login, signup, etc.)
+ *
+ * Anything not matched above falls through to Next.js, which renders the 404 page.
+ * (Previously unknown URLs were redirected to /login — bad for SEO and confusing.)
  */
 
 // Subscriber-only path patterns (checked FIRST — highest priority)
@@ -58,6 +61,10 @@ const PUBLIC_PREFIXES = [
   '/cookies',
   '/terms',
   '/contact',
+  // Gift subscriptions: buying is anonymous (Stripe Checkout), success page reads the
+  // session id from the URL; redeem handles its own "log in first" prompt client-side.
+  '/gift',
+  '/redeem',
   // Content pages — publicly readable
   '/levels',
   '/exams',
@@ -193,45 +200,10 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Everything else (unknown routes): require auth + subscription
-  const response = NextResponse.next({
-    request: { headers: request.headers },
-  });
-
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() { return request.cookies.getAll(); },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            response.cookies.set(name, value, options);
-          });
-        },
-      },
-    }
-  );
-
-  const { data: { session } } = await supabase.auth.getSession();
-
-  if (!session) {
-    const loginUrl = new URL('/login', request.url);
-    loginUrl.searchParams.set('next', pathname);
-    return NextResponse.redirect(loginUrl);
-  }
-
-  const { data: subscription } = await supabase
-    .from('subscriptions')
-    .select('status, trial_end')
-    .eq('user_id', session.user.id)
-    .single();
-
-  if (!isSubscriptionActive(subscription)) {
-    return NextResponse.redirect(new URL('/subscribe', request.url));
-  }
-
-  return response;
+  // Everything else is an unknown URL. Let Next.js render the 404 page.
+  // Every subscriber-only page is listed explicitly in isSubscriberOnly() above,
+  // so there is nothing left to protect here.
+  return NextResponse.next();
 }
 
 export const config = {

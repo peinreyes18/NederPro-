@@ -1,12 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
 
-// Server-side TTS using Google Cloud TTS.
-// Set GOOGLE_CLOUD_TTS_API_KEY in your Vercel env vars to enable.
-// Without it, the client falls back to the Web Speech API.
+// Server-side TTS using Google Cloud Text-to-Speech — gives the owl a real Dutch
+// voice instead of whatever the learner's phone happens to have.
 //
-// Google Cloud TTS docs: https://cloud.google.com/text-to-speech/docs/reference/rest
-// Free tier: 4 million characters/month for standard voices
-// Neural voices ("nl-NL-Wavenet-*") are charged after 1M chars/month free
+// Set GOOGLE_CLOUD_TTS_API_KEY in Vercel to enable. Without it this answers 501
+// and the speaking page falls back to the browser's Web Speech voice.
+//
+// Docs: https://cloud.google.com/text-to-speech/docs/reference/rest
+// Free tier: 1M characters/month for WaveNet voices (≈ 20,000 owl replies);
+// about €14 per further million. Responses are cached in memory and at the CDN.
+//
+// Signed-in users only — this endpoint spends real quota.
 
 const GOOGLE_TTS_KEY = process.env.GOOGLE_CLOUD_TTS_API_KEY;
 const CACHE: Map<string, ArrayBuffer> = new Map();
@@ -15,6 +21,15 @@ export async function GET(request: NextRequest) {
   if (!GOOGLE_TTS_KEY) {
     return NextResponse.json({ error: 'TTS not configured' }, { status: 501 });
   }
+
+  const cookieStore = await cookies();
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
+  );
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const text = request.nextUrl.searchParams.get('text');
   if (!text || text.length > 300) {

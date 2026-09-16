@@ -86,6 +86,18 @@ function isIOS() {
     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 }
 
+/** A ~1 ms silent WAV as an object URL — used to "unlock" the audio element on iOS inside a tap. */
+function silentWavUrl(): string {
+  const bytes = new Uint8Array(44 + 8);
+  const view = new DataView(bytes.buffer);
+  const write = (offset: number, s: string) => { for (let i = 0; i < s.length; i++) bytes[offset + i] = s.charCodeAt(i); };
+  write(0, 'RIFF'); view.setUint32(4, 36 + 8, true); write(8, 'WAVE');
+  write(12, 'fmt '); view.setUint32(16, 16, true); view.setUint16(20, 1, true); view.setUint16(22, 1, true);
+  view.setUint32(24, 8000, true); view.setUint32(28, 8000, true); view.setUint16(32, 1, true); view.setUint16(34, 8, true);
+  write(36, 'data'); view.setUint32(40, 8, true); bytes.fill(0x80, 44);
+  return URL.createObjectURL(new Blob([bytes], { type: 'audio/wav' }));
+}
+
 function parseFeedbackItems(feedback: string): string[] {
   if (feedback.match(/\d+\.\s/)) {
     return feedback.split(/(?=\d+\.\s)/).map(s => s.trim()).filter(Boolean);
@@ -149,6 +161,26 @@ function SpeakingPractice() {
   const chatBottomRef = useRef<HTMLDivElement>(null);
   const speakTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Server-voice playback (Google TTS via /api/tts). One reused <audio> element:
+  // iOS only lets an element play later if that SAME element was started by a tap.
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioUrlRef = useRef<string | null>(null);
+  // null = not probed yet · false = route answered 501 (no key configured) · true = works
+  const serverTtsRef = useRef<boolean | null>(null);
+
+  /** Silence every owl voice: browser speech and the server-audio element. */
+  const stopOwlAudio = useCallback(() => {
+    try { window.speechSynthesis?.cancel(); } catch { /* ignore */ }
+    const a = audioRef.current;
+    if (a) {
+      try { a.pause(); a.onended = null; a.onerror = null; } catch { /* ignore */ }
+    }
+    if (audioUrlRef.current) {
+      URL.revokeObjectURL(audioUrlRef.current);
+      audioUrlRef.current = null;
+    }
+  }, []);
+
   useEffect(() => { messagesRef.current = messages; }, [messages]);
 
   useEffect(() => {
@@ -172,15 +204,15 @@ function SpeakingPractice() {
   }, []);
 
   useEffect(() => () => {
-    window.speechSynthesis.cancel();
+    stopOwlAudio();
     if (speakTimeoutRef.current) clearTimeout(speakTimeoutRef.current);
     isListeningRef.current = false;
     intentionalStopRef.current = true;
     recognitionRef.current?.stop();
-  }, []);
+  }, [stopOwlAudio]);
 
   const speakDutch = useCallback((text: string, onDone: () => void) => {
-    window.speechSynthesis.cancel();
+    stopOwlAudio();
     if (speakTimeoutRef.current) clearTimeout(speakTimeoutRef.current);
     setLastOwlText(text);
 
@@ -189,6 +221,54 @@ function SpeakingPractice() {
     // (Previously the mic stayed locked until speech ended, or until a fixed
     // 30 s timeout when iOS silently refused to play it.)
     isBusyRef.current = false;
+
+    // Preferred path: the server voice. /api/tts turns the text into MP3 with
+    // Google Cloud Text-to-Speech (a real Dutch speaker) when
+    // GOOGLE_CLOUD_TTS_API_KEY is set in Vercel. If the route answers 501 (no key)
+    // or anything fails, we fall back to the browser's built-in voice below.
+    const speakViaServer = async (): Promise<boolean> => {
+      if (serverTtsRef.current === false) return false;
+      try {
+        const res = await fetch(`/api/tts?text=${encodeURIComponent(text)}`);
+        if (res.status === 501) { serverTtsRef.current = false; return false; }
+        if (!res.ok) return false;
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const audio = audioRef.current ?? new Audio();
+        audioRef.current = audio;
+        if (audioUrlRef.current) URL.revokeObjectURL(audioUrlRef.current);
+        audioUrlRef.current = url;
+        audio.src = url;
+        serverTtsRef.current = true;
+
+        return await new Promise<boolean>((resolve) => {
+          let done = false;
+          const finish = (ok: boolean) => {
+            if (done) return;
+            done = true;
+            clearTimeout(cap);
+            audio.onended = null;
+            audio.onerror = null;
+            setOwlState((s) => (s === 'speaking' ? 'idle' : s));
+            onDone();
+            resolve(ok);
+          };
+          // Hard cap in case `ended` never fires (rough: 4 s + 100 ms per character).
+          const cap = setTimeout(() => { audio.pause(); finish(true); }, Math.min(20000, 4000 + text.length * 100));
+          audio.onended = () => finish(true);
+          audio.onerror = () => finish(false);
+          setOwlState('speaking');
+          audio.play().catch(() => {
+            // Autoplay blocked (iOS without the unlock) — let the browser voice try.
+            clearTimeout(cap);
+            done = true;
+            resolve(false);
+          });
+        });
+      } catch {
+        return false;
+      }
+    };
 
     const doSpeak = () => {
       const utter = new SpeechSynthesisUtterance(text);
@@ -214,7 +294,7 @@ function SpeakingPractice() {
       // utterance quietly dropped). If nothing is playing after 1.5 s, stop waiting.
       const startWatchdog = setTimeout(() => {
         if (!window.speechSynthesis.speaking) {
-          window.speechSynthesis.cancel();
+          stopOwlAudio();
           finish();
         }
       }, 1500);
@@ -222,7 +302,7 @@ function SpeakingPractice() {
       // Overall cap scales with the text (two short sentences ≈ 8–10 s), max 15 s.
       const maxMs = Math.min(15000, 3000 + text.length * 90);
       const safetyTimer = setTimeout(() => {
-        window.speechSynthesis.cancel();
+        stopOwlAudio();
         finish();
       }, maxMs);
 
@@ -238,8 +318,10 @@ function SpeakingPractice() {
       window.speechSynthesis.speak(utter);
     };
 
-    speakTimeoutRef.current = setTimeout(doSpeak, ios ? 300 : 50);
-  }, [dutchVoice, ios]);
+    speakTimeoutRef.current = setTimeout(() => {
+      speakViaServer().then((ok) => { if (!ok) doSpeak(); });
+    }, ios ? 300 : 50);
+  }, [dutchVoice, ios, stopOwlAudio]);
 
   const replayOwl = useCallback(() => {
     if (!lastOwlText || owlState === 'thinking') return;
@@ -348,7 +430,7 @@ function SpeakingPractice() {
 
   const startListening = useCallback(() => {
     if (!browserSupported || isBusyRef.current) return;
-    window.speechSynthesis.cancel();
+    stopOwlAudio();
     isListeningRef.current = true;
     intentionalStopRef.current = false;
     submittedRef.current = false;
@@ -366,7 +448,7 @@ function SpeakingPractice() {
       isListeningRef.current = false;
       setOwlState('idle');
     }
-  }, [browserSupported, buildRecognition]);
+  }, [browserSupported, buildRecognition, stopOwlAudio]);
 
   const stopListening = useCallback(() => {
     intentionalStopRef.current = true;
@@ -387,18 +469,26 @@ function SpeakingPractice() {
   const handleTextSubmit = useCallback(() => {
     const text = textInput.trim();
     if (!text || isBusyRef.current) return;
-    window.speechSynthesis.cancel();
+    stopOwlAudio();
     setTextInput('');
     setError('');
     callAPI(text, messagesRef.current);
-  }, [textInput, callAPI]);
+  }, [textInput, callAPI, stopOwlAudio]);
 
   const handleStart = useCallback(() => {
-    window.speechSynthesis.cancel();
-    // iOS only plays speech that originates from a user gesture. Speaking an
-    // empty utterance here, inside the tap, unlocks audio for the replies that
-    // arrive later from the network.
+    stopOwlAudio();
+    // iOS only plays audio that originates from a user gesture. Inside this tap
+    // we (1) speak an empty utterance to unlock the browser voice, and (2) play a
+    // few milliseconds of silence through the ONE <audio> element we reuse for
+    // the server voice — iOS then lets that same element play the real replies
+    // that arrive later from the network.
     try { window.speechSynthesis.speak(new SpeechSynthesisUtterance('')); } catch { /* ignore */ }
+    try {
+      const audio = audioRef.current ?? new Audio();
+      audioRef.current = audio;
+      audio.src = silentWavUrl();
+      audio.play().catch(() => { /* fine — we only needed the gesture */ });
+    } catch { /* ignore */ }
     setStarted(true);
     setMessages([]);
     setLastFeedback('');
@@ -408,10 +498,10 @@ function SpeakingPractice() {
     setSummary(null);
     setError('');
     callAPI('', []);
-  }, [callAPI]);
+  }, [callAPI, stopOwlAudio]);
 
   const handleEndConversation = useCallback(() => {
-    window.speechSynthesis.cancel();
+    stopOwlAudio();
     intentionalStopRef.current = true;
     isListeningRef.current = false;
     recognitionRef.current?.stop();
@@ -436,10 +526,10 @@ function SpeakingPractice() {
 
     setSummary({ totalTurns: userMsgs.length, errorCount, corrections });
     setOwlState('idle');
-  }, []);
+  }, [stopOwlAudio]);
 
   const handleReset = useCallback(() => {
-    window.speechSynthesis.cancel();
+    stopOwlAudio();
     intentionalStopRef.current = true;
     isListeningRef.current = false;
     recognitionRef.current?.stop();
@@ -455,7 +545,7 @@ function SpeakingPractice() {
     setLastOwlText('');
     setTextInput('');
     setSummary(null);
-  }, []);
+  }, [stopOwlAudio]);
 
   // Only the API round-trip locks the controls. While the owl is talking the
   // learner may tap Speak or type — that cuts the owl off, like a real chat.

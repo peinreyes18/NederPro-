@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import SubscriptionGate from '@/components/ui/SubscriptionGate';
 import { knmQuestions } from '@/data/knm-questions';
 import { readingExercises } from '@/data/reading-exercises';
 import { listeningExercises } from '@/data/listening-exercises';
@@ -121,7 +122,7 @@ const SECTION_INFO: Record<Section, { label: string; emoji: string; color: strin
 
 // ── Main page ────────────────────────────────────────────────────────────────
 
-export default function MockExamPage() {
+function MockExamRunner() {
   const [stage, setStage] = useState<Stage>('intro');
   const [questions, setQuestions] = useState<ExamQuestion[]>([]);
   const [answers, setAnswers] = useState<(number | null)[]>([]);
@@ -665,5 +666,13 @@ export default function MockExamPage() {
         {answers.filter((a) => a !== null).length} of {questions.length} answered
       </p>
     </div>
+  );
+}
+
+export default function MockExamPage() {
+  return (
+    <SubscriptionGate feature="the full mock exam">
+      <MockExamRunner />
+    </SubscriptionGate>
   );
 }

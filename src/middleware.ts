@@ -37,12 +37,16 @@ function isSubscriberOnly(pathname: string): boolean {
   // User account pages
   if (pathname === '/progress' || pathname.startsWith('/progress/')) return true;
   if (pathname === '/account' || pathname.startsWith('/account/')) return true;
-  // Practice & exam tools
-  if (pathname === '/speaking' || pathname.startsWith('/speaking/')) return true;
-  if (pathname === '/knm' || pathname.startsWith('/knm/')) return true;
-  if (pathname === '/mock-exam' || pathname.startsWith('/mock-exam/')) return true;
-  if (pathname === '/reading' || pathname.startsWith('/reading/')) return true;
-  if (pathname === '/listening' || pathname.startsWith('/listening/')) return true;
+  // Practice & exam tools.
+  //
+  // The landing pages (/speaking, /knm, /mock-exam, /reading, /listening) are
+  // PUBLIC so anonymous visitors get a preview + paywall instead of a login
+  // wall — better for conversion and SEO. Their content is still protected:
+  //   - /reading/[id] and /listening/[id] (the actual exercises) stay gated here;
+  //   - /speaking, /knm and /mock-exam gate their interactive part in-page via
+  //     <SubscriptionGate>, so the quiz/owl never renders for non-subscribers.
+  if (/^\/reading\/[^/]+/.test(pathname)) return true;
+  if (/^\/listening\/[^/]+/.test(pathname)) return true;
   if (pathname === '/verbs' || pathname.startsWith('/verbs/')) return true;
   return false;
 }
@@ -82,6 +86,12 @@ const PUBLIC_PREFIXES = [
   '/blog',
   // Daily practice landing (actual practice requires subscription via isSubscriberOnly)
   '/daily-practice',
+  // Practice landing pages — public preview; content gated in-page or on detail routes.
+  '/reading',
+  '/listening',
+  '/speaking',
+  '/knm',
+  '/mock-exam',
 ];
 
 function isPublic(pathname: string): boolean {

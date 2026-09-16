@@ -168,9 +168,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
     return [levelPage, ...topicPages];
   });
 
-  // Note: individual exam pages (/exams/[id]), reading, listening, speaking, KNM and
-  // mock-exam pages are subscriber-only (middleware redirects to /login), so they are
-  // deliberately NOT in the sitemap. Only the public /exams overview is listed.
+  // Practice landing pages are now public previews (paywall in-page), so they
+  // belong in the sitemap. The individual exercises they link to stay gated and
+  // are deliberately excluded.
+  const practiceLandingPages: MetadataRoute.Sitemap = [
+    '/reading',
+    '/listening',
+    '/speaking',
+    '/knm',
+    '/mock-exam',
+  ].map((path) => ({
+    url: `${BASE_URL}${path}`,
+    lastModified: now,
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
+  }));
+
+  // Note: individual exam pages (/exams/[id]) and the reading/listening exercises
+  // themselves are subscriber-only (middleware redirects to /login), so they are
+  // deliberately NOT in the sitemap. Only the public overviews are listed.
 
   // ── Vocabulary pages ─────────────────────────────────────────────────────
   // Note: /practice pages are subscriber-only (redirect to login) — exclude from sitemap
@@ -223,6 +239,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     ...staticPages,
+    ...practiceLandingPages,
     ...levelPages,
     ...vocabPages,
     ...referencePages,

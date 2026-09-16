@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { readingExercises, levelColors, type Level } from '@/data/reading-exercises';
 import { cn } from '@/lib/utils';
+import PreviewBanner from '@/components/ui/PreviewBanner';
 
 const levels: Level[] = ['A1', 'A2', 'B1', 'B2'];
 
@@ -16,6 +17,7 @@ const levelDescriptions: Record<Level, string> = {
 export default function ReadingPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-10">
+      <PreviewBanner feature="reading exercises" />
       <div className="mb-10 text-center">
         <h1 className="text-3xl font-bold text-primary mb-3">Reading Practice 📖</h1>
         <p className="text-muted text-lg max-w-xl mx-auto">

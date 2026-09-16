@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { listeningExercises, levelColors, type Level } from '@/data/listening-exercises';
 import { cn } from '@/lib/utils';
+import PreviewBanner from '@/components/ui/PreviewBanner';
 
 const levels: Level[] = ['A1', 'A2', 'B1', 'B2'];
 
@@ -16,6 +17,7 @@ const levelDescriptions: Record<Level, string> = {
 export default function ListeningPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-10">
+      <PreviewBanner feature="listening exercises" />
       <div className="mb-10 text-center">
         <h1 className="text-3xl font-bold text-primary mb-3">Listening Practice 🎧</h1>
         <p className="text-muted text-lg max-w-xl mx-auto">

@@ -8,6 +8,7 @@ import {
   type KnmCategory,
 } from '@/data/knm-questions';
 import { cn } from '@/lib/utils';
+import SubscriptionGate from '@/components/ui/SubscriptionGate';
 import { useActivityProgress } from '@/hooks/useActivityProgress';
 
 type Mode = 'menu' | 'quiz' | 'results';
@@ -56,7 +57,7 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-export default function KnmPage() {
+function KnmTrainer() {
   const { completeKnm } = useActivityProgress();
   const [mode, setMode] = useState<Mode>('menu');
   const [filter, setFilter] = useState<Filter>(ALL);
@@ -383,5 +384,13 @@ export default function KnmPage() {
         </button>
       )}
     </div>
+  );
+}
+
+export default function KnmPage() {
+  return (
+    <SubscriptionGate feature="the KNM exam trainer">
+      <KnmTrainer />
+    </SubscriptionGate>
   );
 }

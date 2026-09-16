@@ -292,18 +292,28 @@ export async function POST(request: NextRequest) {
         break; // Don't send cancellation emails — user still has access
       }
 
-      // Fetch cancellation reason before updating status
+      // Cancellation reason: prefer a reason the user gave in-app (the trial
+      // cancel flow writes one), otherwise fall back to what Stripe's billing
+      // portal collected on the way out. Previously the portal's answer was
+      // discarded, so paid churn always showed "(none)" even when the customer
+      // had told Stripe exactly why they left.
       const { data: existingSub } = await supabaseAdmin
         .from('subscriptions')
         .select('cancellation_reason')
         .eq('stripe_subscription_id', sub.id)
         .single();
-      const cancellationReason = existingSub?.cancellation_reason ?? null;
+
+      const cd = sub.cancellation_details;
+      const stripeReason = cd?.comment
+        ? `${cd.feedback ?? 'other'}: ${cd.comment}`
+        : cd?.feedback ?? null;
+      const cancellationReason = existingSub?.cancellation_reason ?? stripeReason;
 
       await supabaseAdmin
         .from('subscriptions')
         .update({
           status: 'canceled',
+          cancellation_reason: cancellationReason,
           updated_at: new Date().toISOString(),
         })
         .eq('stripe_subscription_id', sub.id);

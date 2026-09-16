@@ -24,9 +24,16 @@ const MAX_EXAMPLES = 4;
 const MAX_MISTAKES = 2;
 const MAX_TABLE_ROWS = 5;
 
-function allSections(topic: Topic): LessonSection[] {
-  if (topic.lesson) return topic.lesson.sections;
-  return (topic.lessons ?? []).flatMap((u) => u.sections);
+/**
+ * Sections the explainer may use. `limit` = how many leading sections (single-
+ * lesson topics) or leading units (multi-unit topics) are FREE on this page.
+ * On gated levels (A2/B1/B2) the topic page shows only the first half of the
+ * lesson to non-subscribers, so the explainer must not reveal the rest.
+ */
+function allSections(topic: Topic, limit?: number): LessonSection[] {
+  if (topic.lesson) return topic.lesson.sections.slice(0, limit ?? topic.lesson.sections.length);
+  const units = topic.lessons ?? [];
+  return units.slice(0, limit ?? units.length).flatMap((u) => u.sections);
 }
 
 /** Trim a long explanation to a sentence or two so it fits one slide. */
@@ -41,7 +48,9 @@ function firstSentences(text: string, max = 180): string {
 export function buildExplainerSlides(
   topic: Topic,
   levelLabel: string,
-  exercisesHref: string
+  exercisesHref: string,
+  /** Number of free leading sections/units to draw from (gated levels). Omit = whole lesson. */
+  freeLimit?: number
 ): ExplainerSlide[] {
   const slides: ExplainerSlide[] = [
     { kind: 'title', title: topic.title, subtitle: topic.subtitle, level: levelLabel },
@@ -52,7 +61,7 @@ export function buildExplainerSlides(
   let mistakes = 0;
   let tableDone = false;
 
-  for (const s of allSections(topic)) {
+  for (const s of allSections(topic, freeLimit)) {
     switch (s.type) {
       case 'grammar-rule':
         if (rules < MAX_RULES) {

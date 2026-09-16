@@ -178,7 +178,17 @@ export default async function TopicPage({
       {/* Auto-generated 1-minute explainer (built from this lesson's content; free for everyone) */}
       <section id="watch" className="mb-10 scroll-mt-24" aria-label="One-minute explainer">
         <ExplainerPlayer
-          slides={buildExplainerSlides(topic, level.shortName, `/levels/${levelId}/${topicId}/exercises`)}
+          slides={buildExplainerSlides(
+            topic,
+            level.shortName,
+            `/levels/${levelId}/${topicId}/exercises`,
+            // Gated levels: only the free first half of the lesson feeds the
+            // explainer — same split as the lesson body below, so it can't leak
+            // the paywalled content.
+            isGated
+              ? freeSplit(topic.lesson ? topic.lesson.sections.length : (topic.lessons?.length ?? 0))
+              : undefined
+          )}
         />
       </section>
 

@@ -26,10 +26,10 @@ export async function generateMetadata({
   const level = getLevel(levelId);
   return {
     title: `${level?.name || 'Level'} Dutch Grammar`,
-    description: `${level?.description || 'Dutch grammar topics'} Free Dutch grammar lessons at ${level?.shortName || ''} level, aligned with CEFR and the Dutch inburgering exam.`,
+    description: `${level?.description || 'Dutch grammar topics'} Dutch grammar lessons at ${level?.shortName || ''} level, aligned with CEFR and the Dutch inburgering exam. Preview every lesson free.`,
     openGraph: {
       title: `${level?.name} Dutch Grammar | NederPro`,
-      description: `${level?.description} Free Dutch grammar lessons at ${level?.shortName} level.`,
+      description: `${level?.description} Dutch grammar lessons at ${level?.shortName} level — preview every lesson free.`,
       url: `${BASE_URL}/levels/${levelId}`,
       type: 'website',
     },

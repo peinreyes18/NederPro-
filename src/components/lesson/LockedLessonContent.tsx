@@ -54,11 +54,11 @@ export default function LockedLessonContent({
           </svg>
         </div>
         <h2 className="text-xl font-bold text-primary mb-2">
-          Keep reading the full lesson
+          Unlock the full lesson
         </h2>
         <p className="text-sm text-muted mb-5 max-w-sm mx-auto">
-          You&apos;ve read the first half. Start your free trial to unlock the rest of
-          this lesson — plus every exercise, mock exam, and the speaking owl.
+          That was the free preview. Start your free trial to read the rest of this
+          lesson — plus every exercise, mock exam, and the speaking owl.
         </p>
         <p className="text-sm text-muted mb-6">
           7-day free trial · Cancel before day 7, pay nothing

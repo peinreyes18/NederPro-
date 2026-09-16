@@ -37,7 +37,7 @@ const values = [
   {
     icon: '💶',
     title: 'Affordable by design',
-    desc: 'All grammar lessons are free. The subscription — from €3.49/month or €34.99/year — unlocks exercises and exam practice. Priced for learners, not enterprises.',
+    desc: 'Every lesson opens with a free preview. The subscription — from €3.49/month or €34.99/year — unlocks full lessons, exercises and exam practice. Priced for learners, not enterprises.',
   },
 ];
 
@@ -155,11 +155,11 @@ export default function AboutPage() {
       <div className="rounded-2xl border border-accent/30 bg-accent-light/20 px-6 py-8 text-center">
         <h2 className="text-xl font-bold text-primary mb-2">Start learning Dutch today</h2>
         <p className="text-sm text-muted mb-5">
-          All grammar lessons are free. Exercises and exam practice from €3.49/month.
+          Every lesson opens with a free preview. Full lessons, exercises and exam practice from €3.49/month.
         </p>
         <div className="flex flex-wrap gap-3 justify-center">
           <Link href="/levels">
-            <Button size="lg">Browse free lessons</Button>
+            <Button size="lg">Preview the lessons</Button>
           </Link>
           <Link href="/signup">
             <Button variant="outline" size="lg">Start free trial</Button>

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/contexts/AuthContext';
 import type { ExplainerSlide } from '@/lib/explainer';
 import { slideDurationMs } from '@/lib/explainer';
 
@@ -18,7 +19,10 @@ import { slideDurationMs } from '@/lib/explainer';
  */
 
 interface Props {
+  /** Slides safe to show everyone (built from the free taster of the lesson). */
   slides: ExplainerSlide[];
+  /** Full-lesson slides, shown only to subscribers / valid trials. */
+  fullSlides?: ExplainerSlide[];
   className?: string;
 }
 
@@ -59,7 +63,10 @@ function highlightWords(text: string, highlights?: string | string[]): React.Rea
   return parts.length ? parts : text;
 }
 
-export default function ExplainerPlayer({ slides, className }: Props) {
+export default function ExplainerPlayer({ slides: freeSlides, fullSlides, className }: Props) {
+  // Subscribers get the whole lesson's explainer; everyone else the free preview.
+  const { isSubscribed } = useAuth();
+  const slides = isSubscribed && fullSlides ? fullSlides : freeSlides;
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(false);
@@ -324,6 +331,21 @@ function SlideView({ slide, speaking }: { slide: ExplainerSlide; speaking: boole
         </div>
       );
     case 'end':
+      if (slide.locked) {
+        return (
+          <div className="text-center">
+            <p className="text-4xl mb-3">🔒</p>
+            <h3 className="text-xl font-bold text-primary">That was the free preview.</h3>
+            <p className="mt-1 text-sm text-muted">
+              The full lesson, the rest of this explainer and the exercises open with a free 7-day trial.
+            </p>
+            <Link href="/signup" className="inline-block mt-5 px-5 py-2.5 rounded-xl bg-accent hover:bg-accent-hover text-white text-sm font-semibold transition-colors">
+              Unlock {slide.title} →
+            </Link>
+            <p className="mt-3 text-xs text-muted">Cancel before day 7 and pay nothing.</p>
+          </div>
+        );
+      }
       return (
         <div className="text-center">
           <p className="text-4xl mb-3">🦉</p>

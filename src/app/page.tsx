@@ -423,7 +423,7 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
           <div className="grid gap-6 sm:grid-cols-3 text-center">
             {[
-              { stat: '69', label: 'Grammar topics', sub: 'A0 through B2, all free to read' },
+              { stat: '69', label: 'Grammar topics', sub: 'A0 through B2, every lesson has a free preview' },
               { stat: '7', label: 'Days free trial', sub: 'Cancel before day 7, pay nothing' },
               { stat: '€3.49', label: 'Per month', sub: 'Less than a coffee, once a month' },
             ].map((item) => (
@@ -578,7 +578,7 @@ export default function HomePage() {
               },
               {
                 q: 'Can I read the lessons before subscribing?',
-                a: 'Yes — all 69 grammar lessons are free to read, forever. The subscription unlocks interactive exercises, vocabulary practice with spaced repetition, mock exam sets, and AI writing feedback.',
+                a: 'Every one of the 69 grammar lessons opens with a free preview — the first rule and its examples — so you can judge the quality before paying. The subscription unlocks the full lessons, interactive exercises, vocabulary practice with spaced repetition, mock exam sets, and AI writing feedback.',
               },
               {
                 q: 'Is this good for the Inburgeringsexamen?',
@@ -620,7 +620,7 @@ export default function HomePage() {
             <TrialButton size="lg" className="bg-white text-accent hover:bg-blue-50 font-bold shadow-lg" />
             <Link href="/levels">
               <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                Browse free lessons
+                Preview the lessons
               </Button>
             </Link>
           </div>

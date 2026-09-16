@@ -6,13 +6,13 @@ import Card from '@/components/ui/Card';
 export const metadata: Metadata = {
   title: 'Pricing',
   description:
-    'NederPro is free to browse. Unlock all exercises, vocabulary drills, exam practice, and AI writing feedback from €3.49/month — with a 7-day free trial.',
+    'Preview every NederPro lesson free. Unlock full lessons, exercises, vocabulary drills, exam practice, and AI writing feedback from €3.49/month — with a 7-day free trial.',
 };
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.com';
 
 const included = [
-  { icon: '📚', text: 'All grammar lessons A0 – B2 (69 topics, always free to read)' },
+  { icon: '📚', text: 'Full grammar lessons A0 – B2 (69 topics — every lesson has a free preview)' },
   { icon: '✏️', text: 'Interactive exercises for every lesson' },
   { icon: '🗂️', text: 'Vocabulary drills — 920+ words across 18 categories' },
   { icon: '📋', text: 'Exam practice — 30 full mock exam sets' },
@@ -22,7 +22,7 @@ const included = [
 ];
 
 const freeItems = [
-  'All 69 grammar lessons (read only)',
+  'Free preview of all 69 grammar lessons (first rule + examples)',
   'Vocabulary lists & reference tables',
   'Exam overview & study guides',
   'Culture & history content',
@@ -52,7 +52,7 @@ const faqs = [
   },
   {
     q: 'Are all lessons really free?',
-    a: 'Yes — all 69 grammar lessons are free to read. The paywall applies to interactive exercises, vocabulary practice, and exam sets. We want you to experience the content quality before deciding to subscribe.',
+    a: 'Every lesson opens with a free preview — the first rule and its examples — so you can judge the quality before deciding. The full lessons, interactive exercises, vocabulary practice and exam sets need a subscription, which starts with a 7-day free trial.',
   },
   {
     q: 'Which plan should I choose?',
@@ -89,7 +89,7 @@ export default function PricingPage() {
           Simple, honest pricing
         </h1>
         <p className="text-muted max-w-lg mx-auto leading-relaxed">
-          All grammar lessons are free to read. Upgrade to unlock exercises, exam practice,
+          Every lesson has a free preview. Upgrade to unlock full lessons, exercises, exam practice,
           and AI feedback — with a 7-day free trial. Cancel before day 7 and pay nothing.
         </p>
       </div>
@@ -212,7 +212,7 @@ export default function PricingPage() {
             <Button size="lg">Start free trial →</Button>
           </Link>
           <Link href="/levels">
-            <Button variant="outline" size="lg">Browse free lessons</Button>
+            <Button variant="outline" size="lg">Preview the lessons</Button>
           </Link>
         </div>
       </div>

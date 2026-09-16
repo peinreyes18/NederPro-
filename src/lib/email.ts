@@ -377,7 +377,7 @@ export async function sendReadinessResultsEmail({
 
     <div style="background:#eff6ff;border-radius:12px;padding:16px 20px;margin-bottom:24px;">
       <p style="margin:0 0 6px;font-size:14px;font-weight:700;color:#1e40af;">Where to start</p>
-      <a href="${BASE_URL}/levels/${startLevel}" style="font-size:15px;font-weight:700;color:#2563eb;text-decoration:none;">${startLevelLabel} → free lessons</a>
+      <a href="${BASE_URL}/levels/${startLevel}" style="font-size:15px;font-weight:700;color:#2563eb;text-decoration:none;">${startLevelLabel} → start here</a>
     </div>
 
     ${gaps.length ? `
@@ -399,7 +399,7 @@ export async function sendReadinessResultsEmail({
       </td></tr>
     </table>
     <p style="margin:0;font-size:13px;color:#9ca3af;line-height:1.6;">
-      Grammar lessons are free to read. The trial unlocks exercises, KNM practice, mock exams and AI feedback. Cancel any time before day 7 and pay nothing.
+      Every lesson has a free preview. The trial unlocks the full lessons, exercises, KNM practice, mock exams and AI feedback. Cancel any time before day 7 and pay nothing.
     </p>
   `);
 
@@ -584,7 +584,7 @@ export async function sendWinbackEmail({
     <div style="background:#fefce8;border-radius:12px;padding:16px 20px;margin-bottom:24px;border-left:4px solid #ca8a04;">
       <p style="margin:0 0 6px;font-size:14px;font-weight:700;color:#92400e;">Still working on your Dutch?</p>
       <p style="margin:0;font-size:13px;color:#92400e;line-height:1.6;">
-        All 69 grammar lessons remain free to read. Come back any time to restart your subscription — your progress will still be there.
+        Every lesson still opens with a free preview. Come back any time to restart your subscription — your progress will still be there.
       </p>
     </div>
 
@@ -602,7 +602,7 @@ export async function sendWinbackEmail({
       </tr>
     </table>
 
-    <p style="margin:0 0 8px;font-size:13px;color:#374151;line-height:1.6;">Or keep reading free lessons:</p>
+    <p style="margin:0 0 8px;font-size:13px;color:#374151;line-height:1.6;">Or browse the lesson previews:</p>
     <table cellpadding="0" cellspacing="0">
       <tr>
         ${[

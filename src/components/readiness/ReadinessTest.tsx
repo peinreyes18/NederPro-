@@ -250,7 +250,7 @@ function Results({
         <p className="text-xs font-semibold text-muted uppercase tracking-wider mb-2">Where to start</p>
         <Link href={`/levels/${result.startLevel}`} className="block rounded-xl border border-accent/40 bg-accent-light/40 px-4 py-3 hover:bg-accent-light transition-colors">
           <p className="font-semibold text-primary">{result.startLevelLabel} →</p>
-          <p className="text-xs text-muted">Free grammar lessons, in the order that builds up to the exam.</p>
+          <p className="text-xs text-muted">Grammar lessons with free previews, in the order that builds up to the exam.</p>
         </Link>
         {result.gaps.length > 0 && (
           <>

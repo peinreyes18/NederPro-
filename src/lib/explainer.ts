@@ -17,7 +17,7 @@ export type ExplainerSlide =
   | { kind: 'example'; dutch: string; english: string; highlight?: string | string[]; note?: string; speak: string }
   | { kind: 'table'; title?: string; headers: string[]; rows: string[][] }
   | { kind: 'mistake'; incorrect: string; correct: string; explanation: string; speak: string }
-  | { kind: 'end'; title: string; exercisesHref: string };
+  | { kind: 'end'; title: string; exercisesHref: string; locked?: boolean };
 
 const MAX_RULES = 3;
 const MAX_EXAMPLES = 4;
@@ -33,7 +33,10 @@ const MAX_TABLE_ROWS = 5;
 function allSections(topic: Topic, limit?: number): LessonSection[] {
   if (topic.lesson) return topic.lesson.sections.slice(0, limit ?? topic.lesson.sections.length);
   const units = topic.lessons ?? [];
-  return units.slice(0, limit ?? units.length).flatMap((u) => u.sections);
+  // With a limit, the free taster is the first `limit` sections of the FIRST unit
+  // (mirrors the topic page). Without one, the whole lesson.
+  if (limit !== undefined) return (units[0]?.sections ?? []).slice(0, limit);
+  return units.flatMap((u) => u.sections);
 }
 
 /** Trim a long explanation to a sentence or two so it fits one slide. */
@@ -108,7 +111,8 @@ export function buildExplainerSlides(
     }
   }
 
-  slides.push({ kind: 'end', title: topic.title, exercisesHref });
+  // A limited (free-preview) build ends on an "unlock" card instead of "practise".
+  slides.push({ kind: 'end', title: topic.title, exercisesHref, locked: freeLimit !== undefined });
   return slides;
 }
 

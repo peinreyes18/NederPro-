@@ -4,7 +4,6 @@ import { notFound } from 'next/navigation';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import LessonContent from '@/components/lesson/LessonContent';
 import LockedLessonContent from '@/components/lesson/LockedLessonContent';
-import LessonSignupNudge from '@/components/lesson/LessonSignupNudge';
 import Button from '@/components/ui/Button';
 import Badge from '@/components/ui/Badge';
 import MarkLessonRead from '@/components/progress/MarkLessonRead';
@@ -12,6 +11,7 @@ import ExplainerPlayer from '@/components/lesson/ExplainerPlayer';
 import { buildExplainerSlides } from '@/lib/explainer';
 import { getTopic, getAdjacentTopics, getLevel, getTopicsForLevel } from '@/lib/content-loader';
 import { levels } from '@/content/levels';
+import type { LessonSection } from '@/content/types';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.com';
 
@@ -20,11 +20,18 @@ const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.com';
  * A0 + A1 stay fully free — they're the SEO/Google funnel that brings people in.
  * The second half of each A2/B1/B2 lesson is gated behind a free trial.
  */
-const GATED_LEVELS = new Set(['a2', 'b1', 'b2']);
-
-/** Split point: everything up to (but not including) this index is free. */
-function freeSplit(total: number): number {
-  return Math.max(1, Math.ceil(total / 2));
+/**
+ * PAYWALL RULE (all levels, since 2026-09-16): a lesson shows a free TASTER to
+ * non-subscribers — the first rule and, if it follows directly, its examples
+ * (at most 2 sections). Everything after that is behind the trial. Subscribers
+ * and valid trials see the whole lesson. Anything derived from lesson content
+ * (the explainer) must use the same split so nothing leaks.
+ */
+function freeSectionCount(sections: LessonSection[]): number {
+  if (sections.length === 0) return 0;
+  const firstExamples = sections.findIndex((s) => s.type === 'examples');
+  const upToExamples = firstExamples >= 0 ? firstExamples + 1 : 1;
+  return Math.max(1, Math.min(2, upToExamples, sections.length));
 }
 
 export function generateStaticParams() {
@@ -45,7 +52,7 @@ export async function generateMetadata({
   const topic = getTopic(levelId, topicId);
   const level = getLevel(levelId);
   const title = `${topic?.title || 'Topic'} — ${level?.shortName || ''} Dutch Grammar`;
-  const description = `${topic?.subtitle || `Learn ${topic?.title} in Dutch`} — Free Dutch grammar lesson at ${level?.shortName || ''} level with exercises. Part of NederPro's structured Dutch learning programme.`;
+  const description = `${topic?.subtitle || `Learn ${topic?.title} in Dutch`} — Dutch grammar lesson at ${level?.shortName || ''} level with exercises. Free preview. Part of NederPro's structured Dutch learning programme.`;
   return {
     title,
     description,
@@ -72,7 +79,11 @@ export default async function TopicPage({
     notFound();
   }
 
-  const isGated = GATED_LEVELS.has(levelId);
+  // Every level is gated after the free taster (see freeSectionCount).
+  const isGated = true;
+  const freeCount = freeSectionCount(
+    topic.lesson ? topic.lesson.sections : (topic.lessons?.[0]?.sections ?? [])
+  );
 
   const learningResourceJsonLd = {
     '@context': 'https://schema.org',
@@ -80,7 +91,7 @@ export default async function TopicPage({
     name: `${topic.title} — ${level.shortName} Dutch Grammar`,
     description:
       topic.subtitle ??
-      `Learn ${topic.title} in Dutch. Free grammar lesson at ${level.shortName} level with interactive exercises.`,
+      `Learn ${topic.title} in Dutch. Grammar lesson at ${level.shortName} level with interactive exercises.`,
     url: `${BASE_URL}/levels/${levelId}/${topicId}`,
     educationalLevel: level.shortName,
     teaches: topic.title,
@@ -175,48 +186,33 @@ export default async function TopicPage({
         </div>
       )}
 
-      {/* Auto-generated 1-minute explainer (built from this lesson's content; free for everyone) */}
+      {/* Auto-generated 1-minute explainer (preview for visitors, full version for subscribers) */}
       <section id="watch" className="mb-10 scroll-mt-24" aria-label="One-minute explainer">
         <ExplainerPlayer
-          slides={buildExplainerSlides(
-            topic,
-            level.shortName,
-            `/levels/${levelId}/${topicId}/exercises`,
-            // Gated levels: only the free first half of the lesson feeds the
-            // explainer — same split as the lesson body below, so it can't leak
-            // the paywalled content.
-            isGated
-              ? freeSplit(topic.lesson ? topic.lesson.sections.length : (topic.lessons?.length ?? 0))
-              : undefined
-          )}
+          // Non-subscribers get a preview built only from the free taster (same
+          // split as the lesson body, so nothing paywalled leaks); the player
+          // swaps in the full explainer for subscribers on the client.
+          slides={buildExplainerSlides(topic, level.shortName, `/levels/${levelId}/${topicId}/exercises`, freeCount)}
+          fullSlides={buildExplainerSlides(topic, level.shortName, `/levels/${levelId}/${topicId}/exercises`)}
         />
       </section>
 
-      {/* Lesson content */}
+      {/* Lesson content — free taster first, everything else behind the trial gate. */}
       {(() => {
-        // Renders a single units block (used for the `topic.lessons` shape).
-        const renderUnit = (unit: NonNullable<typeof topic.lessons>[number]) => (
+        const renderUnit = (
+          unit: NonNullable<typeof topic.lessons>[number],
+          sections: LessonSection[] = unit.sections
+        ) => (
           <div key={unit.id} className="mb-8">
             <h2 className="text-xl font-semibold text-primary mb-4">{unit.title}</h2>
-            <LessonContent lesson={{ sections: unit.sections }} />
+            <LessonContent lesson={{ sections }} />
           </div>
         );
 
-        // Non-gated levels (A0/A1) — render the whole lesson, fully free.
-        if (!isGated) {
-          return topic.lesson ? (
-            <LessonContent lesson={topic.lesson} />
-          ) : (
-            topic.lessons?.map(renderUnit)
-          );
-        }
-
-        // Gated levels (A2/B1/B2) — first half free, second half behind the gate.
         if (topic.lesson) {
           const secs = topic.lesson.sections;
-          const split = freeSplit(secs.length);
-          const free = secs.slice(0, split);
-          const locked = secs.slice(split);
+          const free = secs.slice(0, freeCount);
+          const locked = secs.slice(freeCount);
           return (
             <>
               <LessonContent lesson={{ sections: free }} />
@@ -229,26 +225,25 @@ export default async function TopicPage({
           );
         }
 
+        // Multi-unit topics: taster = first sections of the first unit; the rest
+        // of that unit and every later unit are locked.
         const units = topic.lessons ?? [];
-        const split = freeSplit(units.length);
-        const freeUnits = units.slice(0, split);
-        const lockedUnits = units.slice(split);
+        if (units.length === 0) return null;
+        const [first, ...rest] = units;
+        const freeFirst = first.sections.slice(0, freeCount);
+        const lockedFirst = first.sections.slice(freeCount);
         return (
           <>
-            {freeUnits.map(renderUnit)}
-            {lockedUnits.length > 0 && (
+            {renderUnit(first, freeFirst)}
+            {(lockedFirst.length > 0 || rest.length > 0) && (
               <LockedLessonContent>
-                {lockedUnits.map(renderUnit)}
+                {lockedFirst.length > 0 && <LessonContent lesson={{ sections: lockedFirst }} />}
+                {rest.map((u) => renderUnit(u))}
               </LockedLessonContent>
             )}
           </>
         );
       })()}
-
-      {/* Sign-up nudge for unauthenticated visitors.
-          On gated levels the locked-content gate already shows a trial CTA,
-          so we skip the extra nudge there to avoid two stacked CTAs. */}
-      {!isGated && <LessonSignupNudge />}
 
       {/* Navigation */}
       <div className="border-t border-border pt-6 mt-8 mb-24 sm:mb-0">

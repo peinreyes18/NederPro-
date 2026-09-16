@@ -256,7 +256,7 @@ export default function StaatsexamenNT2Page() {
         {/* Study path */}
         <section>
           <h2 className="text-2xl font-bold text-primary mb-2">Your study path</h2>
-          <p className="text-muted mb-6">Start from your current level and work up. All lessons are free to read.</p>
+          <p className="text-muted mb-6">Start from your current level and work up. Every lesson has a free preview.</p>
           <div className="space-y-4">
             {studyPath.map((step, i) => (
               <Card key={step.level}>

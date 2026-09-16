@@ -9,7 +9,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nederpro.com';
 export const metadata: Metadata = {
   title: 'Dutch Grammar Explainers',
   description:
-    'One-minute Dutch grammar explainers for every topic from A0 to B2 — the rule, real examples read aloud, and the mistake to avoid. Free to watch.',
+    'One-minute Dutch grammar explainers for every topic from A0 to B2 — the rule, real examples read aloud, and the mistake to avoid. Free preview for every topic.',
   openGraph: {
     title: 'Dutch Grammar Explainers | NederPro',
     description: 'Short, spoken explainers for every Dutch grammar topic, A0 to B2. Free.',
